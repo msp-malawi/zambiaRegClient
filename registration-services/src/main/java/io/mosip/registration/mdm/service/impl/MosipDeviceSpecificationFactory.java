@@ -523,6 +523,9 @@ public class MosipDeviceSpecificationFactory {
 	private MosipDeviceSpecificationProvider getMdsProvider(
 			List<MosipDeviceSpecificationProvider> deviceSpecificationProviders, String specVersion) {
 
+		 //TODO specversion 9.0.5 to 0.9.5 by Gautam
+             if(specVersion.equals("9.0.5"))
+                  specVersion="0.9.5";
 		LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
 				"Finding MosipDeviceSpecificationProvider for spec version : " + specVersion + " in providers : "
 						+ deviceSpecificationProviders);
