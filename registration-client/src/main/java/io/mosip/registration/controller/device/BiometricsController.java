@@ -986,8 +986,8 @@ public class BiometricsController extends BaseController /* implements Initializ
 				AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
 
 		scanPopUpViewController.setDocumentScan(false);
-		scanPopUpViewController.init(this, "Biometrics");
-
+		//scanPopUpViewController.init(this, "Biometrics");
+		scanPopUpViewController.init(this, currentModality);
 		deviceSearchTask = new Service<MdmBioDevice>() {
 			@Override
 			protected Task<MdmBioDevice> createTask() {
@@ -1066,9 +1066,10 @@ public class BiometricsController extends BaseController /* implements Initializ
 						}
 
 						setPopViewControllerMessage(true, RegistrationUIConstants.STREAMING_INIT_MESSAGE);
-
-						rCaptureTaskService();
-
+						//TODO BY Gautam
+						if(!currentModality.equalsIgnoreCase("Face")) {
+							rCaptureTaskService();
+						}
 						streamer.startStream(urlStream, scanPopUpViewController.getScanImage(), biometricImage);
 
 					} else {

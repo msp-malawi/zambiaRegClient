@@ -12,6 +12,7 @@ import io.mosip.registration.device.webcam.impl.WebcamSarxosServiceImpl;
 import io.mosip.registration.util.common.RubberBandSelection;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.embed.swing.SwingNode;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
@@ -25,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -34,12 +36,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static io.mosip.registration.constants.LoggerConstants.LOG_REG_IRIS_CAPTURE_CONTROLLER;
 import static io.mosip.registration.constants.LoggerConstants.LOG_REG_SCAN_CONTROLLER;
@@ -49,6 +54,8 @@ import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_
 @Controller
 public class ScanPopUpViewController extends BaseController {
 	private static final Logger LOGGER = AppConfig.getLogger(ScanPopUpViewController.class);
+	static int interval;
+	static Timer timer;
 
 	@Autowired
 	private BaseController baseController;
@@ -58,6 +65,9 @@ public class ScanPopUpViewController extends BaseController {
 
 	@Autowired
 	private WebcamSarxosServiceImpl webcamSarxosServiceImpl;
+
+	@FXML
+	private ImageView scanImage;
 
 	@FXML
 	private Label popupTitle;
@@ -70,6 +80,15 @@ public class ScanPopUpViewController extends BaseController {
 
 	@FXML
 	private Text scanningMsg;
+
+//	@FXML
+//	private GridPane imageParent;
+//
+//	@FXML
+//	private GridPane webcamParent;
+
+	@FXML
+	private SwingNode webcamNode;
 
 	private boolean isDocumentScan;
 
@@ -111,37 +130,20 @@ public class ScanPopUpViewController extends BaseController {
 	private Button cropButton;
 
 	@FXML
-	private Button streamBtn;
-	@FXML
-	private Button previewBtn;
-	
-	@FXML
-	private GridPane imageViewGridPane;
-	
-	@FXML
-	private ImageView scanImage;
-	
-	@FXML
-	private Group imageGroup;
-	
+	private Button faceCaptureBtn;
+
 	@Autowired
 	private BiometricsController biometricsController;
 
-	private boolean isStreamPaused;
+	private Stage cropStage;
 
-	public boolean isStreamPaused() {
-		return isStreamPaused;
-	}
+	private ImageView cropImageView;
 
-	private boolean isWebCamStream;
+	@FXML
+	private Group scanImageGroup;
 
-	public boolean isWebCamStream() {
-		return isWebCamStream;
-	}
-
-	public void setWebCamStream(boolean isWebCamStream) {
-		this.isWebCamStream = isWebCamStream;
-	}
+	@FXML
+	private Text countDown;
 
 	/**
 	 * @return the popupStage
@@ -164,6 +166,30 @@ public class ScanPopUpViewController extends BaseController {
 		this.popupStage = popupStage;
 	}
 
+//	public GridPane getImageParent() {
+//		return imageParent;
+//	}
+//
+//	public void setImageParent(GridPane imageParent) {
+//		this.imageParent = imageParent;
+//	}
+//
+//	public GridPane getWebcamParent() {
+//		return webcamParent;
+//	}
+//
+//	public void setWebcamParent(GridPane webcamParent) {
+//		this.webcamParent = webcamParent;
+//	}
+
+	public SwingNode getWebcamNode() {
+		return webcamNode;
+	}
+
+	public void setWebcamNode(SwingNode webcamNode) {
+		this.webcamNode = webcamNode;
+	}
+
 	/**
 	 * This method will open popup to scan
 	 * 
@@ -171,59 +197,54 @@ public class ScanPopUpViewController extends BaseController {
 	 * @param title
 	 */
 	public void init(BaseController parentControllerObj, String title) {
+
 		try {
+
 			LOGGER.info(LOG_REG_IRIS_CAPTURE_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
 					"Opening pop-up screen to scan for user registration");
-			
+
 			streamerValue = new TextField();
 			baseController = parentControllerObj;
 			popupStage = new Stage();
 			popupStage.initStyle(StageStyle.UNDECORATED);
 
 			LOGGER.info(LOG_REG_IRIS_CAPTURE_CONTROLLER, APPLICATION_NAME, APPLICATION_ID, "loading scan.fxml");
-			Parent scanPopup = BaseController.load(getClass().getResource(RegistrationConstants.SCAN_PAGE));			
-			
-			scanImage.fitWidthProperty().bind(imageViewGridPane.widthProperty());
-			scanImage.fitHeightProperty().bind(imageViewGridPane.heightProperty());
-			
+			Parent scanPopup = BaseController.load(getClass().getResource(RegistrationConstants.SCAN_PAGE));
 			setDefaultImageGridPaneVisibility();
 			popupStage.setResizable(false);
 			popupTitle.setText(title);
 
-			cropButton.setDisable(true);
-			cancelBtn.setDisable(true);
+			scanImage.setPreserveRatio(true);
+
 			previewOption.setVisible(false);
 			Scene scene = null;
 
+			if(title.equalsIgnoreCase("face"))
+				faceCaptureBtn.setVisible(true);
+
 			if (!isDocumentScan) {
+
 				scene = new Scene(scanPopup);
 				captureBtn.setVisible(false);
 				saveBtn.setVisible(false);
 				cancelBtn.setVisible(false);
 				cropButton.setVisible(false);
-				previewBtn.setVisible(false);
-				streamBtn.setVisible(false);
 			} else {
 				LOGGER.info(LOG_REG_IRIS_CAPTURE_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
 						"Setting doc screen width : " + width);
 
 				LOGGER.info(LOG_REG_IRIS_CAPTURE_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
-						"Setting doc screen height : " + height);				
-				
+						"Setting doc screen height : " + height);
+
 				scene = new Scene(scanPopup, width, height);
 
 				if (documentScanController.getScannedPages() != null
 						&& !documentScanController.getScannedPages().isEmpty()) {
 
 					initializeDocPages(1, documentScanController.getScannedPages().size());
-
-					previewBtn.setDisable(false);
-				} else {
-					saveBtn.setDisable(true);
-					cropButton.setDisable(true);
-					cancelBtn.setDisable(true);
-					previewBtn.setDisable(true);
+					previewOption.setVisible(true);
 				}
+
 			}
 			scene.getStylesheets().add(ClassLoader.getSystemClassLoader().getResource(getCssName()).toExternalForm());
 			popupStage.setScene(scene);
@@ -293,17 +314,9 @@ public class ScanPopUpViewController extends BaseController {
 				docPreviewNext.setDisable(true);
 			}
 
-//			previewOption.setVisible(true);
-
-			if (!documentScanController.getScannedPages().isEmpty()) {
-				previewBtn.setDisable(false);
-				saveBtn.setDisable(false);
-			} else {
-				previewBtn.setDisable(true);
-			}
+			previewOption.setVisible(true);
 		}
 
-		generateAlert(RegistrationConstants.ALERT_INFORMATION, RegistrationUIConstants.DOC_CAPTURE_SUCCESS);
 	}
 
 	/**
@@ -390,6 +403,21 @@ public class ScanPopUpViewController extends BaseController {
 				"Setting default visibilities for webCamParent and imageParent");
 //		webcamParent.setVisible(false);
 //		imageParent.setVisible(true);
+	}
+
+	public void setWebCamPanel(JPanel jPanelWindow) {
+
+		LOGGER.info(LOG_REG_IRIS_CAPTURE_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+				"Setting jPanel : " + jPanelWindow);
+		webcamNode.setContent(jPanelWindow);
+
+		scanImage.setVisible(false);
+//		imageParent.setVisible(false);
+//		webcamParent.setVisible(true);
+
+		webcamNode.setVisible(true);
+
+		LOGGER.info(LOG_REG_IRIS_CAPTURE_CONTROLLER, APPLICATION_NAME, APPLICATION_ID, "Setting jPanel completed");
 	}
 
 	/**
@@ -483,9 +511,8 @@ public class ScanPopUpViewController extends BaseController {
 
 		LOGGER.debug("REGISTRATION - DOCUMENT_SCAN_CONTROLLER", APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
 				"crop has been selected");
-		isStreamPaused = true;
-		scanImage.setVisible(true);
-		RubberBandSelection rubberBandSelection = new RubberBandSelection(imageGroup);
+
+		RubberBandSelection rubberBandSelection = new RubberBandSelection(scanImageGroup);
 
 		rubberBandSelection.setscanPopUpViewController(this);
 
@@ -534,15 +561,7 @@ public class ScanPopUpViewController extends BaseController {
 
 		scanImage.setImage(SwingFXUtils.toFXImage(documentScanController.getScannedPages().get(pageNumber - 1), null));
 		graphics.dispose();
-		generateAlert(RegistrationConstants.ALERT_INFORMATION, RegistrationUIConstants.CROP_DOC_SUCCESS);
-
-//		if (webcamSarxosServiceImpl.isWebcamConnected()) {
-//			scanImage.setVisible(false);
-//			webcamNode.setVisible(true);
-//		}
-
-		showPreview(true);
-
+		generateAlert(RegistrationConstants.SUCCESS, RegistrationUIConstants.CROP_DOC_SUCCESS);
 //		cropStage.close();
 
 		LOGGER.debug("REGISTRATION - DOCUMENT_SCAN_CONTROLLER", APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
@@ -559,7 +578,6 @@ public class ScanPopUpViewController extends BaseController {
 		// Remove current page
 		documentScanController.getScannedPages().remove(pageNumberIndex);
 
-		generateAlert(RegistrationConstants.ALERT_INFORMATION, RegistrationUIConstants.DOC_DELETE_SUCCESS);
 		// If first page
 		if (currentDocPageNumber == 1) {
 
@@ -614,15 +632,6 @@ public class ScanPopUpViewController extends BaseController {
 			}
 		}
 
-		if (!documentScanController.getScannedPages().isEmpty()) {
-			previewBtn.setDisable(false);
-			saveBtn.setDisable(false);
-		} else {
-			previewBtn.setDisable(true);
-			saveBtn.setDisable(true);
-			cancelBtn.setDisable(true);
-			cropButton.setDisable(true);
-		}
 	}
 
 	private void initializeDocPages(int currentPage, int totalPages) {
@@ -641,39 +650,30 @@ public class ScanPopUpViewController extends BaseController {
 	}
 
 	@FXML
-	public void stream() {
-
-		showPreview(false);
-		showStream(true);
-
-		cancelBtn.setDisable(true);
-		cropButton.setDisable(true);
-
-		isStreamPaused = false;
+	public void faceCapture(ActionEvent actionEvent) {
+		faceCaptureBtn.setVisible(false);
+		closeButton.setVisible(false);
+		String secs = "15";
+		int delay = 1000;
+		int period = 1000;
+		timer = new Timer();
+		interval = Integer.parseInt(secs);
+		timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				Platform.runLater(() -> {
+					countDown.setText(Integer.toString(setInterval()));
+					countDown.setFont(Font.font ("Verdana",20));
+					countDown.setFill(Color.BLUE);
+					if(Integer.parseInt(countDown.getText())<=5)
+						countDown.setFill(Color.RED);
+				});
+			}
+		}, delay, period);
+		biometricsController.rCaptureTaskService();
 	}
-
-	@FXML
-	public void preview() {
-
-		isStreamPaused = true;
-		showPreview(true);
-
-		scanImage.setImage(SwingFXUtils.toFXImage(
-				documentScanController.getScannedImage(documentScanController.getScannedPages().size() - 1), null));
-
-	}
-
-	private void showPreview(boolean isVisible) {
-		previewOption.setVisible(isVisible);
-		scanImage.setVisible(true);
-		cancelBtn.setDisable(false);
-		cropButton.setDisable(false);
-
-	}
-
-	private void showStream(boolean isVisible) {
-
-		isStreamPaused = false;
-
+	private static final int setInterval() {
+		if (interval == 1)
+			timer.cancel();
+		return --interval;
 	}
 }
