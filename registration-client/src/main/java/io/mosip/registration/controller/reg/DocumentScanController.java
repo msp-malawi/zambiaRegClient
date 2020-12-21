@@ -45,8 +45,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -1054,6 +1053,16 @@ public class DocumentScanController extends BaseController {
 				docPages = documentScanFacade.pdfToImages(document);
 				if (!docPages.isEmpty()) {
 					docPreviewImgView.setImage(SwingFXUtils.toFXImage(docPages.get(0), null));
+					//BufferedImage bImage = SwingFXUtils.fromFXImage(docPreviewImgView.getImage(), null);
+//					ByteArrayOutputStream s = new ByteArrayOutputStream();
+//					ImageIO.write(bImage, "png", s);
+//					byte[] res  = s.toByteArray();
+//					InputStream in = new ByteArrayInputStream(res);
+//					BufferedImage bImageFromConvert = ImageIO.read(in);
+//
+//					ImageIO.write(bImageFromConvert, "png", new File(
+//							"D:\\test.png"));
+
 
 					docPreviewLabel.setVisible(true);
 					if (docPages.size() > 1) {

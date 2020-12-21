@@ -238,6 +238,8 @@ public class ScanPopUpViewController extends BaseController {
 				saveBtn.setVisible(false);
 				cancelBtn.setVisible(false);
 				cropButton.setVisible(false);
+				previewBtn.setVisible(false);
+				streamBtn.setVisible(false);
 			} else {
 				LOGGER.info(LOG_REG_IRIS_CAPTURE_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
 						"Setting doc screen width : " + width);
