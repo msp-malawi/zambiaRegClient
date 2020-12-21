@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  * Class contains the constants used in Registration application
- * 
+ *
  * @author Balaji Sridharan
  * @since 1.0.0
  *

@@ -20,11 +20,11 @@ public class CopytoActionHandler extends ChangeActionHandler {
         boolean copyEnabled = false;
 
         if(args.length == 3) {
-           Node flagNode = parentPane.lookup(HASH.concat(args[2]));
-           if(flagNode != null && flagNode instanceof CheckBox) {
-               copyEnabled = ((CheckBox) flagNode).isSelected();
-               if(!copyEnabled) { return; }
-           }
+            Node flagNode = parentPane.lookup(HASH.concat(args[2]));
+            if(flagNode != null && flagNode instanceof CheckBox) {
+                copyEnabled = ((CheckBox) flagNode).isSelected();
+                if(!copyEnabled) { return; }
+            }
         }
 
         if(args.length > 1) {
