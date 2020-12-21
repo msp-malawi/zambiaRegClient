@@ -120,6 +120,24 @@ public class BiometricsController extends BaseController /* implements Initializ
 	private Label qualityText;
 
 	@FXML
+	private Label leftIrisScore;
+
+	@FXML
+	private Label rightIrisScore;
+
+	@FXML
+	private Label finger1;
+
+	@FXML
+	private Label finger2;
+
+	@FXML
+	private Label finger3;
+
+	@FXML
+	private Label finger4;
+
+	@FXML
 	private ColumnConstraints thresholdPane1;
 
 	@FXML
@@ -1530,7 +1548,7 @@ public class BiometricsController extends BaseController /* implements Initializ
 		int retry = biometricDTOList.get(0).getNumOfRetries();
 
 		setCapturedValues(getAverageQualityScore(biometricDTOList), retry,
-				getThresholdScoreInInt(getThresholdKeyByBioType(modality)));
+				getThresholdScoreInInt(getThresholdKeyByBioType(modality)),biometricDTOList);
 
 		// Get the stream image from Bio ServiceImpl and load it in the image pane
 		biometricImage.setImage(getBioStreamImage(subType, modality, retry));
@@ -1674,7 +1692,12 @@ public class BiometricsController extends BaseController /* implements Initializ
 
 		bioProgress.setProgress(0);
 		qualityText.setText("");
-
+		leftIrisScore.setText("");
+		rightIrisScore.setText("");
+		finger1.setText("");
+		finger2.setText("");
+		finger3.setText("");
+		finger4.setText("");
 	}
 
 	private String constructBioType(String bioType) {
@@ -1697,7 +1720,7 @@ public class BiometricsController extends BaseController /* implements Initializ
 	 * @param retry          retrycount
 	 * @param thresholdValue threshold value
 	 */
-	private void setCapturedValues(double qltyScore, int retry, double thresholdValue) {
+	private void setCapturedValues(double qltyScore, int retry, double thresholdValue,List<BiometricsDto> biometricDTOList) {
 
 		LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
 				"Updating captured values of biometrics");
@@ -1706,6 +1729,50 @@ public class BiometricsController extends BaseController /* implements Initializ
 		biometricPane.getStyleClass().add(RegistrationConstants.FINGERPRINT_PANES_SELECTED);
 		qualityScore.setText(getQualityScore(qltyScore));
 		attemptSlap.setText(String.valueOf(retry));
+
+
+		for (BiometricsDto biometricDTO : biometricDTOList) {
+
+			if(biometricDTO.getBioAttribute().equalsIgnoreCase("leftEye")){
+				leftIrisScore.setText("Left Eye "+"- "+getQualityScore(biometricDTO.getQualityScore()));
+			}
+			if(biometricDTO.getBioAttribute().equalsIgnoreCase("rightEye")){
+				rightIrisScore.setText("Right Eye "+"- "+getQualityScore(biometricDTO.getQualityScore()));
+			}
+			if(biometricDTO.getBioAttribute().equalsIgnoreCase("rightIndex")){
+				finger1.setText("Right Index "+"- "+getQualityScore(biometricDTO.getQualityScore()));
+			}
+			if(biometricDTO.getBioAttribute().equalsIgnoreCase("rightMiddle")){
+				finger2.setText("Right Middle "+"- "+getQualityScore(biometricDTO.getQualityScore()));
+			}
+			if(biometricDTO.getBioAttribute().equalsIgnoreCase("rightRing")){
+				finger3.setText("Right Ring "+"- "+getQualityScore(biometricDTO.getQualityScore()));
+			}
+			if(biometricDTO.getBioAttribute().equalsIgnoreCase("rightLittle")){
+				finger4.setText("Right Little "+"- "+getQualityScore(biometricDTO.getQualityScore()));
+			}
+			if(biometricDTO.getBioAttribute().equalsIgnoreCase("leftIndex")){
+				finger1.setText("Left Index "+"- "+getQualityScore(biometricDTO.getQualityScore()));
+			}
+			if(biometricDTO.getBioAttribute().equalsIgnoreCase("leftMiddle")){
+				finger2.setText("Left Middle "+"- "+getQualityScore(biometricDTO.getQualityScore()));
+			}
+			if(biometricDTO.getBioAttribute().equalsIgnoreCase("leftRing")){
+				finger3.setText("Left Ring "+"- "+getQualityScore(biometricDTO.getQualityScore()));
+			}
+			if(biometricDTO.getBioAttribute().equalsIgnoreCase("leftLittle")){
+				finger4.setText("Left Little "+"- "+getQualityScore(biometricDTO.getQualityScore()));
+			}
+			if(biometricDTO.getBioAttribute().equalsIgnoreCase("leftThumb")){
+				finger1.setText("Left Thumb "+"- "+getQualityScore(biometricDTO.getQualityScore()));
+			}
+			if(biometricDTO.getBioAttribute().equalsIgnoreCase("rightThumb")){
+				finger2.setText("Right Thumb "+"- "+getQualityScore(biometricDTO.getQualityScore()));
+			}
+			//leftIrisScore.setText(biometricDTO.getBioAttribute()+"-"+getQualityScore(biometricDTO.getQualityScore()));
+			//rightIrisScore.setText();
+		}
+
 
 		bioProgress.setProgress(
 				Double.valueOf(getQualityScore(qltyScore).split(RegistrationConstants.PERCENTAGE)[0]) / 100);
