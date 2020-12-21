@@ -552,6 +552,7 @@ public class DocumentScanController extends BaseController {
 			String errorMessage) {
 
 		String poeDocValue = getValueFromApplicationContext(RegistrationConstants.POE_DOCUMENT_VALUE);
+		poeDocValue =documents.getValue().getCode();
 		if (null != documents.getValue() && poeDocValue != null
 				&& documents.getValue().getCode().matches(poeDocValue)) {
 			if (documents.getValue() == null) {

@@ -100,10 +100,10 @@ public class ScanPopUpViewController extends BaseController {
 
 	public TextField streamerValue;
 
-	@Value("${mosip.doc.stage.width:1200}")
+	@Value("${mosip.doc.stage.width}")
 	private int width;
 
-	@Value("${mosip.doc.stage.height:620}")
+	@Value("${mosip.doc.stage.height}")
 	private int height;
 
 	@FXML
