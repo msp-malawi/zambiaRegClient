@@ -50,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -862,9 +863,10 @@ public class HeaderController extends BaseController {
 	 */
 	public void userGuide(ActionEvent event) {
 		userGuide.setOnAction(e -> {
+
 			if (Desktop.isDesktopSupported()) {
 				try {
-					Desktop.getDesktop().browse(new URI(RegistrationConstants.MOSIP_URL));
+					Desktop.getDesktop().open(new File(getClass().getResource(RegistrationConstants.PDF_FILE_PATH).toURI()));
 				} catch (IOException ioException) {
 					LOGGER.error(LoggerConstants.LOG_REG_LOGIN, APPLICATION_NAME, APPLICATION_ID,
 							ioException.getMessage() + ExceptionUtils.getStackTrace(ioException));

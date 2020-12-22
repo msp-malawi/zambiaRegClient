@@ -163,6 +163,9 @@ public class RegistrationConstants {
 	public static final String REGISTERING_FOCUSED = "/images/RegisterIndividualFocus.png";
 	public static final String UPDATE_BIOMETRICS_IMG_PATH = "/images/activeBiometricDetail.png";
 	public static final String UPDATE_BIOMETRICS_FOCUSED = "/images/UpdateBiometricsFocus.png";
+	//pdf file
+
+	public static final String PDF_FILE_PATH ="/PSAUserManual.pdf";
 
 	// Authentication
 	public static final String SUPERVISOR_FINGERPRINT_LOGIN = "Supervisior Fingerprint Authentication";
