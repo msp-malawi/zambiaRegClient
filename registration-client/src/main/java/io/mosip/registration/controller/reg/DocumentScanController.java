@@ -44,6 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
@@ -196,7 +197,7 @@ public class DocumentScanController extends BaseController {
 			if (getRegistrationDTOFromSession() != null
 					&& getRegistrationDTOFromSession().getRegistrationMetaDataDTO().getRegistrationCategory() != null
 					&& getRegistrationDTOFromSession().getRegistrationMetaDataDTO().getRegistrationCategory()
-							.equals(RegistrationConstants.PACKET_TYPE_LOST)) {
+					.equals(RegistrationConstants.PACKET_TYPE_LOST)) {
 
 				registrationNavlabel.setText(
 						ApplicationContext.applicationLanguageBundle().getString(RegistrationConstants.LOSTUINLBL));
@@ -548,7 +549,7 @@ public class DocumentScanController extends BaseController {
 	 * This method scans and uploads documents
 	 */
 	private void scanDocument(ComboBox<DocumentCategoryDto> documents, VBox vboxElement, String document,
-			String errorMessage) {
+							  String errorMessage) {
 
 		String poeDocValue = getValueFromApplicationContext(RegistrationConstants.POE_DOCUMENT_VALUE);
 		poeDocValue =documents.getValue().getCode();
@@ -680,6 +681,7 @@ public class DocumentScanController extends BaseController {
 						RegistrationConstants.APPLICATION_ID, "Opening webcam");
 
 				startStream(webcam);
+
 				// Enable Auto-Logout
 				SessionContext.setAutoLogout(false);
 				LOGGER.info(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, RegistrationConstants.APPLICATION_NAME,
@@ -703,11 +705,8 @@ public class DocumentScanController extends BaseController {
 				webcamSarxosServiceImpl.getHeight());
 		scanPopUpViewController.setWebCamStream(true);
 		Thread streamer_thread = new Thread(new Runnable() {
-
 			public void run() {
-
 				while (scanPopUpViewController.isWebCamStream()) {
-
 					try {
 						if (!scanPopUpViewController.isStreamPaused()) {
 							scanPopUpViewController.getScanImage().setImage(
@@ -717,14 +716,11 @@ public class DocumentScanController extends BaseController {
 						LOGGER.error(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, APPLICATION_NAME,
 								RegistrationConstants.APPLICATION_ID,
 								ExceptionUtils.getStackTrace(nullPointerException));
-
 						scanPopUpViewController.setWebCamStream(false);
 					}
 				}
 			}
-
 		});
-
 		streamer_thread.start();
 	}
 
