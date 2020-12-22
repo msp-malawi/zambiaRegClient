@@ -1178,7 +1178,7 @@ public class RegistrationConstants {
 	public static final String NUMBER_OR_NOTHING_REGEX = "^\\d*$";
 	public static final String FOUR_NUMBER_REGEX = "\\d{4}";
 	public static final String NUMBER_REGEX_ZERO_TO_THREE = "\\d{0,3}";
-	public static final int MOBILE_NUMBER_LENGTH = 9;
+	public static final int MOBILE_NUMBER_LENGTH = 12;
 	public static final String EMAIL_ID_REGEX = "^([\\w\\-\\.]+)@((\\[([0-9]{1,3}\\.){3}[0-9]{1,3}\\])|(([\\w\\-]+\\.)+)([a-zA-Z]{2,4}))$";
 	public static final String EMAIL_ID_REGEX_INITIAL = "([a-zA-Z]+\\.?\\-?\\@?(\\d+)?)+";
 	public static final String CNI_OR_PIN_NUMBER_REGEX = "\\d{0,30}";
