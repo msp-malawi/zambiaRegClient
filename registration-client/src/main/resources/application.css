@@ -235,7 +235,7 @@
 	-fx-background-color: #d9d9d9;
 }
 
-.selectedResidence {
+	.selectedResidence {
 	-fx-background-color: #005baa;
 	-fx-border-color: #005baa;
 	-fx-text-fill: #FFFFFF;
@@ -251,7 +251,7 @@
 	-fx-background-color: #FFFFFF;
 	-fx-border-color: #005baa;
 	-fx-text-fill: #005baa;
-	-fx-font-size: 12.0px;
+	-fx-font-size: 10.0px;
 	-fx-border-width: 1.0px;
 	-fx-border-radius: 4.0 4.0 4.0 4.0;
 	-fx-background-radius: 4.0 4.0 4.0 4.0;
@@ -896,7 +896,7 @@ Working on new Css by taleev
 	-fx-border-color: #C9C9C9;
 	-fx-font-size: 14.0px;
 	-fx-pref-height: 10.0px;
-	-fx-pref-width: 190.0px;
+	-fx-pref-width: 250.0px;
 }
 
 .demographicComboboxFocused {
@@ -905,7 +905,7 @@ Working on new Css by taleev
 	-fx-border-color: red;
 	-fx-font-size: 14.0px;
 	-fx-pref-height: 10.0px;
-	-fx-pref-width: 190.0px;
+	-fx-pref-width: 250.0px;
 }
 
 .demographicCombobox:focused {
@@ -914,7 +914,7 @@ Working on new Css by taleev
 	-fx-border-color: #005baa;
 	-fx-font-size: 14.0px;
 	-fx-pref-height: 10.0px;
-	-fx-pref-width: 190.0px;
+	-fx-pref-width: 250.0px;
 }
 
 .demographicCombobox .combo-box-popup>.list-view>.virtual-flow>.clipped-container>.sheet>.list-cell:filled:hover
