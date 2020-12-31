@@ -95,8 +95,11 @@ public class RegistrationDAOImpl implements RegistrationDAO {
 			if (fullNameKey.contains(RegistrationConstants.COMMA)) {
 				List<String> fullNameKeys = Arrays.asList(fullNameKey.split(RegistrationConstants.COMMA));
 				for (String key : fullNameKeys) {
+					System.out.println("key :"+key);
 					Object fullNameObj = registrationDTO.getDemographics().get(key);
-					applicantName = applicantName == null ? getAdditionalInfo(fullNameObj) : applicantName.concat(RegistrationConstants.SPACE).concat(getAdditionalInfo(fullNameObj));
+					if(getAdditionalInfo(fullNameObj) !=null) {
+						applicantName = applicantName == null ? getAdditionalInfo(fullNameObj) : applicantName.concat(RegistrationConstants.SPACE).concat(getAdditionalInfo(fullNameObj));
+					}
 				}
 			} else {
 				Object fullNameObj = registrationDTO.getDemographics().get(fullNameKey);

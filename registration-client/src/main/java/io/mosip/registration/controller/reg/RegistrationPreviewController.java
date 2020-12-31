@@ -1,10 +1,29 @@
 package io.mosip.registration.controller.reg;
 
+import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_ID;
+import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
+
+import java.io.Writer;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.events.EventTarget;
+
 import io.mosip.kernel.core.exception.ExceptionUtils;
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.kernel.core.templatemanager.spi.TemplateManagerBuilder;
 import io.mosip.registration.config.AppConfig;
-import io.mosip.registration.constants.*;
+import io.mosip.registration.constants.AuditEvent;
+import io.mosip.registration.constants.AuditReferenceIdTypes;
+import io.mosip.registration.constants.Components;
+import io.mosip.registration.constants.RegistrationConstants;
+import io.mosip.registration.constants.RegistrationUIConstants;
 import io.mosip.registration.context.ApplicationContext;
 import io.mosip.registration.context.SessionContext;
 import io.mosip.registration.controller.BaseController;
@@ -21,20 +40,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.events.EventTarget;
-
-import java.io.Writer;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_ID;
-import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
 
 @Controller
 public class RegistrationPreviewController extends BaseController implements Initializable {
@@ -100,7 +105,7 @@ public class RegistrationPreviewController extends BaseController implements Ini
 		if (getRegistrationDTOFromSession() != null
 				&& getRegistrationDTOFromSession().getRegistrationMetaDataDTO().getRegistrationCategory() != null
 				&& getRegistrationDTOFromSession().getRegistrationMetaDataDTO().getRegistrationCategory()
-						.equals(RegistrationConstants.PACKET_TYPE_LOST)) {
+				.equals(RegistrationConstants.PACKET_TYPE_LOST)) {
 
 			registrationNavlabel.setText(
 					ApplicationContext.applicationLanguageBundle().getString(RegistrationConstants.LOSTUINLBL));
@@ -324,7 +329,7 @@ public class RegistrationPreviewController extends BaseController implements Ini
 			 * UIN_UPDATE_PARENTGUARDIAN_DETAILS, true); } else if (fingerPrintCount > 0) {
 			 * SessionContext.map().put(RegistrationConstants.UIN_UPDATE_FINGERPRINTCAPTURE,
 			 * true); } else if (irisCount > 0) {
-			 * 
+			 *
 			 * SessionContext.map().put(RegistrationConstants.UIN_UPDATE_IRISCAPTURE, true);
 			 * } else if (!RegistrationConstants.DISABLE
 			 * .equalsIgnoreCase(getValueFromApplicationContext(RegistrationConstants.
@@ -371,6 +376,6 @@ public class RegistrationPreviewController extends BaseController implements Ini
 
 	private void disableConsent() {
 		getRegistrationDTOFromSession().getRegistrationMetaDataDTO().setConsentOfApplicant(RegistrationConstants.NO);
-		nextButton.setDisable(false);
+		nextButton.setDisable(true);
 	}
 }

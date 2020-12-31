@@ -3,6 +3,7 @@ package io.mosip.registration.config;
 import io.mosip.kernel.core.exception.ExceptionUtils;
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.kernel.core.util.FileUtils;
+import io.mosip.kernel.core.util.HMACUtils;
 import io.mosip.kernel.core.util.HMACUtils2;
 import io.mosip.registration.constants.LoggerConstants;
 import io.mosip.registration.util.LoggerFactory;
@@ -282,8 +283,15 @@ public class SoftwareInstallationHandler {
 		// Get latest Manifest from server
 
 		// Get latest Manifest from server
-		setServerManifest(
-				new Manifest(getInputStreamOf(serverRegClientURL + getLatestVersion() + SLASH + manifestFile)));
+//by mano
+		System.out.println("dsfhdjh"+serverRegClientURL + SLASH + manifestFile);
+		File localManifestFile = new File(manifestFile);
+
+		if (localManifestFile.exists()) {
+			setServerManifest(new Manifest(new FileInputStream(localManifestFile)));
+		}
+//		setServerManifest(
+//				new Manifest(getInputStreamOf(serverRegClientURL + getLatestVersion() + SLASH + manifestFile)));
 		setLatestVersion(serverManifest.getMainAttributes().getValue(Attributes.Name.MANIFEST_VERSION));
 
 		LOGGER.info(LoggerConstants.CLIENT_JAR_DECRYPTION, LoggerConstants.APPLICATION_NAME,
@@ -354,14 +362,14 @@ public class SoftwareInstallationHandler {
 
 		String checkSum;
 		try {
-			checkSum = HMACUtils2.digestAsPlainText(Files.readAllBytes(jarFile.toPath()));
+			checkSum = HMACUtils.digestAsPlainText(HMACUtils.generateHash(Files.readAllBytes(jarFile.toPath())));
 			String manifestCheckSum = (String) manifest.getEntries().get(jarFile.getName())
 					.get(Attributes.Name.CONTENT_TYPE);
 
 			return manifestCheckSum.equals(checkSum);
 
-		} catch (IOException | NoSuchAlgorithmException ioException) {
-			
+		} catch (IOException ioException) {
+
 			LOGGER.error(LoggerConstants.CLIENT_JAR_DECRYPTION, LoggerConstants.APPLICATION_NAME,
 					LoggerConstants.APPLICATION_ID,
 					ioException.getMessage() + ExceptionUtils.getStackTrace(ioException));
@@ -372,7 +380,7 @@ public class SoftwareInstallationHandler {
 
 				FileUtils.forceDelete(jarFile);
 			} catch (io.mosip.kernel.core.exception.IOException exception) {
-				
+
 				LOGGER.error(LoggerConstants.CLIENT_JAR_DECRYPTION, LoggerConstants.APPLICATION_NAME,
 						LoggerConstants.APPLICATION_ID,
 						exception.getMessage() + ExceptionUtils.getStackTrace(exception));

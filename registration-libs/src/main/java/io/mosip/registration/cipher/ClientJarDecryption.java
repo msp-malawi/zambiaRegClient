@@ -76,7 +76,7 @@ public class ClientJarDecryption extends Application {
 	private String DB_CHECK = "Checking for DB Availability";
 	private String CHECKING_FOR_JARS = "Checking for jars";
 	private String FAILED_TO_LAUNCH = "Failed To Launch";
-	private String LAUNCHING_CLIENT = "Launching Mosip-Client";
+	private String LAUNCHING_CLIENT = "Launching Reg-Client";
 	private String RE_CHECKING_FOR_JARS = "Re-Checking Jars";
 	private String INSTALLING_JARS = "Installing Jars";
 	private String TERMINATING_APPLICATION = "Terminating Application";

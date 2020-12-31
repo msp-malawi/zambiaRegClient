@@ -57,6 +57,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.imageio.ImageIO;
 import java.io.*;
+import java.time.Instant;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -1698,6 +1699,7 @@ public class BiometricsController extends BaseController /* implements Initializ
 		finger2.setText("");
 		finger3.setText("");
 		finger4.setText("");
+		captureTimeValue.setText("");
 	}
 
 	private String constructBioType(String bioType) {
@@ -1729,7 +1731,10 @@ public class BiometricsController extends BaseController /* implements Initializ
 		biometricPane.getStyleClass().add(RegistrationConstants.FINGERPRINT_PANES_SELECTED);
 		qualityScore.setText(getQualityScore(qltyScore));
 		attemptSlap.setText(String.valueOf(retry));
-
+        String time = Instant.now().toString().substring(0,16);
+		captureTimeValue.setText(time);
+		captureTimeValue.setStyle("-fx-font-size:9.0px");
+//		captureTimeValue.setStyle("-fx-text-fill: #005baa");
 
 		for (BiometricsDto biometricDTO : biometricDTOList) {
 

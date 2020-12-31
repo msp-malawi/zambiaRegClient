@@ -125,13 +125,10 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
 
             String url = deviceSpecificationFactory.buildUrl(bioDevice.getPort(),
                     MosipBioDeviceConstants.STREAM_ENDPOINT);
-
             StreamRequestDTO streamRequestDTO = new StreamRequestDTO(bioDevice.getDeviceId(), getDeviceSubId(modality));
 
             String request = new ObjectMapper().writeValueAsString(streamRequestDTO);
-
             //TODO time out exception by gautam
-
             RequestConfig config = RequestConfig.custom()
                     .setConnectTimeout(15000)
                     .setConnectionRequestTimeout(15000)
@@ -239,6 +236,19 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
 
                LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                         "Getting data payload of biometric" + System.currentTimeMillis());
+
+                //TODO Iris exception - Gautam
+                if(rCaptureRequestDTO.getBio().get(0).getType().equalsIgnoreCase(RegistrationConstants.VALIDATION_TYPE_IRIS)) {
+                    Long exception = Arrays.stream(rCaptureRequestDTO.getBio().get(0).getException()).count();
+                    if (exception==0) {
+                        try {
+                            captureResponseBiometricsDTOs.get(1);
+                        } catch (Exception ex){
+                            throw new RegBaseCheckedException(RegistrationExceptionConstants.MDS_RCAPTURE_ERROR.getErrorCode(),
+                                    RegistrationExceptionConstants.MDS_RCAPTURE_ERROR.getErrorMessage());
+                        }
+                    }
+                }
                if(rCaptureResponseBiometricsDTO.getError().getErrorCode()!=null) {
                    if (rCaptureResponseBiometricsDTO.getData() == null
                            || rCaptureResponseBiometricsDTO.getData().isEmpty() || !rCaptureResponseBiometricsDTO.getError().getErrorCode().equalsIgnoreCase("0")) {
@@ -262,7 +272,7 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
                     if(Integer.parseInt(dataDTO.getQualityScore())>99) {
                         dataDTO.setQualityScore("99");
                     }
-                    //System.out.println("QualityScore>>>>"+dataDTO.getQualityScore());
+
                     if (dataDTO.getTransactionId() == null
                             || !dataDTO.getTransactionId().equalsIgnoreCase(rCaptureRequestDTO.getTransactionId())) {
                         throw new RegBaseCheckedException(

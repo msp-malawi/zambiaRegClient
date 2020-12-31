@@ -138,7 +138,7 @@ public class MasterSyncDaoImpl implements MasterSyncDao {
 	 */
 	@Override
 	public List<Location> findLocationByLangCode(int hierarchyLevel, String langCode) {
-		return locationRepository.findByIsActiveTrueAndHierarchyLevelAndLangCode(hierarchyLevel, langCode);
+		return locationRepository.findByIsActiveTrueAndHierarchyLevelAndLangCodeOrderByName(hierarchyLevel, langCode);
 	}
 
 	/*
@@ -150,7 +150,7 @@ public class MasterSyncDaoImpl implements MasterSyncDao {
 	 */
 	@Override
 	public List<Location> findLocationByParentLocCode(String parentLocCode, String langCode) {
-		return locationRepository.findByIsActiveTrueAndParentLocCodeAndLangCode(parentLocCode, langCode);
+		return locationRepository.findByIsActiveTrueAndParentLocCodeAndLangCodeOrderByName(parentLocCode, langCode);
 	}
 
 	/*
@@ -240,7 +240,7 @@ public class MasterSyncDaoImpl implements MasterSyncDao {
 	 */
 	@Override
 	public List<IndividualType> getIndividulType(String langCode) {
-		return individualTypeRepository.findByIndividualTypeIdLangCodeAndIsActiveTrue(
+		return individualTypeRepository.findByIndividualTypeIdLangCodeAndIsActiveTrueOrderByIndividualTypeIdDesc(
 				langCode);
 	}
 	
@@ -279,7 +279,7 @@ public class MasterSyncDaoImpl implements MasterSyncDao {
 	}
 	
 	public List<Location> getLocationDetails(String langCode) {
-		return locationRepository.findByIsActiveTrueAndLangCode(langCode);
+		return locationRepository.findByIsActiveTrueAndLangCodeOrderByName(langCode);
 	}
 
 	/**

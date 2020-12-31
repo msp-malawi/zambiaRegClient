@@ -301,6 +301,7 @@ public class RegistrationApprovalController extends BaseController implements In
 				while ((line = bufferedReader.readLine()) != null) {
 					acknowledgementContent.append(line);
 				}
+				System.out.println(acknowledgementContent.toString());
 				webView.getEngine().loadContent(acknowledgementContent.toString());
 			} catch (IOException ioException) {
 				LOGGER.error("REGISTRATION_APPROVAL_CONTROLLER - REGSITRATION_ACKNOWLEDGEMNT_PAGE_LOADING_FAILED",

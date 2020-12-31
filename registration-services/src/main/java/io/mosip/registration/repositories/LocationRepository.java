@@ -32,7 +32,7 @@ public interface LocationRepository extends BaseRepository<Location, String> {
 	 * @param langCode      the lang code
 	 * @return the list
 	 */
-	List<Location> findByIsActiveTrueAndHierarchyLevelAndLangCode(int hierarchyLevel, String langCode);
+	List<Location> findByIsActiveTrueAndHierarchyLevelAndLangCodeOrderByName(int hierarchyLevel, String langCode);
 
 	
 	/**
@@ -42,9 +42,9 @@ public interface LocationRepository extends BaseRepository<Location, String> {
 	 * @param langCode the lang code
 	 * @return the list
 	 */
-	List<Location> findByIsActiveTrueAndParentLocCodeAndLangCode(String parentLocCode, String langCode);
-	
-	
+	List<Location> findByIsActiveTrueAndParentLocCodeAndLangCodeOrderByName(String parentLocCode, String langCode);
+
+
 	List<Location> findAllByIsActiveTrue();
 	
 	/**
@@ -53,7 +53,7 @@ public interface LocationRepository extends BaseRepository<Location, String> {
 	 * @param langCode      the lang code
 	 * @return the list
 	 */
-	List<Location> findByIsActiveTrueAndLangCode( String langCode);
+	List<Location> findByIsActiveTrueAndLangCodeOrderByName( String langCode);
 
 
 }

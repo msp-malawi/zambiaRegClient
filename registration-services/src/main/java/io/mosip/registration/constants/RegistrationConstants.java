@@ -366,7 +366,6 @@ public class RegistrationConstants {
 	public static final String ONBOARD_IMG_PATH = "/images/tick.png";
 
 	public static final String TICK_CIRICLE_IMG_PATH = "/images/tick-circle.png";
-	public static final String EXCLAMATION_IMG_PATH = "/images/exclamation.png";
 	public static final String ONBOARD_LAST_BIOMETRIC_UPDTAE_FORMAT = "EEEE dd MMM hh:mm a";
 	public static final String UTC_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
@@ -872,9 +871,20 @@ public class RegistrationConstants {
 	public static final String ONBOARD_DEVICES_REF_ID_TYPE = "UserID";
 
 	// Template Name
+
+	public static final String PREVIEW_TEMPLATE_CODE = "reg-preview-template-part";
 	public static final String ACKNOWLEDGEMENT_TEMPLATE = "Ack Template";
 	public static final String ACKNOWLEDGEMENT_TEMPLATE_CODE = "reg-ack-template-part";
-	public static final String PREVIEW_TEMPLATE_CODE = "reg-preview-template-part";
+	public static final String ACKNOWLEDGEMENT_TEMPLATE_PART_1 = "reg-ack-template-part1";
+	public static final String ACKNOWLEDGEMENT_TEMPLATE_PART_2 = "reg-ack-template-part2";
+	public static final String ACKNOWLEDGEMENT_TEMPLATE_PART_3 = "reg-ack-template-part3";
+	public static final String ACKNOWLEDGEMENT_TEMPLATE_PART_4 = "reg-ack-template-part4";
+	public static final String EMAIL_TEMPLATE = "reg-email-notification";
+	public static final String UPDATE_UIN_EMAIL_TEMPLATE = "updateUIN-email-notification";
+	public static final String LOST_UIN_EMAIL_TEMPLATE = "lostUIN-email-notification";
+	public static final String SMS_TEMPLATE = "reg-sms-notification";
+	public static final String UPDATE_UIN_SMS_TEMPLATE = "updateUIN-sms-notification";
+	public static final String LOST_UIN_SMS_TEMPLATE = "lostUIN-sms-notification";
 
 	// Notification Service
 	public static final String EMAIL_SUBJECT = "MOSIP REGISTRATION NOTIFICATION";
@@ -1180,9 +1190,15 @@ public class RegistrationConstants {
 	public static final String NUMBER_REGEX = "\\d+";
 	public static final String NUMBER_OR_NOTHING_REGEX = "^\\d*$";
 	public static final String FOUR_NUMBER_REGEX = "\\d{4}";
+	public static final String TWO_NUMBER_REGEX = "\\d{2}";
 	public static final String NUMBER_REGEX_ZERO_TO_THREE = "\\d{0,3}";
 	public static final int MOBILE_NUMBER_LENGTH = 12;
 	public static final String EMAIL_ID_REGEX = "^([\\w\\-\\.]+)@((\\[([0-9]{1,3}\\.){3}[0-9]{1,3}\\])|(([\\w\\-]+\\.)+)([a-zA-Z]{2,4}))$";
+	public static final String MOBILE_NO_REGEX = "[+]*[6]{1}[3]{1}([0-9]{10})$";
+	public static final String MOBILE_NO_REGEX_NON_PHIL = "[+]*([0-9]{12})$";
+	public static final int MOBILE_NUMBER_NON_PHIL_MIN_LENGTH = 7;
+	public static final int MOBILE_NUMBER_NON_PHIL_MAX_LENGTH = 15;
+
 	public static final String EMAIL_ID_REGEX_INITIAL = "([a-zA-Z]+\\.?\\-?\\@?(\\d+)?)+";
 	public static final String CNI_OR_PIN_NUMBER_REGEX = "\\d{0,30}";
 	public static final String AGE_REGEX = "\\d{1,2}";

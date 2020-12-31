@@ -1070,6 +1070,8 @@ public class AuthenticationController extends BaseController implements Initiali
 	 */
 	private boolean captureAndValidateFP(String userId, MDMRequestDto mdmRequestDto)
 			throws RegBaseCheckedException, IOException {
+		//TODO -START STREAM DURING OPERATOR AUTHENTICATION - GAUTAM
+		bioService.getStream(RegistrationConstants.FINGERPRINT_SLAB_RIGHT);
 		List<BiometricsDto> biometrics = bioService.captureModalityForAuth(mdmRequestDto);
 		boolean fpMatchStatus = authenticationService.authValidator(userId, SingleType.FINGER.value(), biometrics);
 		if (fpMatchStatus) {
@@ -1102,6 +1104,8 @@ public class AuthenticationController extends BaseController implements Initiali
 	 * @throws IOException
 	 */
 	private boolean captureAndValidateIris(String userId) throws RegBaseCheckedException, IOException {
+		//TODO -START STREAM DURING OPERATOR AUTHENTICATION - GAUTAM
+		bioService.getStream(RegistrationConstants.IRIS_DOUBLE);
 		MDMRequestDto mdmRequestDto = new MDMRequestDto(RegistrationConstants.IRIS_DOUBLE, null, "Registration",
 				io.mosip.registration.context.ApplicationContext
 						.getStringValueFromApplicationMap(RegistrationConstants.SERVER_ACTIVE_PROFILE),

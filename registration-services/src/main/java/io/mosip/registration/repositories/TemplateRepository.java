@@ -14,7 +14,7 @@ public interface TemplateRepository<P> extends BaseRepository<Template, String>{
 	/**
 	 * This method returns the list of {@link Template} which are active have specified
 	 * templateTypeCode
-	 * 
+	 *
 	 * @param templateTypeCode
 	 *            the required template type code
 	 * @return the list of {@link Template}
@@ -22,5 +22,5 @@ public interface TemplateRepository<P> extends BaseRepository<Template, String>{
 	List<Template> findByIsActiveTrueAndTemplateTypeCode(String templateTypeCode);
 
 	List<Template> findAllByIsActiveTrueAndTemplateTypeCodeLikeAndLangCodeOrderByIdAsc(String templateTypeCode, String langCode);
-	
+
 }

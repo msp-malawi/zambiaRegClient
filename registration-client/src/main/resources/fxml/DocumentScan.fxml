@@ -137,7 +137,7 @@
                                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                         </rowConstraints>
                                                          <children>
-                                                            <ImageView fx:id="docPreviewImgView" fitHeight="${docPreviewImgViewPane.height-20}" fitWidth="${docPreviewImgViewPane.width-20}" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                                            <ImageView fx:id="docPreviewImgView" fitHeight="540" fitWidth="540" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                                          </children>
                                                       </GridPane>
                                                       <GridPane GridPane.rowIndex="1">

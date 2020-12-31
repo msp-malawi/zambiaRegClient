@@ -41,7 +41,7 @@ import io.mosip.registration.util.restclient.ServiceDelegateUtil;
  * This class will handle the creation of Session context, Security Context and
  * User Context. This will handle authentication of all the login methods.
  *
- * 
+ *
  * @author Sravya Surampalli
  * @since 1.0.0
  *
@@ -91,7 +91,7 @@ public class SessionContext {
 	/**
 	 * This method will make the Session context class as singleton and returns the
 	 * instance of the Session context if available or else it will return null
-	 * 
+	 *
 	 * @return sessionContext
 	 */
 	public static SessionContext getInstance() {
@@ -119,7 +119,7 @@ public class SessionContext {
 	 * Returns false and Creation of Session context, Security Context and User
 	 * Context will not happen
 	 * </p>
-	 * 
+	 *
 	 * @param userDTO
 	 *            - UserInfo to create session which contains user id, user name,
 	 *            roles, center id
@@ -131,14 +131,14 @@ public class SessionContext {
 	 *            - is user first time accessing machine
 	 * @param authenticationValidatorDTO
 	 *            - Authentication validator should contain user id, pwd, otp
-	 * 
+	 *
 	 * @return boolean - Returns whether the Session context is getting created or
 	 *         not.
 	 * @throws IOException
 	 * @throws RegBaseCheckedException
 	 */
 	public static boolean create(UserDTO userDTO, String loginMethod, boolean isInitialSetUp,
-			boolean isUserNewToMachine, AuthenticationValidatorDTO authenticationValidatorDTO)
+								 boolean isUserNewToMachine, AuthenticationValidatorDTO authenticationValidatorDTO)
 			throws RegBaseCheckedException, IOException {
 
 		LOGGER.info(LoggerConstants.LOG_REG_LOGIN, APPLICATION_NAME, APPLICATION_ID,
@@ -175,13 +175,13 @@ public class SessionContext {
 
 	/**
 	 * Validating login in case of initial setup or user new to machine
-	 * 
+	 *
 	 * @param userDTO
 	 *            - UserInfo to create session which contains user id, user name,
 	 *            roles, center id
 	 * @param loginMethod
 	 *            - mode of login
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private static boolean validateInitialLogin(UserDTO userDTO, String loginMethod) {
@@ -209,7 +209,7 @@ public class SessionContext {
 
 	/**
 	 * Validating login wrt corresponding login method
-	 * 
+	 *
 	 * @param userDTO
 	 *            - UserInfo to create session which contains user id, user name,
 	 *            roles, center id
@@ -219,33 +219,33 @@ public class SessionContext {
 	 *            - Authentication validator should contain user id, pwd, otp
 	 * @param skipAuthModes
 	 *            To skip Auth modes validation
-	 * 
+	 *
 	 * @return boolean
 	 * @throws IOException
 	 * @throws RegBaseCheckedException
 	 */
 	private static boolean validateAuthMethods(UserDTO userDTO, String loginMethod,
-			AuthenticationValidatorDTO authenticationValidatorDTO, boolean skipAuthModes)
+											   AuthenticationValidatorDTO authenticationValidatorDTO, boolean skipAuthModes)
 			throws RegBaseCheckedException, IOException {
 		switch (loginMethod) {
-		case RegistrationConstants.PWORD:
-			return validatePword(loginMethod, userDTO, authenticationValidatorDTO, skipAuthModes);
-		case RegistrationConstants.OTP:
-			return validateOTP(loginMethod, userDTO, authenticationValidatorDTO);
-		case RegistrationConstants.FINGERPRINT_UPPERCASE:
-			return validateFingerprint(loginMethod, userDTO, authenticationValidatorDTO);
-		case RegistrationConstants.IRIS:
-			return validateIris(loginMethod, userDTO, authenticationValidatorDTO);
-		case RegistrationConstants.FACE:
-			return validateFace(loginMethod, userDTO, authenticationValidatorDTO);
-		default:
+			case RegistrationConstants.PWORD:
+				return validatePword(loginMethod, userDTO, authenticationValidatorDTO, skipAuthModes);
+			case RegistrationConstants.OTP:
+				return validateOTP(loginMethod, userDTO, authenticationValidatorDTO);
+			case RegistrationConstants.FINGERPRINT_UPPERCASE:
+				return validateFingerprint(loginMethod, userDTO, authenticationValidatorDTO);
+			case RegistrationConstants.IRIS:
+				return validateIris(loginMethod, userDTO, authenticationValidatorDTO);
+			case RegistrationConstants.FACE:
+				return validateFace(loginMethod, userDTO, authenticationValidatorDTO);
+			default:
 		}
 		return false;
 	}
 
 	/**
 	 * Validating login with pwd
-	 * 
+	 *
 	 * @param userDTO
 	 *            - UserInfo to create session which contains user id, user name,
 	 *            roles, center id
@@ -255,11 +255,11 @@ public class SessionContext {
 	 *            - Authentication validator should contain user id, pwd
 	 * @param skipAuthModes
 	 *            To Skip Auth Modes validation
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private static boolean validatePword(String loginMethod, UserDTO userDTO,
-			AuthenticationValidatorDTO authenticationValidatorDTO, boolean skipAuthModes) {
+										 AuthenticationValidatorDTO authenticationValidatorDTO, boolean skipAuthModes) {
 		AuthenticationService authenticationService = applicationContext.getBean(AuthenticationService.class);
 		if (authenticationValidatorDTO != null && authenticationService.validatePassword(authenticationValidatorDTO)
 				.equalsIgnoreCase(RegistrationConstants.PWD_MATCH)) {
@@ -277,7 +277,7 @@ public class SessionContext {
 
 	/**
 	 * Validating login with otp
-	 * 
+	 *
 	 * @param userDTO
 	 *            - UserInfo to create session which contains user id, user name,
 	 *            roles, center id
@@ -285,11 +285,11 @@ public class SessionContext {
 	 *            - mode of login
 	 * @param authenticationValidatorDTO
 	 *            - Authentication validator should contain user id, otp
-	 * 
+	 *
 	 * @return boolean
 	 */
 	private static boolean validateOTP(String loginMethod, UserDTO userDTO,
-			AuthenticationValidatorDTO authenticationValidatorDTO) {
+									   AuthenticationValidatorDTO authenticationValidatorDTO) {
 		AuthenticationService authenticationService = applicationContext.getBean(AuthenticationService.class);
 		AuthTokenDTO authTknDTO = authenticationService.authValidator(RegistrationConstants.OTP,
 				authenticationValidatorDTO.getUserId(), authenticationValidatorDTO.getOtp(), HAVE_TO_SAVE_AUTH_TOKEN);
@@ -305,11 +305,11 @@ public class SessionContext {
 			return false;
 		}
 	}
-	
+
 
 	/**
 	 * Validating login with Fingerprint
-	 * 
+	 *
 	 * @param userDTO
 	 *            - UserInfo to create session which contains user id, user name,
 	 *            roles, center id
@@ -317,14 +317,14 @@ public class SessionContext {
 	 *            - mode of login
 	 * @param authenticationValidatorDTO
 	 *            - Authentication validator should contain user id
-	 * 
+	 *
 	 * @return boolean
 	 * @throws IOException
 	 * @throws RegBaseCheckedException
 	 */
 	//TODO fetch environment for MDM request from applicationContext
 	private static boolean validateFingerprint(String loginMethod, UserDTO userDTO,
-			AuthenticationValidatorDTO authenticationValidatorDTO) throws RegBaseCheckedException, IOException {
+											   AuthenticationValidatorDTO authenticationValidatorDTO) throws RegBaseCheckedException, IOException {
 		BioService bioService = applicationContext.getBean(BioService.class);
 		AuthenticationService authService = applicationContext.getBean(AuthenticationService.class);
 
@@ -333,7 +333,10 @@ public class SessionContext {
 				io.mosip.registration.context.ApplicationContext
 						.getIntValueFromApplicationMap(RegistrationConstants.CAPTURE_TIME_OUT),
 				1, io.mosip.registration.context.ApplicationContext
-						.getIntValueFromApplicationMap(RegistrationConstants.FINGERPRINT_AUTHENTICATION_THRESHHOLD));
+				.getIntValueFromApplicationMap(RegistrationConstants.FINGERPRINT_AUTHENTICATION_THRESHHOLD));
+		//TODO -START STREAM DURING OPERATOR AUTHENTICATION - GAUTAM
+		bioService.getStream(RegistrationConstants.FINGERPRINT_SLAB_RIGHT);
+
 
 		List<BiometricsDto> biometrics = bioService.captureModalityForAuth(mdmRequestDto);
 		if (authService.authValidator(authenticationValidatorDTO.getUserId(), BiometricType.FINGER.value(),
@@ -352,7 +355,7 @@ public class SessionContext {
 
 	/**
 	 * Validating login with Iris
-	 * 
+	 *
 	 * @param userDTO
 	 *            - UserInfo to create session which contains user id, user name,
 	 *            roles, center id
@@ -360,14 +363,14 @@ public class SessionContext {
 	 *            - mode of login
 	 * @param authenticationValidatorDTO
 	 *            - Authentication validator should contain user id
-	 * 
+	 *
 	 * @return boolean
 	 * @throws IOException
 	 * @throws RegBaseCheckedException
 	 */
 	//TODO fetch environment for MDM request from applicationContext
 	private static boolean validateIris(String loginMethod, UserDTO userDTO,
-			AuthenticationValidatorDTO authenticationValidatorDTO) throws RegBaseCheckedException, IOException {
+										AuthenticationValidatorDTO authenticationValidatorDTO) throws RegBaseCheckedException, IOException {
 		BioService bioService = applicationContext.getBean(BioService.class);
 		AuthenticationService authService = applicationContext.getBean(AuthenticationService.class);
 
@@ -376,7 +379,10 @@ public class SessionContext {
 				io.mosip.registration.context.ApplicationContext
 						.getIntValueFromApplicationMap(RegistrationConstants.CAPTURE_TIME_OUT),
 				2, io.mosip.registration.context.ApplicationContext
-						.getIntValueFromApplicationMap(RegistrationConstants.IRIS_THRESHOLD));
+				.getIntValueFromApplicationMap(RegistrationConstants.IRIS_THRESHOLD));
+
+		//TODO -START STREAM DURING OPERATOR AUTHENTICATION - GAUTAM
+		bioService.getStream(RegistrationConstants.IRIS_DOUBLE);
 
 		List<BiometricsDto> biometrics = bioService.captureModalityForAuth(mdmRequestDto);
 		if (authService.authValidator(authenticationValidatorDTO.getUserId(), BiometricType.IRIS.value(), biometrics)) {
@@ -395,7 +401,7 @@ public class SessionContext {
 
 	/**
 	 * Validating login with Face
-	 * 
+	 *
 	 * @param userDTO
 	 *            - UserInfo to create session which contains user id, user name,
 	 *            roles, center id
@@ -403,22 +409,22 @@ public class SessionContext {
 	 *            - mode of login
 	 * @param authenticationValidatorDTO
 	 *            - Authentication validator should contain user id
-	 * 
+	 *
 	 * @return boolean
 	 * @throws IOException
 	 * @throws RegBaseCheckedException
 	 */
 	//TODO fetch environment for MDM request from applicationContext
 	private static boolean validateFace(String loginMethod, UserDTO userDTO,
-			AuthenticationValidatorDTO authenticationValidatorDTO) throws RegBaseCheckedException, IOException {
+										AuthenticationValidatorDTO authenticationValidatorDTO) throws RegBaseCheckedException, IOException {
 		BioService bioService = applicationContext.getBean(BioService.class);
 		AuthenticationService authService = applicationContext.getBean(AuthenticationService.class);
-		
-		MDMRequestDto mdmRequestDto = new MDMRequestDto(RegistrationConstants.FACE_FULLFACE, null, "Registration", io.mosip.registration.context.ApplicationContext.getStringValueFromApplicationMap(RegistrationConstants.SERVER_ACTIVE_PROFILE), 
+
+		MDMRequestDto mdmRequestDto = new MDMRequestDto(RegistrationConstants.FACE_FULLFACE, null, "Registration", io.mosip.registration.context.ApplicationContext.getStringValueFromApplicationMap(RegistrationConstants.SERVER_ACTIVE_PROFILE),
 				io.mosip.registration.context.ApplicationContext
-				.getIntValueFromApplicationMap(RegistrationConstants.CAPTURE_TIME_OUT), 1, io.mosip.registration.context.ApplicationContext
+						.getIntValueFromApplicationMap(RegistrationConstants.CAPTURE_TIME_OUT), 1, io.mosip.registration.context.ApplicationContext
 				.getIntValueFromApplicationMap(RegistrationConstants.FACE_THRESHOLD));
-		
+
 		List<BiometricsDto> biometrics = bioService.captureModalityForAuth(mdmRequestDto);
 		if(authService.authValidator(authenticationValidatorDTO.getUserId(), BiometricType.FACE.value(), biometrics)) {
 			createSessionContext();
@@ -448,7 +454,7 @@ public class SessionContext {
 
 	/**
 	 * Creating Security Context
-	 * 
+	 *
 	 * @param skipAuthModes
 	 *            To Skip Auth Modes validation
 	 */
@@ -545,7 +551,7 @@ public class SessionContext {
 
 	/**
 	 * Reading map from sessionContext
-	 * 
+	 *
 	 * @return map
 	 */
 	public static Map<String, Object> map() {
@@ -557,7 +563,7 @@ public class SessionContext {
 
 	/**
 	 * Return the Type casted object based on the input
-	 * 
+	 *
 	 * @param map
 	 *            - map that contains key and values to be typecasted
 	 * @param key
@@ -574,7 +580,7 @@ public class SessionContext {
 
 	/**
 	 * Reading userContext from sessionContext
-	 * 
+	 *
 	 * @return userContext
 	 */
 	public static UserContext userContext() {
@@ -583,7 +589,7 @@ public class SessionContext {
 
 	/**
 	 * Reading SecurityContext from sessioncontext
-	 * 
+	 *
 	 * @return securityContext
 	 */
 	public static SecurityContext securityContext() {
@@ -592,7 +598,7 @@ public class SessionContext {
 
 	/**
 	 * Reading userMap from sessionContext
-	 * 
+	 *
 	 * @return userMap
 	 */
 	public static Map<String, Object> userMap() {
@@ -601,7 +607,7 @@ public class SessionContext {
 
 	/**
 	 * Reading refreshedLoginTime from sessionContext
-	 * 
+	 *
 	 * @return refreshedLoginTime
 	 */
 	public static long refreshedLoginTime() {
@@ -610,7 +616,7 @@ public class SessionContext {
 
 	/**
 	 * Reading loginTime from sessioncontext
-	 * 
+	 *
 	 * @return loginTime
 	 */
 	public static Date loginTime() {
@@ -619,7 +625,7 @@ public class SessionContext {
 
 	/**
 	 * Reading timeoutInterval from sessionContext
-	 * 
+	 *
 	 * @return timeoutInterval
 	 */
 	public static long timeoutInterval() {
@@ -628,7 +634,7 @@ public class SessionContext {
 
 	/**
 	 * Reading idealTime from sessionContext
-	 * 
+	 *
 	 * @return idealTime
 	 */
 	public static long idealTime() {
@@ -647,7 +653,7 @@ public class SessionContext {
 
 	/**
 	 * Reading authTokenDTO from sessionContext
-	 * 
+	 *
 	 * @return authTokenDTO
 	 */
 	public static AuthTokenDTO authTokenDTO() {
@@ -656,7 +662,7 @@ public class SessionContext {
 
 	/**
 	 * Reading userId from sessionContext
-	 * 
+	 *
 	 * @return userId
 	 */
 	public static String userId() {
@@ -670,7 +676,7 @@ public class SessionContext {
 
 	/**
 	 * Reading userName from sessionContext
-	 * 
+	 *
 	 * @return userName
 	 */
 	public static String userName() {
@@ -684,7 +690,7 @@ public class SessionContext {
 
 	/**
 	 * Reading isSessionContextAvailable from sessionContext
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public static boolean isSessionContextAvailable() {
@@ -693,7 +699,7 @@ public class SessionContext {
 
 	/**
 	 * Getter for id
-	 * 
+	 *
 	 * @return id
 	 */
 	public UUID getId() {
@@ -712,7 +718,7 @@ public class SessionContext {
 
 	/**
 	 * Getter for userContext
-	 * 
+	 *
 	 * @return userContext
 	 */
 	public UserContext getUserContext() {
@@ -721,7 +727,7 @@ public class SessionContext {
 
 	/**
 	 * Getter for securityContext
-	 * 
+	 *
 	 * @return securityContext
 	 */
 	public SecurityContext getSecurityContext() {
@@ -730,7 +736,7 @@ public class SessionContext {
 
 	/**
 	 * Getter for loginTime
-	 * 
+	 *
 	 * @return loginTime
 	 */
 	public Date getLoginTime() {
@@ -739,7 +745,7 @@ public class SessionContext {
 
 	/**
 	 * Setter for loginTime
-	 * 
+	 *
 	 * @param loginTime
 	 *            time of login
 	 */
@@ -749,7 +755,7 @@ public class SessionContext {
 
 	/**
 	 * Getter for refreshedLoginTime
-	 * 
+	 *
 	 * @return refreshedLoginTime
 	 */
 	public long getRefreshedLoginTime() {
@@ -758,7 +764,7 @@ public class SessionContext {
 
 	/**
 	 * Setter for refreshedLoginTime
-	 * 
+	 *
 	 * @param refreshedLoginTime
 	 *            time of login when to refresh
 	 */
@@ -768,7 +774,7 @@ public class SessionContext {
 
 	/**
 	 * Getter for timeoutInterval
-	 * 
+	 *
 	 * @return timeoutInterval
 	 */
 	public long getTimeoutInterval() {
@@ -777,7 +783,7 @@ public class SessionContext {
 
 	/**
 	 * Setter for timeoutInterval
-	 * 
+	 *
 	 * @param timeoutInterval
 	 *            time for logout
 	 */
@@ -787,7 +793,7 @@ public class SessionContext {
 
 	/**
 	 * Getter for idealTime
-	 * 
+	 *
 	 * @return idealTime
 	 */
 	public long getIdealTime() {
@@ -796,7 +802,7 @@ public class SessionContext {
 
 	/**
 	 * Setter for idealTime
-	 * 
+	 *
 	 * @param idealTime
 	 *            ideal time
 	 */
@@ -806,7 +812,7 @@ public class SessionContext {
 
 	/**
 	 * Getter for mapObject
-	 * 
+	 *
 	 * @return mapObject
 	 */
 	public Map<String, Object> getMapObject() {
@@ -815,7 +821,7 @@ public class SessionContext {
 
 	/**
 	 * Setter for mapObject
-	 * 
+	 *
 	 * @param mapObject
 	 *            session map
 	 */
@@ -855,7 +861,7 @@ public class SessionContext {
 
 		/**
 		 * Getter for userId
-		 * 
+		 *
 		 * @return userId
 		 */
 		public String getUserId() {
@@ -867,7 +873,7 @@ public class SessionContext {
 
 		/**
 		 * Setter for userId
-		 * 
+		 *
 		 * @param userId
 		 *            id of the user
 		 */
@@ -877,7 +883,7 @@ public class SessionContext {
 
 		/**
 		 * Getter for name
-		 * 
+		 *
 		 * @return name
 		 */
 		public String getName() {
@@ -886,7 +892,7 @@ public class SessionContext {
 
 		/**
 		 * Setter for name
-		 * 
+		 *
 		 * @param name
 		 *            user name
 		 */
@@ -896,7 +902,7 @@ public class SessionContext {
 
 		/**
 		 * Getter for registrationCenterDetailDTO
-		 * 
+		 *
 		 * @return registrationCenterDetailDTO
 		 */
 		public RegistrationCenterDetailDTO getRegistrationCenterDetailDTO() {
@@ -905,7 +911,7 @@ public class SessionContext {
 
 		/**
 		 * Setter for registrationCenterDetailDTO
-		 * 
+		 *
 		 * @param registrationCenterDetailDTO
 		 *            registration center details
 		 */
@@ -915,7 +921,7 @@ public class SessionContext {
 
 		/**
 		 * Getter for roles
-		 * 
+		 *
 		 * @return list of roles
 		 */
 		public List<String> getRoles() {
@@ -924,7 +930,7 @@ public class SessionContext {
 
 		/**
 		 * Setter for roles
-		 * 
+		 *
 		 * @param roles
 		 *            user roles
 		 */
@@ -934,7 +940,7 @@ public class SessionContext {
 
 		/**
 		 * Getter for authorizationDTO
-		 * 
+		 *
 		 * @return authorizationDTO
 		 */
 		public AuthorizationDTO getAuthorizationDTO() {
@@ -943,7 +949,7 @@ public class SessionContext {
 
 		/**
 		 * Setter for authorizationDTO
-		 * 
+		 *
 		 * @param authorizationDTO
 		 *            DTO for authorization details
 		 */
@@ -953,7 +959,7 @@ public class SessionContext {
 
 		/**
 		 * Getter for userMap
-		 * 
+		 *
 		 * @return userMap
 		 */
 		public Map<String, Object> getUserMap() {
@@ -962,7 +968,7 @@ public class SessionContext {
 
 		/**
 		 * Setter for userMap
-		 * 
+		 *
 		 * @param userMap
 		 *            user map
 		 */
@@ -990,7 +996,7 @@ public class SessionContext {
 
 		/**
 		 * Getter for userId
-		 * 
+		 *
 		 * @return userId
 		 */
 		public String getUserId() {
@@ -1002,7 +1008,7 @@ public class SessionContext {
 
 		/**
 		 * Setter for userId
-		 * 
+		 *
 		 * @param userId
 		 *            id of the user
 		 */
@@ -1012,7 +1018,7 @@ public class SessionContext {
 
 		/**
 		 * Getter for roles
-		 * 
+		 *
 		 * @return list of roles
 		 */
 		public List<String> getRoles() {
@@ -1021,7 +1027,7 @@ public class SessionContext {
 
 		/**
 		 * Setter for roles
-		 * 
+		 *
 		 * @param roles
 		 *            user roles
 		 */
@@ -1031,7 +1037,7 @@ public class SessionContext {
 
 		/**
 		 * Getter for userMap
-		 * 
+		 *
 		 * @return userMap
 		 */
 		public Map<String, Object> getSecurityAuthenticationMap() {
@@ -1040,7 +1046,7 @@ public class SessionContext {
 
 		/**
 		 * Setter for securityAuthenticationMap
-		 * 
+		 *
 		 * @param securityAuthenticationMap
 		 *            - Security Authentication Map
 		 */

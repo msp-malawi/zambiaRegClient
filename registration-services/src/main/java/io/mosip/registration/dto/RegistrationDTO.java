@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 /**
  * This DTO class contains the Registration details.
- * 
+ *
  * @author Dinesh Asokan
  * @author Balaji Sridharan
  * @since 1.0.0
@@ -82,7 +82,7 @@ public class RegistrationDTO {
 	}
 
 	public void addDemographicField(String fieldId, String applicationLanguage, String value, String localLanguage,
-			String localValue) {
+									String localValue) {
 		List<SimpleDto> values = new ArrayList<SimpleDto>();
 		if (value != null && !value.isEmpty())
 			values.add(new SimpleDto(applicationLanguage, value));
@@ -95,7 +95,7 @@ public class RegistrationDTO {
 	}
 
 	public void addDefaultDemographicField(String fieldId, String applicationLanguage, String value,
-			String localLanguage, String localValue) {
+										   String localLanguage, String localValue) {
 		List<SimpleDto> values = new ArrayList<SimpleDto>();
 		if (value != null && !value.isEmpty())
 			values.add(new SimpleDto(applicationLanguage, value));
@@ -119,7 +119,7 @@ public class RegistrationDTO {
 						ApplicationContext.getDateFormat()
 				)));
 			}
-			
+
 			this.age = Period.between(date, LocalDate.now(ZoneId.of("UTC"))).getYears();
 
 			int minAge = Integer
@@ -188,7 +188,7 @@ public class RegistrationDTO {
 	}
 
 	public void addBiometricException(String subType, String uiSchemaAttribute, String bioAttribute, String reason,
-			String exceptionType) {
+									  String exceptionType) {
 		String key = String.format("%s_%s", subType, uiSchemaAttribute);
 		SingleType type = io.mosip.registration.mdm.dto.Biometric.getSingleTypeBySpecConstant(uiSchemaAttribute);
 		this.biometricExceptions.put(key, new BiometricsException(type == null ? null : type.value(), bioAttribute,
@@ -228,17 +228,17 @@ public class RegistrationDTO {
 	 * allIdentityDetails.put("IDSchemaVersion", idSchemaVersion);
 	 * if(registrationMetaDataDTO.getUin() != null) allIdentityDetails.put("UIN",
 	 * registrationMetaDataDTO.getUin());
-	 * 
+	 *
 	 * allIdentityDetails.putAll(this.demographics);
 	 * allIdentityDetails.putAll(this.documents);
-	 * 
+	 *
 	 * if(biometricDTO.getApplicantBiometrics() != null)
 	 * allIdentityDetails.put("applicantBiometrics",
 	 * biometricDTO.getApplicantBiometrics());
 	 * if(biometricDTO.getIntroducerBiometrics() != null)
 	 * allIdentityDetails.put("introducerBiometrics",
 	 * biometricDTO.getIntroducerBiometrics());
-	 * 
+	 *
 	 * Map<String, Object> identity = new LinkedHashMap<String, Object>();
 	 * identity.put("identity", allIdentityDetails); return identity; }
 	 */
@@ -267,7 +267,7 @@ public class RegistrationDTO {
 	}
 
 	public List<BiometricsDto> addAllBiometrics(String subType, Map<String, BiometricsDto> biometricsDTOMap,
-			double thresholdScore, int maxRetryAttempt) {
+												double thresholdScore, int maxRetryAttempt) {
 
 		List<BiometricsDto> savedBiometrics = null;
 		if (subType != null && biometricsDTOMap != null && !biometricsDTOMap.isEmpty()) {
@@ -275,7 +275,7 @@ public class RegistrationDTO {
 			savedBiometrics = new LinkedList<>();
 
 			boolean isForceCaptured = false;
-			
+
 			if (!biometricsDTOMap.isEmpty()) {
 				thresholdScore = thresholdScore * biometricsDTOMap.size();
 			}
@@ -321,9 +321,9 @@ public class RegistrationDTO {
 
 	/*
 	 * private String getRegistrationDTOBioAttribute(String attribute) {
-	 * 
+	 *
 	 * String bioAttributeByMap = RegistrationConstants.regBioMap.get(attribute);
-	 * 
+	 *
 	 * return bioAttributeByMap != null ? bioAttributeByMap : attribute; }
 	 */
 

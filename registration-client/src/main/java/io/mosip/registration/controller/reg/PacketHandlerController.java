@@ -1,15 +1,45 @@
 package io.mosip.registration.controller.reg;
 
+import static io.mosip.registration.constants.LoggerConstants.PACKET_HANDLER;
+import static io.mosip.registration.constants.RegistrationConstants.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.net.URL;
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+
 import io.mosip.kernel.core.exception.ExceptionUtils;
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.kernel.core.templatemanager.spi.TemplateManagerBuilder;
 import io.mosip.kernel.core.util.FileUtils;
 import io.mosip.registration.config.AppConfig;
-import io.mosip.registration.constants.*;
+import io.mosip.registration.constants.AuditEvent;
+import io.mosip.registration.constants.AuditReferenceIdTypes;
+import io.mosip.registration.constants.Components;
+import io.mosip.registration.constants.RegistrationClientStatusCode;
+import io.mosip.registration.constants.RegistrationConstants;
+import io.mosip.registration.constants.RegistrationUIConstants;
 import io.mosip.registration.context.ApplicationContext;
 import io.mosip.registration.context.SessionContext;
 import io.mosip.registration.controller.BaseController;
-import io.mosip.registration.dto.*;
+import io.mosip.registration.dto.ErrorResponseDTO;
+import io.mosip.registration.dto.PacketStatusDTO;
+import io.mosip.registration.dto.RegistrationApprovalDTO;
+import io.mosip.registration.dto.RegistrationDTO;
+import io.mosip.registration.dto.ResponseDTO;
+import io.mosip.registration.dto.SyncDataProcessDTO;
 import io.mosip.registration.entity.PreRegistrationList;
 import io.mosip.registration.entity.SyncControl;
 import io.mosip.registration.exception.RegBaseCheckedException;
@@ -41,24 +71,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.Writer;
-import java.net.URL;
-import java.sql.Timestamp;
-import java.util.*;
-
-import static io.mosip.registration.constants.LoggerConstants.PACKET_HANDLER;
-import static io.mosip.registration.constants.RegistrationConstants.*;
 
 /**
  * Class for Registration Packet operations
- * 
+ *
  * @author Sravya Surampalli
  * @since 1.0.0
  *
@@ -125,7 +141,7 @@ public class PacketHandlerController extends BaseController implements Initializ
 
 				String latestUpdateTime = timestamps.stream().sorted((timestamp1, timestamp2) -> Timestamp
 						.valueOf(timestamp2).compareTo(Timestamp.valueOf(timestamp1))).findFirst().get();
-				
+
 				lastSyncTime.setText(getLocalZoneTime(latestUpdateTime));
 
 				setLastPreRegPacketDownloadedTime();
@@ -254,13 +270,13 @@ public class PacketHandlerController extends BaseController implements Initializ
 
 	@Autowired
 	private AuthTokenUtilService authTokenUtilService;
-	
+
 	@FXML
 	private ImageView uploadPacketImageView;
-	
+
 	@FXML
 	private ImageView remapImageView;
-	
+
 	@FXML
 	private ImageView checkUpdatesImageView;
 
@@ -604,7 +620,7 @@ public class PacketHandlerController extends BaseController implements Initializ
 			RegistrationDTO registrationDTO = getRegistrationDTOFromSession();
 
 			String platformLanguageCode = ApplicationContext.applicationLanguage();
-			String ackTemplateText = templateService.getHtmlTemplate(ACKNOWLEDGEMENT_TEMPLATE_CODE, platformLanguageCode);
+			String ackTemplateText = templateService.getHtmlTemplate(RegistrationConstants.ACKNOWLEDGEMENT_TEMPLATE_CODE, platformLanguageCode);
 
 			if (ApplicationContext.applicationLanguage().equalsIgnoreCase(ApplicationContext.localLanguage())) {
 				ackTemplateText = ackTemplateText.replace("} / ${", "}  ${");
@@ -774,7 +790,7 @@ public class PacketHandlerController extends BaseController implements Initializ
 					if (RegistrationConstants.DISABLE.equalsIgnoreCase(
 							getValueFromApplicationContext(RegistrationConstants.FINGERPRINT_DISABLE_FLAG))
 							&& RegistrationConstants.DISABLE.equalsIgnoreCase(
-									getValueFromApplicationContext(RegistrationConstants.IRIS_DISABLE_FLAG))) {
+							getValueFromApplicationContext(RegistrationConstants.IRIS_DISABLE_FLAG))) {
 
 						generateAlert(RegistrationConstants.ERROR,
 								RegistrationUIConstants.UPDATE_UIN_NO_BIOMETRIC_CONFIG_ALERT);
@@ -1015,7 +1031,7 @@ public class PacketHandlerController extends BaseController implements Initializ
 
 	/**
 	 * Update packet status.
-	 * 
+	 *
 	 * @throws RegBaseCheckedException
 	 */
 	private void updatePacketStatus() throws RegBaseCheckedException {
@@ -1092,8 +1108,8 @@ public class PacketHandlerController extends BaseController implements Initializ
 		return ((null != userOnboardService.getMachineCenterId().get(RegistrationConstants.USER_STATION_ID)
 				|| null != userOnboardService.getMachineCenterId().get(RegistrationConstants.USER_CENTER_ID))
 				&& SessionContext.userContext().getRegistrationCenterDetailDTO().getRegistrationCenterId() != null)
-						? true
-						: false;
+				? true
+				: false;
 
 	}
 

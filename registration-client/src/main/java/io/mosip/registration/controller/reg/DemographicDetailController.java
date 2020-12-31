@@ -26,6 +26,7 @@ import io.mosip.registration.service.sync.MasterSyncService;
 import io.mosip.registration.service.sync.PreRegistrationDataSyncService;
 import io.mosip.registration.util.common.ComboBoxAutoComplete;
 import io.mosip.registration.util.common.DemographicChangeActionHandler;
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -97,7 +98,9 @@ public class DemographicDetailController extends BaseController {
     private ResourceLoader resourceLoader;
     @Autowired
     private DemographicChangeActionHandler demographicChangeActionHandler;
-
+    private ResourceBundle applicationMessageBundle;
+    @FXML
+    private Button continueBtn;
     @FXML
     private FlowPane parentFlowPane;
     @FXML
@@ -162,7 +165,7 @@ public class DemographicDetailController extends BaseController {
         secondaryLanguage = applicationContext.getLocalLanguage();
 
         ResourceBundle localProperties = ApplicationContext.localLanguageProperty();
-
+        applicationMessageBundle = ApplicationContext.applicationMessagesBundle();
         String localLanguageTextVal = isLocalLanguageAvailable() && !isAppLangAndLocalLangSame()
                 ? localProperties.getString("language")
                 : RegistrationConstants.EMPTY;
@@ -252,7 +255,7 @@ public class DemographicDetailController extends BaseController {
 
             refreshDemographicGroups();
             listOfComboBoxWithObject.get("registrationType").getSelectionModel().selectFirst();
-
+          
             auditFactory.audit(AuditEvent.REG_DEMO_CAPTURE, Components.REGISTRATION_CONTROLLER,
                     SessionContext.userContext().getUserId(), AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
         } catch (RuntimeException runtimeException) {
@@ -476,7 +479,25 @@ public class DemographicDetailController extends BaseController {
         HBox dateHbox = new HBox();
         dateHbox.setSpacing(10);
         dateHbox.setPrefWidth(250);
-        dateHbox.getChildren().addAll(vBoxDD, vBoxMM, vBoxYYYY);
+        String dateFormat = ApplicationContext.getDateFormat();
+        String[] parts = dateFormat.split("/|-");
+        if (parts.length > 0) {
+            for (String part : parts) {
+                switch (part.toLowerCase()) {
+                    case "dd":
+                        dateHbox.getChildren().add(vBoxDD);
+                        break;
+                    case "mm":
+                        dateHbox.getChildren().add(vBoxMM);
+                        break;
+                    case "yyyy":
+                        dateHbox.getChildren().add(vBoxYYYY);
+                        break;
+                }
+            }
+        } else {
+            dateHbox.getChildren().addAll(vBoxDD, vBoxMM, vBoxYYYY);
+        }
 
         Label orLabel = new Label(localLanguage ? localLabelBundle.getString("ageOrDOBField")
                 : applicationLabelBundle.getString("ageOrDOBField"));
@@ -496,7 +517,6 @@ public class DemographicDetailController extends BaseController {
         finalVbox.setDisable(languageType.equals(RegistrationConstants.LOCAL_LANGUAGE));
         return finalVbox;
     }
-
 
     public VBox addContentWithTextField(UiSchemaDTO schema, String fieldName, String languageType) {
         TextField field = new TextField();
@@ -1233,20 +1253,75 @@ public class DemographicDetailController extends BaseController {
         boolean flag = true;
 
 
-//		if (listOfTextField.get("mobileno") != null) {
-//			if (listOfTextField.get("mobileno").getText() != null) {
-//				if (!listOfTextField.get("mobileno").getText().isEmpty()
-//						&& !listOfTextField.get("mobileno").getText().matches(RegistrationConstants.MOBILE_NO_REGEX)) {
+        if (listOfTextField.get("mobileno") != null) {
+            if (listOfTextField.get("mobileno").getText() != null) {
+                String regex = "";
+
+
+                if (!listOfTextField.get("mobileno").getText().isEmpty()) {
+                    if (listOfComboBoxWithObject.get("presentCountry").getSelectionModel() != null) {
+                        if (listOfComboBoxWithObject.get("presentCountry").getSelectionModel().getSelectedItem().getName().equals("Philippines")) {
+                            regex = RegistrationConstants.MOBILE_NO_REGEX;
+                            String[] validmobilecode = {"63905", "63906", "63913", "63914", "63915", "63916",
+                                    "63917", "63926", "63927", "63935", "63936", "63937", "63988", "63907",
+                                    "63908", "63909", "63910", "63912", "63918", "63919", "63920", "63921",
+                                    "63922", "63923", "63925", "63928", "63929", "63930", "63931", "63932",
+                                    "63933", "63938", "63939", "63942", "63943", "63946", "63947", "63948",
+                                    "63949", "63950", "63951", "63958", "63960", "63961", "63962", "63963",
+                                    "63964", "63968", "63969", "63970", "63981", "63985", "63998", "63999",
+                                    "63813", "63817", "63904", "63911", "63924", "63934", "63940", "63941",
+                                    "63944", "63945", "63953", "63954", "63955", "63956", "63965", "63966",
+                                    "63967", "63973", "63974", "63975", "63976", "63977", "63978", "63979",
+                                    "63989", "63992", "63994", "63995", "63996", "63997"};
+
+                            if (!stringContainsItemFromList(listOfTextField.get("mobileno").getText().substring(0, 5), validmobilecode)) {
+                                System.out.println("test 1");
+                                generateAlert(parentFlowPane, "mobileno", getFromLabelMap("mobileno").concat(RegistrationConstants.SPACE)
+                                        .concat(applicationMessageBundle.getString(RegistrationConstants.REG_DDC_004)));
+
+                                flag = false;
+                                listOfTextField.get("mobileno").requestFocus();
+
+                            } else if (listOfTextField.get("mobileno").getText().length() != RegistrationConstants.MOBILE_NUMBER_LENGTH) {
+                                generateAlert(parentFlowPane, "mobileno", getFromLabelMap("mobileno").concat(RegistrationConstants.SPACE)
+                                        .concat(applicationMessageBundle.getString(RegistrationConstants.REG_DDC_004)));
+
+                                flag = false;
+                                listOfTextField.get("mobileno").requestFocus();
+                            }
+                        } else {
+
+//                            if (!listOfTextField.get("mobileno").getText().matches(RegistrationConstants.MOBILE_NO_REGEX_NON_PHIL)) {
+//                                generateAlert(parentFlowPane, "mobileno", getFromLabelMap("mobileno").concat(RegistrationConstants.SPACE)
+//                                        .concat(applicationMessageBundle.getString(RegistrationConstants.REG_DDC_004)));
 //
-//					generateAlert(RegistrationConstants.ERROR, "INVALID MOBILE NO");
-//					flag = false;
-//					listOfTextField.get("mobileno").requestFocus();
 //
-//				}
-//			}
-//		}
+//                                flag = false;
+//                                listOfTextField.get("mobileno").requestFocus();
+//                            }
+
+                            if (listOfTextField.get("mobileno").getText().length() < RegistrationConstants.MOBILE_NUMBER_NON_PHIL_MIN_LENGTH
+                                    || listOfTextField.get("mobileno").getText().length() > RegistrationConstants.MOBILE_NUMBER_NON_PHIL_MAX_LENGTH) {
+                                generateAlert(parentFlowPane, "mobileno", getFromLabelMap("mobileno").concat(RegistrationConstants.SPACE)
+                                        .concat(applicationMessageBundle.getString(RegistrationConstants.REG_DDC_004)));
+
+
+                                flag = false;
+                                listOfTextField.get("mobileno").requestFocus();
+                            }
+
+                        }
+                    }
+
+                }
+            }
+        }
 
         return flag;
+    }
+
+    public static boolean stringContainsItemFromList(String inputStr, String[] items) {
+        return Arrays.stream(items).anyMatch(inputStr::contains);
     }
 
     /**
