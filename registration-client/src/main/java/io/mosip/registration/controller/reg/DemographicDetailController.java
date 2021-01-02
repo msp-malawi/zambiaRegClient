@@ -255,7 +255,7 @@ public class DemographicDetailController extends BaseController {
 
             refreshDemographicGroups();
             listOfComboBoxWithObject.get("registrationType").getSelectionModel().selectFirst();
-          
+
             auditFactory.audit(AuditEvent.REG_DEMO_CAPTURE, Components.REGISTRATION_CONTROLLER,
                     SessionContext.userContext().getUserId(), AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
         } catch (RuntimeException runtimeException) {
@@ -543,7 +543,7 @@ public class DemographicDetailController extends BaseController {
         hB.setSpacing(20);
 
         vbox.getChildren().add(validationMessage);
-        setFieldChangeListener(field);
+        setFieldChangeListenerForTextFiled(field);
         listOfTextField.put(field.getId(), field);
 
         String mandatorySuffix = getMandatorySuffix(schema);
@@ -879,6 +879,7 @@ public class DemographicDetailController extends BaseController {
                         });
                         break;
                     default:
+
                         TextField platformTextField = listOfTextField.get(schemaField.getId());
                         TextField localTextField = listOfTextField.get(schemaField.getId() + RegistrationConstants.LOCAL_LANGUAGE);
                         registrationDTO.addDemographicField(schemaField.getId(), applicationContext.getApplicationLanguage(),
@@ -1519,6 +1520,25 @@ public class DemographicDetailController extends BaseController {
         });
     }
 
+    private void setFieldChangeListenerForTextFiled(Node node) {
+        node.addEventHandler(Event.ANY, event -> {
+            if (validateFieldValue(node)) {
+                // Group level visibility listeners
+//                refreshDemographicGroups();
+                //handling other handlers
+                UiSchemaDTO uiSchemaDTO = validation.getValidationMap().get(node.getId().replaceAll(RegistrationConstants.ON_TYPE,
+                        RegistrationConstants.EMPTY).replaceAll(RegistrationConstants.LOCAL_LANGUAGE, RegistrationConstants.EMPTY));
+                if (uiSchemaDTO != null) {
+                    LOGGER.info(loggerClassName, APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
+                            "Invoking external action handler for .... " + uiSchemaDTO.getId());
+                    demographicChangeActionHandler.actionHandle(parentFlowPane, node.getId(), uiSchemaDTO.getChangeAction());
+                }
+                // Group level visibility listeners
+//                refreshDemographicGroups();
+            }
+        });
+    }
+
     private boolean validateFieldValue(Node field) {
         if (field == null) {
             LOGGER.warn(loggerClassName, APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
@@ -1556,7 +1576,7 @@ public class DemographicDetailController extends BaseController {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void refreshDemographicGroups() {
-        addDemoGraphicDetailsToSession();
+
         LOGGER.debug(loggerClassName, APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
                 "Refreshing demographic groups");
         Map<String, Map<String, Object>> context = new HashMap();
@@ -1575,6 +1595,7 @@ public class DemographicDetailController extends BaseController {
                 }
             }
         }
+        addDemoGraphicDetailsToSession();
     }
 
     private void updateFields(List<UiSchemaDTO> fields, boolean isVisible) {

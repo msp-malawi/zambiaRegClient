@@ -602,6 +602,14 @@
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
+                         <ImageView fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT">
+                             <image>
+                                 <Image url="@../images/msp-logo.png" />
+                             </image>
+                             <GridPane.margin>
+                                 <Insets left="22.0" />
+                             </GridPane.margin>
+                         </ImageView>
             		   <Label prefHeight="30.0" prefWidth="204.0" styleClass="powerdBy" text="%regClientVersion" textAlignment="CENTER">
                            <font>
                               <Font size="20.0" />

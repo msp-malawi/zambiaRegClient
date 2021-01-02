@@ -114,6 +114,14 @@
    <bottom>
 		<HBox id="footer-section">
 			<children>
+				<ImageView fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT">
+					<image>
+						<Image url="@../images/msp-logo.png" />
+					</image>
+					<GridPane.margin>
+						<Insets left="22.0" />
+					</GridPane.margin>
+				</ImageView>
 				<Label text="%mosip.io" />
 				<Label text="  " />
 				<Label text="%regClientVersion" />
