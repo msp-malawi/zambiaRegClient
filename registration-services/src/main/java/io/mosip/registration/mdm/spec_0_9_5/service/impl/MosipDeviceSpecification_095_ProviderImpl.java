@@ -177,9 +177,6 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
             mdmRequestDto.setCount(count);
 
             RCaptureRequestDTO rCaptureRequestDTO = getRCaptureRequest(bioDevice, mdmRequestDto);
-            if(rCaptureRequestDTO.getEnv().equals("null"))
-                rCaptureRequestDTO.setEnv("Developer");
-
 
             LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                     "Entering into Capture method....." + System.currentTimeMillis());
@@ -206,11 +203,6 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
             LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                     "Requesting capture url...." + System.currentTimeMillis());
 
-//            if(mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_RIGHT) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_LEFT) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_THUMBS)){
-//                Thread.sleep(10000);
-//            }else {
-//                Thread.sleep(4000);
-//            }
             CloseableHttpResponse response = client.execute(request);
             LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                     "Request completed.... " + System.currentTimeMillis());
