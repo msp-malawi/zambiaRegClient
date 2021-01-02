@@ -1258,7 +1258,7 @@ public class BiometricsController extends BaseController /* implements Initializ
 								// TODO Remove dedup enable/disable validation, currently added for testing
 								// purpose
 								if (RegistrationConstants.ENABLE
-										.equalsIgnoreCase(RegistrationConstants.DEDUPLICATION_ENABLE_FLAG)) {
+										.equalsIgnoreCase((String) applicationContext.getApplicationMap().get(RegistrationConstants.DEDUPLICATION_ENABLE_FLAG))) {
 									LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
 											"Doing local de-dup validation");
 

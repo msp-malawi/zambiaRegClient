@@ -895,16 +895,15 @@ public class DocumentScanController extends BaseController {
      */
     public void attachScannedDocument(Stage popupStage) throws IOException {
 
-        LOGGER.info(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, RegistrationConstants.APPLICATION_NAME,
-                RegistrationConstants.APPLICATION_ID, "Converting byte array to image");
-        //String documentSize = getValueFromApplicationContext(RegistrationConstants.DOC_SIZE);
-        String documentSize = "3200000";
-        int docSize = Integer.parseInt(documentSize) / (1024 * 1024);
-        if (scannedPages == null || scannedPages.isEmpty()) {
-            generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.SCAN_DOCUMENT_EMPTY);
-            return;
-        }
-        byte[] byteArray = getScannedPagesToBytes(scannedPages);
+		LOGGER.info(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, RegistrationConstants.APPLICATION_NAME,
+				RegistrationConstants.APPLICATION_ID, "Converting byte array to image");
+		String documentSize = getValueFromApplicationContext(RegistrationConstants.DOC_SIZE);
+		int docSize = Integer.parseInt(documentSize) / (1024 * 1024);
+		if (scannedPages == null || scannedPages.isEmpty()) {
+			generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.SCAN_DOCUMENT_EMPTY);
+			return;
+		}
+		byte[] byteArray = getScannedPagesToBytes(scannedPages);
 
         if (byteArray == null) {
             generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.SCAN_DOCUMENT_CONVERTION_ERR);
