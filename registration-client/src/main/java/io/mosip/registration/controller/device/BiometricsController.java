@@ -9,9 +9,9 @@ import io.mosip.kernel.core.bioapi.exception.BiometricException;
 import io.mosip.kernel.core.cbeffutil.entity.BDBInfo;
 import io.mosip.kernel.core.cbeffutil.entity.BIR;
 import io.mosip.kernel.core.cbeffutil.entity.BIR.BIRBuilder;
-import io.mosip.kernel.core.cbeffutil.jaxbclasses.PurposeType;
-import io.mosip.kernel.core.cbeffutil.jaxbclasses.RegistryIDType;
-import io.mosip.kernel.core.cbeffutil.jaxbclasses.SingleType;
+import io.mosip.kernel.core.cbeffutil.entity.BIRInfo;
+import io.mosip.kernel.core.cbeffutil.entity.BIRVersion;
+import io.mosip.kernel.core.cbeffutil.jaxbclasses.*;
 import io.mosip.kernel.core.exception.ExceptionUtils;
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.registration.config.AppConfig;
@@ -58,6 +58,8 @@ import org.springframework.stereotype.Controller;
 import javax.imageio.ImageIO;
 import java.io.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -2313,12 +2315,12 @@ public class BiometricsController extends BaseController /* implements Initializ
 		userBiometrics.forEach(userBiometric -> {
 			String userId = userBiometric.getUserBiometricId().getUsrId();
 			gallery.computeIfAbsent(userId, k -> new ArrayList<BIR>())
-					.add(buildBir(userBiometric.getBioIsoImage(), biometricType));
+					.add(createBIR(userBiometric.getBioIsoImage(), biometricType,userBiometric.getUserBiometricId().getBioAttributeCode(),(double) userBiometric.getQualityScore()));
 		});
 
 		List<BIR> sample = new ArrayList<>(biometrics.size());
 		biometrics.forEach(biometricDto -> {
-			sample.add(buildBir(biometricDto.getAttributeISO(), biometricType));
+			sample.add(createBIR(biometricDto.getAttributeISO(), biometricType,biometricDto.getBioAttribute(),biometricDto.getQualityScore()));
 		});
 
 		try {
@@ -2338,6 +2340,38 @@ public class BiometricsController extends BaseController /* implements Initializ
 						.withType(Collections.singletonList(SingleType.fromValue(modality.value())))
 						.withPurpose(PurposeType.IDENTIFY).build())
 				.build();
+	}
+
+	public static BIR createBIR(byte[] biometricImageISO, BiometricType modality, String subtype,Double qualityScore){
+		/*
+		 * random values are given for bir creation*/
+		if (biometricImageISO != null && biometricImageISO.length > 0) {
+			RegistryIDType format = new RegistryIDType();
+			format.setOrganization("257");
+			format.setType("7");
+			QualityType Qtype = new QualityType();
+			Qtype.setScore(qualityScore.longValue());
+			RegistryIDType algorithm = new RegistryIDType();
+			algorithm.setOrganization("HMAC");
+			algorithm.setType("SHA-256");
+			Qtype.setAlgorithm(algorithm);
+			return new BIR.BIRBuilder().withBdb(biometricImageISO)
+					.withVersion(new
+							BIRVersion.BIRVersionBuilder().withMinor(1).withMajor(1).build())
+					.withCbeffversion(new
+							BIRVersion.BIRVersionBuilder().withMinor(1).withMajor(1).build())
+					.withBirInfo(new
+							BIRInfo.BIRInfoBuilder().withIntegrity(false).build())
+					.withBdbInfo(new BDBInfo.BDBInfoBuilder().withFormat(format)
+							.withQuality(Qtype)
+							.withType(Collections.singletonList(SingleType.fromValue(modality.value())))
+							.withSubtype(Arrays.asList(subtype))
+							.withPurpose(PurposeType.IDENTIFY).withLevel(ProcessedLevelType.RAW)
+
+							.withCreationDate(LocalDateTime.now(ZoneId.of("UTC"))).build())
+					.build();
+		}
+		return null;
 	}
 
 	private VBox getImageVBox(String modality, String subtype, List<String> configBioAttributes) {

@@ -98,9 +98,9 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
 
                 MdmBioDevice bioDevice = getBioDevice(deviceInfo);
 
-                if (bioDevice != null) {
-                    bioDevice.setPort(port);
-                    LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID, "prepared bio Device");
+				if (bioDevice != null) {
+
+					LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID, "prepared bio Device");
 
                     mdmBioDevices.add(bioDevice);
 
@@ -121,10 +121,8 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
         try {
             LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID, "Started Strema for modality : " + modality);
 
-            //String url = bioDevice.getCallbackId() + MosipBioDeviceConstants.STREAM_ENDPOINT;
+            String url = bioDevice.getCallbackId() + MosipBioDeviceConstants.STREAM_ENDPOINT;
 
-            String url = deviceSpecificationFactory.buildUrl(bioDevice.getPort(),
-                    MosipBioDeviceConstants.STREAM_ENDPOINT);
             StreamRequestDTO streamRequestDTO = new StreamRequestDTO(bioDevice.getDeviceId(), getDeviceSubId(modality));
 
             String request = new ObjectMapper().writeValueAsString(streamRequestDTO);
@@ -203,17 +201,16 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
             LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                     "Bulding capture url...." + System.currentTimeMillis());
             HttpUriRequest request = RequestBuilder.create("RCAPTURE")
-                    .setUri(deviceSpecificationFactory.buildUrl(bioDevice.getPort(),
-                            MosipBioDeviceConstants.CAPTURE_ENDPOINT))
+                    .setUri(bioDevice.getCallbackId() + MosipBioDeviceConstants.CAPTURE_ENDPOINT)
                     .setEntity(requestEntity).build();
             LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                     "Requesting capture url...." + System.currentTimeMillis());
 
-            if(mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_RIGHT) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_LEFT) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_THUMBS)){
-                Thread.sleep(10000);
-            }else {
-                Thread.sleep(4000);
-            }
+//            if(mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_RIGHT) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_LEFT) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_THUMBS)){
+//                Thread.sleep(10000);
+//            }else {
+//                Thread.sleep(4000);
+//            }
             CloseableHttpResponse response = client.execute(request);
             LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                     "Request completed.... " + System.currentTimeMillis());
@@ -269,10 +266,6 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
                     LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                             "Parsed decoded payload" + System.currentTimeMillis());
 
-                    if(Integer.parseInt(dataDTO.getQualityScore())>99) {
-                        dataDTO.setQualityScore("99");
-                    }
-
                     if (dataDTO.getTransactionId() == null
                             || !dataDTO.getTransactionId().equalsIgnoreCase(rCaptureRequestDTO.getTransactionId())) {
                         throw new RegBaseCheckedException(
@@ -283,13 +276,7 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
                                         + dataDTO.getTransactionId());
                     }
 
-                    //TODO change mds specVersion by Gautam
-                    if(rCaptureResponseBiometricsDTO.getSpecVersion().equals("9.0.5")){
-                        rCaptureResponseBiometricsDTO.setSpecVersion("0.9.5");
-                    }
-
-
-                    if (rCaptureResponseBiometricsDTO.getSpecVersion() == null || !rCaptureResponseBiometricsDTO
+                 if (rCaptureResponseBiometricsDTO.getSpecVersion() == null || !rCaptureResponseBiometricsDTO
                             .getSpecVersion().equalsIgnoreCase(rCaptureRequestDTO.getSpecVersion())) {
                         throw new RegBaseCheckedException(
                                 RegistrationExceptionConstants.MDS_RCAPTURE_ERROR.getErrorCode(),
