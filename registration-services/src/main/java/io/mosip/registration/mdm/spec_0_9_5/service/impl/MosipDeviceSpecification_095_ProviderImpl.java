@@ -203,6 +203,9 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
             LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                     "Requesting capture url...." + System.currentTimeMillis());
 
+            if(mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_RIGHT) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_LEFT) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_THUMBS)){
+                Thread.sleep(5000);
+            }
             CloseableHttpResponse response = client.execute(request);
             LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                     "Request completed.... " + System.currentTimeMillis());
@@ -238,16 +241,15 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
                         }
                     }
                 }
-               if(rCaptureResponseBiometricsDTO.getError().getErrorCode()!=null) {
                    if (rCaptureResponseBiometricsDTO.getData() == null
-                           || rCaptureResponseBiometricsDTO.getData().isEmpty() || !rCaptureResponseBiometricsDTO.getError().getErrorCode().equalsIgnoreCase("0")) {
+                           || rCaptureResponseBiometricsDTO.getData().isEmpty()) {
                        throw new RegBaseCheckedException(RegistrationExceptionConstants.MDS_RCAPTURE_ERROR.getErrorCode(),
                                RegistrationExceptionConstants.MDS_RCAPTURE_ERROR.getErrorMessage()
                                        + " : Data is empty in RCapture " + " error Code  : "
                                        + rCaptureResponseBiometricsDTO.getError().getErrorCode() + " error message : "
                                        + rCaptureResponseBiometricsDTO.getError().getErrorInfo());
                    }
-               }
+
                 if (rCaptureResponseBiometricsDTO.getData() != null
                         && !rCaptureResponseBiometricsDTO.getData().isEmpty()) {
                     String payLoad = deviceSpecificationFactory.getPayLoad(rCaptureResponseBiometricsDTO.getData());
@@ -257,6 +259,16 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
 
                     LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                             "Parsed decoded payload" + System.currentTimeMillis());
+
+                    if(dataDTO.getBioType().equalsIgnoreCase("face")) {
+                        if(dataDTO.getBioValue().isEmpty()){
+                            throw new RegBaseCheckedException(RegistrationExceptionConstants.MDS_RCAPTURE_ERROR.getErrorCode(),
+                                    RegistrationExceptionConstants.MDS_RCAPTURE_ERROR.getErrorMessage()
+                                            + " : Data is empty in RCapture " + " error Code  : "
+                                            + rCaptureResponseBiometricsDTO.getError().getErrorCode() + " error message : "
+                                            + rCaptureResponseBiometricsDTO.getError().getErrorInfo());
+                        }
+                    }
 
                     if (dataDTO.getTransactionId() == null
                             || !dataDTO.getTransactionId().equalsIgnoreCase(rCaptureRequestDTO.getTransactionId())) {

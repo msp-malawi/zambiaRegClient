@@ -32,7 +32,7 @@ public interface LocationRepository extends BaseRepository<Location, String> {
 	 * @param langCode      the lang code
 	 * @return the list
 	 */
-	List<Location> findByIsActiveTrueAndHierarchyLevelAndLangCodeOrderByName(int hierarchyLevel, String langCode);
+	List<Location> findByIsActiveTrueAndHierarchyLevelAndLangCodeOrderByHierarchyLevel(int hierarchyLevel, String langCode);
 
 	
 	/**
