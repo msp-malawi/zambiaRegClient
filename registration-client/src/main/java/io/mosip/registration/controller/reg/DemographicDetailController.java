@@ -1153,7 +1153,7 @@ public class DemographicDetailController extends BaseController {
             return;
         } else {
             try {
-                pridValidatorImpl.validateId(preRegId);
+               // pridValidatorImpl.validateId(preRegId);
             } catch (InvalidIDException invalidIDException) {
                 generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.PRE_REG_ID_NOT_VALID);
                 LOGGER.error("PRID VALIDATION FAILED", APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
