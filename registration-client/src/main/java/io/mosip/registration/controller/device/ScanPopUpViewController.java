@@ -782,8 +782,8 @@ public class ScanPopUpViewController extends BaseController {
         scrollPane.setContent(imageLayer);
 
         scrollPane.setPrefSize(image.getWidth(), image.getHeight());
-        scrollPane.setPannable(true);
-        scrollPane.setHbarPolicy(javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER);
+       // scrollPane.setPannable(true);
+       scrollPane.setHbarPolicy(javafx.scene.control.ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         root.setCenter(scrollPane);
 

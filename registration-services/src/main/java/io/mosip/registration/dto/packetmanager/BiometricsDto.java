@@ -5,17 +5,18 @@ import lombok.Data;
 
 @Data
 public class BiometricsDto {
-	
+
 	private byte[] attributeISO;
 	private String bioAttribute;
 	private String modalityName;
 	private double qualityScore;
 	private boolean isForceCaptured;
-	private int numOfRetries;	
+	private int numOfRetries;
 	private boolean isCaptured;
 	private String subType;
+	private double idemiaQualityScore;
 
-		
+
 	public BiometricsDto(String bioAttribute, byte[] attributeISO, double qualityScore) {
 		this.bioAttribute = bioAttribute;
 		this.attributeISO = attributeISO;

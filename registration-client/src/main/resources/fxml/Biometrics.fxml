@@ -202,7 +202,7 @@
                                                 <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="80.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                           </GridPane>
-                                          <GridPane fx:id="thresholdBox" GridPane.rowIndex="4">
+                                          <GridPane fx:id="thresholdBox" prefHeight="117.0" prefWidth="157.0" GridPane.rowIndex="4">
                                              <children>
                                                 <Label styleClass="threshHoldLabel" text="%threshold" GridPane.halignment="LEFT" />
                                                 <Label styleClass="qualityLabel" text="%quality" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
@@ -212,26 +212,35 @@
                                                 <Label fx:id="qualityScore" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                                                 <Label fx:id="attemptSlap" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
                                                 <Label GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3" />
-                                                 <Label fx:id="leftIrisScore" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
-                                                 <Label fx:id="rightIrisScore" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
-                                                 <Label fx:id="finger1" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
-                                                 <Label fx:id="finger2" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
-                                                 <Label fx:id="finger3" GridPane.halignment="LEFT" GridPane.rowIndex="7" />
-                                                 <Label fx:id="finger4" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="7" />
+                                                 <Label fx:id="leftIrisScore" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+<!--                                                 <Label fx:id="leftIrisScoreIdemia" GridPane.halignment="LEFT" GridPane.rowIndex="6" />-->
+                                                 <Label fx:id="rightIrisScore" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+<!--                                                 <Label fx:id="rightIrisScoreIdemia" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" />-->
+                                                 <Label fx:id="finger1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+<!--                                                 <Label fx:id="finger1Idemia" GridPane.halignment="LEFT" GridPane.rowIndex="6" />-->
+                                                 <Label fx:id="finger2" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" />
+<!--                                                 <Label fx:id="finger2Idemia" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" />-->
+                                                 <Label fx:id="finger3" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
+<!--                                                 <Label fx:id="finger3Idemia" GridPane.halignment="LEFT" GridPane.rowIndex="10" />-->
+                                                 <Label fx:id="finger4" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
+<!--                                                 <Label fx:id="finger4Idemia" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="10" />-->
                                              </children>
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="60.0" prefWidth="100.0" />
                                              </columnConstraints>
                                              <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="15.0" minHeight="12.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="15.0" minHeight="12.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="15.0" minHeight="12.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="15.0" minHeight="12.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="25.0" minHeight="12.0" prefHeight="25.0" />
                                                 <RowConstraints />
+                                                <RowConstraints maxHeight="15.0" minHeight="12.0" prefHeight="25.0" />
                                                 <RowConstraints />
+                                                <RowConstraints maxHeight="15.0" minHeight="12.0" prefHeight="25.0" />
                                                 <RowConstraints />
-                                                <RowConstraints />
+                                                <RowConstraints maxHeight="15.0" minHeight="12.0" prefHeight="25.0" />
                                              </rowConstraints>
                                           </GridPane>
                                           <GridPane GridPane.rowIndex="3">

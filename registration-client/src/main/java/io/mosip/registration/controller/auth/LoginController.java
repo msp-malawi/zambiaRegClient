@@ -50,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -481,6 +482,7 @@ public class LoginController extends BaseController implements Initializable {
 		LOGGER.info(LoggerConstants.LOG_REG_LOGIN, APPLICATION_NAME, APPLICATION_ID,
 				"Validating Credentials entered through UI");
 
+
 		LoginUserDTO loginUserDTO = new LoginUserDTO();
 		loginUserDTO.setUserId(userId.getText());
 		loginUserDTO.setPassword(password.getText());
@@ -496,7 +498,7 @@ public class LoginController extends BaseController implements Initializable {
 					if (SessionContext.create(userDTO, RegistrationConstants.PWORD, isInitialSetUp, isUserNewToMachine,
 							null)) {
 						if (isInitialSetUp) {
-							executePreLaunchTask(credentialsPane, passwordProgressIndicator);
+						executePreLaunchTask(credentialsPane, passwordProgressIndicator);
 
 						} else {
 							validateUserCredentialsInLocal(userDTO);

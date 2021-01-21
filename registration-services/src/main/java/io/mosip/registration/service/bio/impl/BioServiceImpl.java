@@ -9,12 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +53,7 @@ import io.mosip.registration.service.bio.BioService;
 /**
  * This class {@code BioServiceImpl} handles all the biometric captures and
  * validations through MDM service
- * 
+ *
  * @author taleev.aalam
  *
  */
@@ -78,7 +73,7 @@ public class BioServiceImpl extends BaseService implements BioService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see io.mosip.registration.service.bio.BioService#isMdmEnabled()
 	 */
 	@Override
@@ -130,26 +125,27 @@ public class BioServiceImpl extends BaseService implements BioService {
 			for (BiometricsDto biometricsDto : biometricsDtos) {
 				if (biometricsDto != null
 						&& isQualityScoreMaxInclusive(String.valueOf(biometricsDto.getQualityScore()))) {
-					if (ApplicationContext.map().containsKey(RegistrationConstants.QUALITY_CHECK_WITH_SDK)
-							&& ApplicationContext
-									.getStringValueFromApplicationMap(RegistrationConstants.QUALITY_CHECK_WITH_SDK)
-									.equalsIgnoreCase(RegistrationConstants.ENABLE)) {
-						LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
-								"Quality check with Biometric SDK flag is enabled..");
+//					if (ApplicationContext.map().containsKey(RegistrationConstants.QUALITY_CHECK_WITH_SDK)
+//							&& Applica1100ionContext
+//									.getStringValueFromApplicationMap(RegistrationConstants.QUALITY_CHECK_WITH_SDK)
+//									.equalsIgnoreCase(RegistrationConstants.ENABLE)) {
+//						LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
+//								"Quality check with Biometric SDK flag is enabled..");
 
-						BiometricType biometricType = BiometricType
-								.fromValue(Biometric.getSingleTypeByAttribute(biometricsDto.getBioAttribute()).name());
-						BIR bir = buildBir(biometricsDto);
-						BIR[] birList = new BIR[] { bir };
-						Map<BiometricType, Float> scoreMap = bioAPIFactory
-								.getBioProvider(biometricType, BiometricFunction.QUALITY_CHECK)
-								.getModalityQuality(birList, null);
+					BiometricType biometricType = BiometricType
+							.fromValue(Biometric.getSingleTypeByAttribute(biometricsDto.getBioAttribute()).name());
 
-						LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
-								"Quality score is evaluated and assigning to biometricsDto..");
+					BIR bir = buildBir(biometricsDto);
+					BIR[] birList = new BIR[] { bir };
+					Map<BiometricType, Float> scoreMap = bioAPIFactory
+							.getBioProvider(biometricType, BiometricFunction.QUALITY_CHECK)
+							.getModalityQuality(birList, null);
 
-						biometricsDto.setQualityScore(scoreMap.get(biometricType));
-					}
+					LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
+							"Quality score is evaluated and assigning to biometricsDto..");
+
+					biometricsDto.setIdemiaQualityScore(scoreMap.get(biometricType));
+					//}
 					list.add(biometricsDto);
 				}
 			}
@@ -168,26 +164,26 @@ public class BioServiceImpl extends BaseService implements BioService {
 	private List<String> getSubTypes(SingleType singleType, String bioAttribute) {
 		List<String> subtypes = new LinkedList<>();
 		switch (singleType) {
-		case FINGER:
-			subtypes.add(bioAttribute.contains("left") ? SingleAnySubtypeType.LEFT.value()
-					: SingleAnySubtypeType.RIGHT.value());
-			if (bioAttribute.toLowerCase().contains("thumb"))
-				subtypes.add(SingleAnySubtypeType.THUMB.value());
-			else {
-				String val = bioAttribute.toLowerCase().replace("left", "").replace("right", "");
-				subtypes.add(SingleAnySubtypeType.fromValue(StringUtils.capitalizeFirstLetter(val).concat("Finger"))
-						.value());
-			}
-			break;
-		case IRIS:
-			subtypes.add(bioAttribute.contains("left") ? SingleAnySubtypeType.LEFT.value()
-					: SingleAnySubtypeType.RIGHT.value());
-			break;
-		case FACE:
-			subtypes.add(SingleType.FACE.value());
-			break;
-		default:
-			break;
+			case FINGER:
+				subtypes.add(bioAttribute.contains("left") ? SingleAnySubtypeType.LEFT.value()
+						: SingleAnySubtypeType.RIGHT.value());
+				if (bioAttribute.toLowerCase().contains("thumb"))
+					subtypes.add(SingleAnySubtypeType.THUMB.value());
+				else {
+					String val = bioAttribute.toLowerCase().replace("left", "").replace("right", "");
+					subtypes.add(SingleAnySubtypeType.fromValue(StringUtils.capitalizeFirstLetter(val).concat("Finger"))
+							.value());
+				}
+				break;
+			case IRIS:
+				subtypes.add(bioAttribute.contains("left") ? SingleAnySubtypeType.LEFT.value()
+						: SingleAnySubtypeType.RIGHT.value());
+				break;
+			case FACE:
+				subtypes.add(SingleType.FACE.value());
+				break;
+			default:
+				break;
 		}
 		return subtypes;
 	}
@@ -206,7 +202,7 @@ public class BioServiceImpl extends BaseService implements BioService {
 			for (String bioAttribute : attributes) {
 				BiometricsDto biometricDto = new BiometricsDto(
 						Biometric.getBiometricByAttribute(bioAttribute).getAttributeName(), IOUtils.resourceToByteArray(
-								getFilePath(mdmRequestDto.getModality(), bioAttribute, isUserOnboarding)),
+						getFilePath(mdmRequestDto.getModality(), bioAttribute, isUserOnboarding)),
 						90.0);
 				biometricDto.setCaptured(true);
 				list.add(biometricDto);
@@ -226,25 +222,25 @@ public class BioServiceImpl extends BaseService implements BioService {
 
 		String path = null;
 		switch (modality) {
-		case PacketManagerConstants.FINGERPRINT_SLAB_LEFT:
-			path = String.format(isUserOnboarding ? "/UserOnboard/leftHand/%s/ISOTemplate.iso"
-					: "/fingerprints/lefthand/%s/ISOTemplate.iso", bioAttribute);
-			break;
-		case PacketManagerConstants.FINGERPRINT_SLAB_RIGHT:
-			path = String.format(isUserOnboarding ? "/UserOnboard/rightHand/%s/ISOTemplate.iso"
-					: "/fingerprints/Srighthand/%s/ISOTemplate.iso", bioAttribute);
-			break;
-		case PacketManagerConstants.FINGERPRINT_SLAB_THUMBS:
-			path = String.format(isUserOnboarding ? "/UserOnboard/thumb/%s/ISOTemplate.iso"
-					: "/fingerprints/thumb/%s/ISOTemplate.iso", bioAttribute);
-			break;
-		case PacketManagerConstants.IRIS_DOUBLE:
-			path = String.format("/images/%s.iso", bioAttribute);
-			break;
-		case "FACE":
-		case PacketManagerConstants.FACE_FULLFACE:
-			path = String.format("/images/%s.iso", "face");
-			break;
+			case PacketManagerConstants.FINGERPRINT_SLAB_LEFT:
+				path = String.format(isUserOnboarding ? "/UserOnboard/leftHand/%s/ISOTemplate.iso"
+						: "/fingerprints/lefthand/%s/ISOTemplate.iso", bioAttribute);
+				break;
+			case PacketManagerConstants.FINGERPRINT_SLAB_RIGHT:
+				path = String.format(isUserOnboarding ? "/UserOnboard/rightHand/%s/ISOTemplate.iso"
+						: "/fingerprints/Srighthand/%s/ISOTemplate.iso", bioAttribute);
+				break;
+			case PacketManagerConstants.FINGERPRINT_SLAB_THUMBS:
+				path = String.format(isUserOnboarding ? "/UserOnboard/thumb/%s/ISOTemplate.iso"
+						: "/fingerprints/thumb/%s/ISOTemplate.iso", bioAttribute);
+				break;
+			case PacketManagerConstants.IRIS_DOUBLE:
+				path = String.format("/images/%s.iso", bioAttribute);
+				break;
+			case "FACE":
+			case PacketManagerConstants.FACE_FULLFACE:
+				path = String.format("/images/%s.iso", "face");
+				break;
 		}
 		return path;
 	}
