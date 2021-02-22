@@ -171,6 +171,7 @@ public class DocumentScanController extends BaseController {
      */
     @FXML
     private void initialize() {
+
         LOGGER.info(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, APPLICATION_NAME,
                 RegistrationConstants.APPLICATION_ID, "Entering the DOCUMENT_SCAN_CONTROLLER");
 
@@ -219,6 +220,7 @@ public class DocumentScanController extends BaseController {
      */
     protected <T> void populateDocumentCategories() {
 
+
         /* clearing all the previously added fields */
         docScanVbox.getChildren().clear();
         documentComboBoxes.clear();
@@ -236,7 +238,7 @@ public class DocumentScanController extends BaseController {
         Map<String, DocumentDto> documentsMap = getDocumentsMapFromSession();
         if (documentsMap != null && !documentsMap.isEmpty() && !documentVBoxes.isEmpty()) {
             Set<String> docCategoryKeys = documentVBoxes.keySet();
-            documentsMap.keySet().retainAll(docCategoryKeys);
+//            documentsMap.keySet().retainAll(docCategoryKeys);  COMMENTED BY MANO TO DISPLAY EXCEPTION PHOTO
             for (String docCategoryKey : docCategoryKeys) {
 
                 DocumentDto documentDetailsDTO = documentsMap.get(docCategoryKey);
@@ -246,7 +248,7 @@ public class DocumentScanController extends BaseController {
                             documentVBoxes.get(docCategoryKey));
 
                     addDocumentRefNumber(documentDetailsDTO.getRefNumber(),
-                            documentVBoxes.get(documentDetailsDTO.getCategory() + "RefNumVBox"));
+                            documentVBoxes.get(docCategoryKey + "RefNumVBox"));
 
                     FXUtils.getInstance().selectComboBoxValue(documentComboBoxes.get(docCategoryKey),
                             documentDetailsDTO.getValue().substring(
@@ -265,6 +267,7 @@ public class DocumentScanController extends BaseController {
     }
 
     private void addDocumentRefNumber(String refNumber, VBox vBox) {
+
         if (refNumber != null && vBox != null) {
             GridPane gridPane = (GridPane) vBox.getChildren().get(0);
             TextField textField = (TextField) gridPane.getChildren().get(0);
@@ -273,6 +276,7 @@ public class DocumentScanController extends BaseController {
     }
 
     private Map<String, DocumentDto> getDocumentsMapFromSession() {
+
         return getRegistrationDTOFromSession().getDocuments();
     }
 
@@ -409,7 +413,7 @@ public class DocumentScanController extends BaseController {
                 documentVBoxes.put(documentCategory.getId(), documentVBox);
 
                 VBox refNumVBox = new VBox();
-                refNumVBox.setId(docCategoryCode + "RefNumVBox");
+                refNumVBox.setId(documentCategory.getId() + "RefNumVBox");
                 refNumVBox.getStyleClass().add(RegistrationConstants.SCAN_VBOX);
                 TextField documentNumberTxtField = new TextField();
                 documentNumberTxtField.setId(docCategoryCode + "RefNum");
@@ -417,6 +421,8 @@ public class DocumentScanController extends BaseController {
                 documentNumberTxtField.getStyleClass().add(RegistrationConstants.DEMOGRAPHIC_TEXTFIELD);
                 documentNumberTxtField.setStyle("-fx-font-size:13");
                 documentNumberTxtField.setMinWidth(100);
+
+
 
                 // numberOfDocs.setPrefWidth(40);
 
@@ -482,7 +488,7 @@ public class DocumentScanController extends BaseController {
                         clickedBtn.getId();
                         scanDocument(comboBox, documentVBox, documentCategory.getSubType(),
                                 RegistrationUIConstants.PLEASE_SELECT + RegistrationConstants.SPACE
-                                        + documentCategory.getSubType() + " " + RegistrationUIConstants.DOCUMENT);
+                                        + documentCategory.getSubType() + " " + RegistrationUIConstants.DOCUMENT, documentNumberTxtField);
 
                         LOGGER.debug("REGISTRATION - DOCUMENT_SCAN_CONTROLLER", APPLICATION_NAME,
                                 RegistrationConstants.APPLICATION_ID,
@@ -548,18 +554,20 @@ public class DocumentScanController extends BaseController {
      * This method scans and uploads documents
      */
     private void scanDocument(ComboBox<DocumentCategoryDto> documents, VBox vboxElement, String document,
-                              String errorMessage) {
+                              String errorMessage, TextField documentNumberTxtField) {
 
         String poeDocValue = getValueFromApplicationContext(RegistrationConstants.POE_DOCUMENT_VALUE);
-        poeDocValue = documents.getValue().getCode();
         if (null != documents.getValue() && poeDocValue != null
                 && documents.getValue().getCode().matches(poeDocValue)) {
-            if (documents.getValue() == null) {
-                LOGGER.info(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, RegistrationConstants.APPLICATION_NAME,
-                        RegistrationConstants.APPLICATION_ID, "Select atleast one document for scan");
+            if (!documentNumberTxtField.getText().equals("")) {
+                poeDocValue = documents.getValue().getCode();
 
-                generateAlert(RegistrationConstants.ERROR, errorMessage);
-                documents.requestFocus();
+                if (documents.getValue() == null) {
+                    LOGGER.info(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, RegistrationConstants.APPLICATION_NAME,
+                            RegistrationConstants.APPLICATION_ID, "Select atleast one document for scan");
+
+                    generateAlert(RegistrationConstants.ERROR, errorMessage);
+                    documents.requestFocus();
 //			} else if (!vboxElement.getChildren().isEmpty()) {
 //				LOGGER.info(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, RegistrationConstants.APPLICATION_NAME,
 //						RegistrationConstants.APPLICATION_ID, "only One Document can be added to the Category");
@@ -571,11 +579,15 @@ public class DocumentScanController extends BaseController {
 //						RegistrationConstants.APPLICATION_ID, "Select only one document category for scan");
 //
 //				generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.SCAN_DOC_CATEGORY_MULTIPLE);
+                } else {
+                    selectedDocument = document;
+                    selectedComboBox = documents;
+                    selectedDocVBox = vboxElement;
+                    scanWindow();
+                }
             } else {
-                selectedDocument = document;
-                selectedComboBox = documents;
-                selectedDocVBox = vboxElement;
-                scanWindow();
+                generateAlert(RegistrationConstants.ERROR, "Please Enter Reference Number");
+                documents.requestFocus();
             }
         } else {
             if (documents.getValue() == null) {
@@ -584,17 +596,12 @@ public class DocumentScanController extends BaseController {
 
                 generateAlert(RegistrationConstants.ERROR, errorMessage);
                 documents.requestFocus();
-//			} else if (!vboxElement.getChildren().isEmpty()) {
-//				LOGGER.info(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, RegistrationConstants.APPLICATION_NAME,
-//						RegistrationConstants.APPLICATION_ID, "only One Document can be added to the Category");
-//
-//				generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.SCAN_DOC_CATEGORY_MULTIPLE);
-//			} else if (!vboxElement.getChildren().isEmpty() && vboxElement.getChildren().stream()
-//					.noneMatch(index -> index.getId().contains(documents.getValue().getName()))) {
-//				LOGGER.info(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, RegistrationConstants.APPLICATION_NAME,
-//						RegistrationConstants.APPLICATION_ID, "Select only one document category for scan");
-//
-//				generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.SCAN_DOC_CATEGORY_MULTIPLE);
+
+            }
+
+            if (documentNumberTxtField.getText().equals("")) {
+                generateAlert(RegistrationConstants.ERROR, "Please Enter Reference Number");
+                documents.requestFocus();
             } else {
                 LOGGER.info(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, RegistrationConstants.APPLICATION_NAME,
                         RegistrationConstants.APPLICATION_ID, "Displaying Scan window to scan Documents");
@@ -895,15 +902,15 @@ public class DocumentScanController extends BaseController {
      */
     public void attachScannedDocument(Stage popupStage) throws IOException {
 
-		LOGGER.info(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, RegistrationConstants.APPLICATION_NAME,
-				RegistrationConstants.APPLICATION_ID, "Converting byte array to image");
-		String documentSize = getValueFromApplicationContext(RegistrationConstants.DOC_SIZE);
-		int docSize = Integer.parseInt(documentSize) / (1024 * 1024);
-		if (scannedPages == null || scannedPages.isEmpty()) {
-			generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.SCAN_DOCUMENT_EMPTY);
-			return;
-		}
-		byte[] byteArray = getScannedPagesToBytes(scannedPages);
+        LOGGER.info(RegistrationConstants.DOCUMNET_SCAN_CONTROLLER, RegistrationConstants.APPLICATION_NAME,
+                RegistrationConstants.APPLICATION_ID, "Converting byte array to image");
+        String documentSize = getValueFromApplicationContext(RegistrationConstants.DOC_SIZE);
+        int docSize = Integer.parseInt(documentSize) / (1024 * 1024);
+        if (scannedPages == null || scannedPages.isEmpty()) {
+            generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.SCAN_DOCUMENT_EMPTY);
+            return;
+        }
+        byte[] byteArray = getScannedPagesToBytes(scannedPages);
 
         if (byteArray == null) {
             generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.SCAN_DOCUMENT_CONVERTION_ERR);
@@ -964,10 +971,12 @@ public class DocumentScanController extends BaseController {
             documentDto.setFormat(docType);
             documentDto.setCategory(selectedDocument);
             documentDto.setOwner("Applicant");
+
             documentDto.setValue(selectedDocument.concat(RegistrationConstants.UNDER_SCORE).concat(document.getCode()));
         } else {
             List<BufferedImage> capBufferedImages = documentScanFacade.pdfToImages(byteArray);
             documentDto.setDocument(getScannedPagesToBytes(capBufferedImages));
+            documentDto.setValue(selectedDocument.concat(RegistrationConstants.UNDER_SCORE).concat(document.getCode()));
         }
 
         HBox hBox = (HBox) vboxElement.getParent();
@@ -1108,6 +1117,7 @@ public class DocumentScanController extends BaseController {
      * This method will preview the previous document
      */
     public void previewPrevPage() {
+
         if (isDocsNotEmpty()) {
             int pageNumber = Integer.parseInt(docPageNumber.getText());
             if (pageNumber > 1) {
@@ -1306,8 +1316,7 @@ public class DocumentScanController extends BaseController {
      * This method will prepare the edit page content
      */
     protected void prepareEditPageContent() {
-
-        FXUtils fxUtils = FXUtils.getInstance();
+      FXUtils fxUtils = FXUtils.getInstance();
 
         if (documentComboBoxes != null && !documentComboBoxes.isEmpty()) {
             Map<String, DocumentDto> documentsMap = getDocumentsMapFromSession();
@@ -1326,6 +1335,7 @@ public class DocumentScanController extends BaseController {
      * This method will clear the document section
      */
     public void clearDocSection() {
+
         clearAllDocs();
         initializePreviewSection();
     }
@@ -1375,6 +1385,7 @@ public class DocumentScanController extends BaseController {
      */
     @FXML
     private void next() {
+
         auditFactory.audit(AuditEvent.REG_DOC_NEXT, Components.REG_DOCUMENTS, SessionContext.userId(),
                 AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
 
@@ -1424,6 +1435,8 @@ public class DocumentScanController extends BaseController {
                 continueBtn.setDisable(true);
             }
         }
+
+
     }
 
     public List<BufferedImage> getScannedPages() {
