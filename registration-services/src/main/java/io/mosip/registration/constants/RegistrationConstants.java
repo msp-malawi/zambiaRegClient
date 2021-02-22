@@ -875,7 +875,7 @@ public class RegistrationConstants {
 
 	public static final String PREVIEW_TEMPLATE_CODE = "reg-preview-template-part";
 	public static final String ACKNOWLEDGEMENT_TEMPLATE = "Ack Template";
-	public static final String ACKNOWLEDGEMENT_TEMPLATE_CODE = "reg-ack-template-part";
+	public static final String ACKNOWLEDGEMENT_TEMPLATE_CODE = "reg-ack-template-part1";
 	public static final String ACKNOWLEDGEMENT_TEMPLATE_PART_1 = "reg-ack-template-part1";
 	public static final String ACKNOWLEDGEMENT_TEMPLATE_PART_2 = "reg-ack-template-part2";
 	public static final String ACKNOWLEDGEMENT_TEMPLATE_PART_3 = "reg-ack-template-part3";
