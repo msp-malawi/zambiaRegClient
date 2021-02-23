@@ -128,7 +128,8 @@
                                             </graphic>
                                         </Button>
                                         <Button fx:id="faceCaptureBtn" visible="false"  mnemonicParsing="false" onAction="#faceCapture" prefHeight="39.0" prefWidth="167.0" styleClass="scanButton" text="%capture" GridPane.rowIndex="4" />
-                                        <Text fx:id="countDown" wrappingWidth="80" GridPane.rowIndex="5"></Text>
+<!--                                        <Text fx:id="countDown" wrappingWidth="80" GridPane.rowIndex="5"></Text>-->
+                                        <Label fx:id="timerLabel"    GridPane.rowIndex="5"/>
                                         <Button fx:id="saveBtn" graphicTextGap="10.0" mnemonicParsing="false" onAction="#save" styleClass="scanButton" text="%save" GridPane.rowIndex="2">
                                             <graphic>
                                                 <ImageView fitHeight="19.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true">
