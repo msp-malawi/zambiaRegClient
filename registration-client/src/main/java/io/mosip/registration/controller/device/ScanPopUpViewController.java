@@ -10,7 +10,12 @@ import io.mosip.registration.controller.BaseController;
 import io.mosip.registration.controller.reg.DocumentScanController;
 import io.mosip.registration.device.webcam.impl.WebcamSarxosServiceImpl;
 import io.mosip.registration.util.common.RubberBandSelection;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.embed.swing.SwingNode;
 import javafx.event.ActionEvent;
@@ -38,6 +43,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -171,6 +177,13 @@ public class ScanPopUpViewController extends BaseController {
     public void setWebCamStream(boolean isWebCamStream) {
         this.isWebCamStream = isWebCamStream;
     }
+
+
+    private static final Integer STARTTIME = 15;
+    private Timeline timeline;
+    @FXML
+    private Label timerLabel;
+    private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
 
     /**
      * @return the popupStage
@@ -714,28 +727,49 @@ public class ScanPopUpViewController extends BaseController {
         isStreamPaused = isVisible;
     }
 
+//    @FXML
+//    public void faceCapture(ActionEvent actionEvent) {
+//        faceCaptureBtn.setVisible(false);
+//        closeButton.setVisible(false);
+//        String secs = "15";
+//        int delay = 1000;
+//        int period = 1000;
+//        timer = new Timer();
+//        interval = Integer.parseInt(secs);
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            public void run() {
+//                Platform.runLater(() -> {
+//                    countDown.setText(Integer.toString(setInterval()));
+//                    countDown.setFont(Font.font("Verdana", 20));
+//                    countDown.setFill(Color.BLUE);
+//                    if (Integer.parseInt(countDown.getText()) <= 5)
+//                        countDown.setFill(Color.RED);
+//                });
+//            }
+//        }, delay, period);
+//        biometricsController.rCaptureTaskService();
+//    }
+
     @FXML
     public void faceCapture(ActionEvent actionEvent) {
         faceCaptureBtn.setVisible(false);
         closeButton.setVisible(false);
-        String secs = "15";
-        int delay = 1000;
-        int period = 1000;
-        timer = new Timer();
-        interval = Integer.parseInt(secs);
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                Platform.runLater(() -> {
-                    countDown.setText(Integer.toString(setInterval()));
-                    countDown.setFont(Font.font("Verdana", 20));
-                    countDown.setFill(Color.BLUE);
-                    if (Integer.parseInt(countDown.getText()) <= 5)
-                        countDown.setFill(Color.RED);
-                });
-            }
-        }, delay, period);
+        if (timeline != null) {
+            timeline.stop();
+        }
+        timeSeconds.set(STARTTIME);
+        timeline = new Timeline();
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(STARTTIME+1),
+                        new KeyValue(timeSeconds, 0)));
+        timeline.playFromStart();
+
+        timerLabel.textProperty().bind(timeSeconds.asString());
+        timerLabel.setTextFill(Color.BLUE);
+        timerLabel.setStyle("-fx-font-size: 3em;");
         biometricsController.rCaptureTaskService();
     }
+
 
     private static final int setInterval() {
         if (interval == 1)
