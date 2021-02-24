@@ -119,6 +119,10 @@ public class BiometricsController extends BaseController /* implements Initializ
     @FXML
     private Button scanBtn;
 
+
+    @FXML
+    private Button recaptureBtn;
+
     @FXML
     private ProgressBar bioProgress;
 
@@ -251,6 +255,8 @@ public class BiometricsController extends BaseController /* implements Initializ
     public Button getScanBtn() {
         return scanBtn;
     }
+
+    public Button getRecaptureBtn() { return recaptureBtn; }
 
     public Button getContinueBtn() {
         return continueBtn;
@@ -796,6 +802,10 @@ public class BiometricsController extends BaseController /* implements Initializ
         this.currentModality = modality;
         enableCurrentCheckBoxSection();
 
+        if(!modality.equalsIgnoreCase(RegistrationConstants.FACE)){
+            recaptureBtn.setVisible(false);
+        }
+
         // get List of captured Biometrics based on nonExceptionBio Attributes
         List<BiometricsDto> capturedBiometrics = null;
 
@@ -1171,6 +1181,28 @@ public class BiometricsController extends BaseController /* implements Initializ
 
     }
 
+    @FXML
+    private void recapture(ActionEvent event) {
+
+        LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+                "Displaying Scan popup for capturing biometrics");
+        boolean isAllMarked = false;
+        if(currentModality.equalsIgnoreCase("Exception_Photo")){
+            if (getRegistrationDTOFromSession() != null && getRegistrationDTOFromSession().getDocuments() != null) {
+                getRegistrationDTOFromSession().getDocuments().remove("proofOfException");
+            }
+            addImageInUIPane(RegistrationConstants.APPLICANT, RegistrationConstants.EXCEPTION_PHOTO, null, false);
+        }else{
+            getRegistrationDTOFromSession().removeBiometric(currentSubType, "face");
+        }
+        displayBiometric(currentModality);
+        addImageInUIPane(currentSubType, currentModality, null, isAllMarked);
+        setScanButtonVisibility(isAllMarked, scanBtn);
+        recaptureBtn.setVisible(false);
+        refreshContinueButton();
+
+    }
+
     private boolean isFace(String currentModality) {
         return currentModality.toUpperCase().contains(RegistrationConstants.FACE.toUpperCase());
     }
@@ -1335,7 +1367,7 @@ public class BiometricsController extends BaseController /* implements Initializ
                                         extractFaceImageData(registrationDTOBiometricsList.get(0).getAttributeISO()));
                                 generateAlert(RegistrationConstants.ALERT_INFORMATION,
                                         RegistrationUIConstants.BIOMETRIC_CAPTURE_SUCCESS);
-
+                                  recaptureBtn.setVisible(true);
                                 scanPopUpViewController.getPopupStage().close();
                                 return;
                             }
@@ -1700,9 +1732,9 @@ public class BiometricsController extends BaseController /* implements Initializ
         createQualityBox(retryCount, biometricThreshold);
 
         clearBioLabels();
-        if (!isFace(currentModality)) {
+       if (!isFace(currentModality)) {
             setScanButtonVisibility(isAllExceptions(getCheckBoxes(currentSubType, currentModality)), scanBtn);
-        } else {
+       } else {
             setScanButtonVisibility(false, scanBtn);
         }
 
@@ -1885,6 +1917,11 @@ public class BiometricsController extends BaseController /* implements Initializ
 
         if (retry == getMaxRetryByModality(currentModality)) {
             scanBtn.setDisable(true);
+            if(currentModality.equalsIgnoreCase(RegistrationConstants.FACE) && retry == getMaxRetryByModality(currentModality)){
+                recaptureBtn.setVisible(true);
+            }else{
+                recaptureBtn.setVisible(false);
+            }
         } else {
             scanBtn.setDisable(false);
         }
@@ -1892,6 +1929,8 @@ public class BiometricsController extends BaseController /* implements Initializ
         LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
                 "Updated captured values of biometrics");
     }
+
+
 
     private int getMaxRetryByModality(String currentModality) {
         String key = getMaxRetryKeyByModality(currentModality);
