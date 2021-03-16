@@ -770,6 +770,25 @@ public class ScanPopUpViewController extends BaseController {
         biometricsController.rCaptureTaskService();
     }
 
+    @FXML
+    public void timerShow(ActionEvent actionEvent) {
+
+        if (timeline != null) {
+            timeline.stop();
+        }
+        timeSeconds.set(STARTTIME);
+        timeline = new Timeline();
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(STARTTIME+1),
+                        new KeyValue(timeSeconds, 0)));
+        timeline.playFromStart();
+
+        timerLabel.textProperty().bind(timeSeconds.asString());
+        timerLabel.setTextFill(Color.BLUE);
+        timerLabel.setStyle("-fx-font-size: 3em;");
+
+    }
+
 
     private static final int setInterval() {
         if (interval == 1)
