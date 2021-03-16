@@ -1123,7 +1123,9 @@ public class BiometricsController extends BaseController /* implements Initializ
 
                             return;
                         }
-
+                        if(currentModality.equalsIgnoreCase(RegistrationConstants.IRIS_DOUBLE) || currentModality.equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_RIGHT) || currentModality.equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_LEFT) || currentModality.equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_THUMBS)) {
+                            scanPopUpViewController.timerShow(event);
+                        }
                         setPopViewControllerMessage(true, RegistrationUIConstants.STREAMING_INIT_MESSAGE);
                         //TODO BY Gautam
                         if (!currentModality.equalsIgnoreCase("Face")) {
@@ -1346,17 +1348,17 @@ public class BiometricsController extends BaseController /* implements Initializ
                                         "BiometricDTO captured from mock/real MDM >>> "
                                                 + biometricDTO.getBioAttribute());
 
-//                                if (!exceptionBioAttributes.isEmpty()
-//                                        && exceptionBioAttributes.contains(biometricDTO.getBioAttribute())) {
-//                                    LOGGER.debug(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
-//                                            "As bio atrribute marked as exception not storing into registration DTO : "
-//                                                    + biometricDTO.getBioAttribute());
-//                                    continue;
-//                                } else {
+                                if (!exceptionBioAttributes.isEmpty()
+                                        && exceptionBioAttributes.contains(biometricDTO.getBioAttribute())) {
+                                    LOGGER.debug(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+                                            "As bio atrribute marked as exception not storing into registration DTO : "
+                                                    + biometricDTO.getBioAttribute());
+                                    continue;
+                                } else {
                                     qualityScore += biometricDTO.getQualityScore();
                                     biometricDTO.setSubType(currentSubType);
                                     registrationDTOBiometricsList.add(biometricDTO);
-//                                }
+                                }
                             }
 
                             if (isExceptionPhoto(currentModality)) {
