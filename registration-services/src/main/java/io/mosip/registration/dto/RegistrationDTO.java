@@ -92,6 +92,9 @@ public class RegistrationDTO {
 
 		if (!values.isEmpty())
 			this.demographics.put(fieldId, values);
+
+		if (values.isEmpty())
+			this.demographics.remove(fieldId);
 	}
 
 	public void addDefaultDemographicField(String fieldId, String applicationLanguage, String value,
