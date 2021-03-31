@@ -1369,7 +1369,7 @@ public class BiometricsController extends BaseController /* implements Initializ
                                         extractFaceImageData(registrationDTOBiometricsList.get(0).getAttributeISO()));
                                 generateAlert(RegistrationConstants.ALERT_INFORMATION,
                                         RegistrationUIConstants.BIOMETRIC_CAPTURE_SUCCESS);
-                                  recaptureBtn.setVisible(true);
+                                recaptureBtn.setVisible(true);
                                 scanPopUpViewController.getPopupStage().close();
                                 return;
                             }
@@ -1437,6 +1437,13 @@ public class BiometricsController extends BaseController /* implements Initializ
                                         "using captured response fill the fields like quality score and progress bar,,etc,.. UI");
                                 loadBiometricsUIElements(registrationDTOBiometricsList, currentSubType,
                                         currentModality);
+//                                for (BiometricsDto biometricsDto: registrationDTOBiometricsList
+//                                     ) {
+//                                    if(biometricsDto.isForceCaptured()){
+//                                        setPopViewControllerMessage(true, RegistrationUIConstants.NO_DEVICE_FOUND1);
+//                                        break;
+//                                    }
+//                                }
 
                                 refreshContinueButton();
                             } else {
@@ -1734,9 +1741,9 @@ public class BiometricsController extends BaseController /* implements Initializ
         createQualityBox(retryCount, biometricThreshold);
 
         clearBioLabels();
-       if (!isFace(currentModality)) {
+        if (!isFace(currentModality)) {
             setScanButtonVisibility(isAllExceptions(getCheckBoxes(currentSubType, currentModality)), scanBtn);
-       } else {
+        } else {
             setScanButtonVisibility(false, scanBtn);
         }
 
@@ -1790,7 +1797,7 @@ public class BiometricsController extends BaseController /* implements Initializ
      * @param capturedBio    biometric
      * @param qltyScore      Qulaity score
      * @param retry          retrycount
-     * @param thresholdValue threshold value
+     * @param thresholdValue threshold value11
      */
     private void setCapturedValues(double qltyScore, int retry, double thresholdValue, List<BiometricsDto> biometricDTOList) {
 
@@ -2414,7 +2421,7 @@ public class BiometricsController extends BaseController /* implements Initializ
                 /* Captures check */
                 qualityScore += biometricDTO.getQualityScore();
                 isCaptured = true;
-                //11isForceCaptured = biometricDTO.isForceCaptured();
+                isForceCaptured = biometricDTO.isForceCaptured();
 
             } else if (isBiometricExceptionAvailable(subType, bioAttribute)) {
                 /* Exception bio check */
@@ -2427,44 +2434,14 @@ public class BiometricsController extends BaseController /* implements Initializ
             }
         }
 
-        if (isCaptured) {
+        if (isCaptured && !isForceCaptured) {
             if (bioAttributes.size() == exceptionBioCount)
                 isCaptured = considerExceptionAsCaptured ? true : false;
             else {
-//                File directory = new File(getRegistrationDTOFromSession().getRegistrationId());
-//                if (!directory.exists()) {
-//                    directory.mkdir();
-//// If you require it to make the entire directory path including parents,
-//                    // use directory.mkdirs(); here instead.
-//                }
-
                 for (String bioAttribute : bioAttributes
                 ) {
                     BiometricsDto biometricDTO = getBiometrics(subType, bioAttribute);
                     if (biometricDTO != null) {
-//
-//                        JSONArray array = new JSONArray();
-//                        File file = new File(getRegistrationDTOFromSession().getRegistrationId() + "/" + biometricDTO.getModalityName() + "_" + biometricDTO.getNumOfRetries());
-//
-//                        try {
-//
-//                            FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-//
-//
-//                            JSONObject obj = new JSONObject();
-//                            obj.put("Attribute", biometricDTO.getBioAttribute());
-//                            obj.put("MDS_Score", biometricDTO.getQualityScore());
-//                            obj.put("IDEMIA_Score", biometricDTO.getIdemiaQualityScore());
-//                            obj.put("RID", getRegistrationDTOFromSession().getRegistrationId());
-//
-//                            array.put(obj);
-//                            fw.append(array.toString());
-//                            fw.flush();
-//                            fw.close();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                            System.exit(-1);
-//                        }
                         if (biometricDTO.getModalityName().equalsIgnoreCase(RegistrationConstants.IRIS_DOUBLE)) {
                             if (biometricDTO.getIdemiaQualityScore() >= 50 || (qualityScore / (bioAttributes.size() - exceptionBioCount)) >= thresholdScore) {
                                 isCaptured = true;
@@ -2493,6 +2470,9 @@ public class BiometricsController extends BaseController /* implements Initializ
                 RegistrationConstants.APPLICATION_NAME,
                 "isBiometricsCaptured invoked  subType >> " + subType + " bioAttributes >> " + bioAttributes
                         + " exceptionBioCount >> " + exceptionBioCount + " isCaptured >> " + isCaptured);
+
+
+
         return isCaptured;
     }
 
