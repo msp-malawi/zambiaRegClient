@@ -47,7 +47,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -1139,6 +1142,27 @@ public class DemographicDetailController extends BaseController {
             }
         }
     }
+
+
+    @FXML
+    private void startQrScanner() throws InterruptedException, IOException {
+        Process process =Runtime.getRuntime().exec("qr.bat");
+        process.waitFor();
+        InputStream is = process.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        String line = null;
+        String temp = null;
+        while ((line = reader.readLine()) != null) {
+            temp = line;
+        }
+        System.out.println(temp);
+        if(temp!=null&&!temp.isEmpty()) {
+            preRegistrationId.setText(temp);
+fetchPreRegistration();
+        }
+    }
+
 
     /**
      * Method to fetch the pre-Registration details
