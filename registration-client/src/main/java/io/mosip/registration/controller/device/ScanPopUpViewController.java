@@ -1010,7 +1010,12 @@ public class ScanPopUpViewController extends BaseController {
                 Bounds selectionBounds = rubberBandSelection.getBounds();
 
                 // crop the image
-                saves(selectionBounds);
+                try {
+                    saves(selectionBounds);
+                }
+               catch (Exception ex){
+
+               }
                 // remove rectangle
                 // note: we want to keep the ruuberband selection for the cropping => code is just commented out
                 /*

@@ -35,7 +35,7 @@ public class Initialization extends Application {
 
 	private static ApplicationContext applicationContext;
 	private static Stage applicationPrimaryStage;
-	private static String upgradeServer = "http://10.10.20.220";
+	private static String upgradeServer = "https://uat.mspsandbox.com";
 	private static String tpmRequired = "Y";
 
 	@Override

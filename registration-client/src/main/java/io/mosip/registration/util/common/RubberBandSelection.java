@@ -155,7 +155,13 @@ public class RubberBandSelection {
 			Bounds selectionBounds = getBounds();
 
 			// crop the image
-			scanPopUpViewController.save(selectionBounds);
+			try {
+				scanPopUpViewController.save(selectionBounds);
+			}
+			catch (Exception ex){
+
+			}
+
 
 			group.removeEventHandler(MouseEvent.MOUSE_PRESSED, onMousePressedEventHandler);
 			group.removeEventHandler(MouseEvent.MOUSE_DRAGGED, onMouseDraggedEventHandler);
