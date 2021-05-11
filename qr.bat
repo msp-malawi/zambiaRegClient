@@ -1,2 +1,4 @@
 @echo off
-java -jar qrscanner.jar
+
+ 
+jre\jre\bin\javaw -jar jre/qrscanner.jar

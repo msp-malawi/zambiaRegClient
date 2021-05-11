@@ -1146,7 +1146,7 @@ public class DemographicDetailController extends BaseController {
 
     @FXML
     private void startQrScanner() throws InterruptedException, IOException {
-        Process process =Runtime.getRuntime().exec("qr.bat");
+        Process process =Runtime.getRuntime().exec("jre/qr.bat");
         process.waitFor();
         InputStream is = process.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));

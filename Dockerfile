@@ -2,6 +2,8 @@ FROM openjdk:11
 
 RUN apt-get update
 
+RUN apt install nano
+
 RUN apt install -y zip nginx
 
 ARG client_version
@@ -18,9 +20,9 @@ ARG tpm_enabled
 
 ARG db_bootpwd
 
-ENV client_version_env=${client_version}
+ENV client_version_env=1.2.0-SNAPSHOT
 
-ENV crypto_key_env=${crypto_key}
+ENV crypto_key_env=bBQX230Wskq6XpoZ1c+Ep1D+znxfT89NxLQ7P4KFkc4
 
 ENV healthcheck_url_env=${healthcheck_url}
 
@@ -30,15 +32,32 @@ ENV client_repo_env=${client_repo_url}
 
 ENV client_certificate_env=${client_certificate}
 
-ENV tpm_enabled_env=${tpm_enabled}
+ENV tpm_enabled_env=Y
 
-ENV db_bootpwd_env=${db_bootpwd}
+ENV db_bootpwd_env=bW9zaXAxMjM0NQ
 
 ADD registration-client/target /registration-client/target
 
 ADD registration-libs/target /registration-libs/target
 
 ADD registration-libs/src/main/resources registration-libs/resources
+
+ADD databin_FACETOOLS.bin databin_FACETOOLS.bin
+
+ADD FaceTools_Config.bin FaceTools_Config.bin
+
+ADD initBlock.dat initBlock.dat
+
+ADD QCT.cfg QCT.cfg
+
+ADD opencv_java320.dll opencv_java320.dll
+
+ADD qr.bat qr.bat
+
+ADD qrscanner.jar qrscanner.jar
+
+ADD registration-client/target/MANIFEST.MF MANIFEST.MF
+
 
 ADD configure.sh configure.sh
 
