@@ -103,7 +103,7 @@ mkdir -p /var/www/html/registration-client/${client_version_env}/lib
 
 cp /registration-client/target/lib/* /var/www/html/registration-client/${client_version_env}/lib
 cp /registration-client/target/MANIFEST.MF /var/www/html/registration-client/${client_version_env}/
-cp /registration-libs/resources/maven-metadata.xml /var/www/html/registration-client/${client_version_env}/
+cp /registration-libs/resources/maven-metadata.xml /var/www/html/registration-client/
 cp reg-client.zip /var/www/html/registration-client/${client_version_env}/
 
 echo "setting up nginx static content - completed"

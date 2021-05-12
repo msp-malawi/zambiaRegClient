@@ -445,7 +445,7 @@ public class ApplicationContext {
 	}
 
 	public static String getUpgradeServerURL() {
-		return applicationMap.get("client.upgrade.server.url") == null ? RegistrationAppHealthCheckUtil.getHostName()
+		return applicationMap.get("client.upgrade.server.url") == null ? "https://" +RegistrationAppHealthCheckUtil.getHostName()
 				: String.valueOf(applicationMap.get("client.upgrade.server.url"));
 	}
 
