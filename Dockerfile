@@ -20,7 +20,7 @@ ARG tpm_enabled
 
 ARG db_bootpwd
 
-ENV client_version_env=1.2.0-SNAPSHOT
+ENV client_version_env=1.3-SNAPSHOT
 
 ENV crypto_key_env=bBQX230Wskq6XpoZ1c+Ep1D+znxfT89NxLQ7P4KFkc4
 
@@ -58,8 +58,9 @@ ADD qrscanner.jar qrscanner.jar
 
 ADD registration-client/target/MANIFEST.MF MANIFEST.MF
 
-
 ADD configure.sh configure.sh
+
+ADD maven-metadata.xml maven-metadata.xml
 
 RUN chmod a+x configure.sh \
  && rm -f /registration-client/target/registration-client-*-javadoc.jar \

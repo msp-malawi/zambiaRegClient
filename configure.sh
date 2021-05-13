@@ -42,6 +42,7 @@ cp QCT.cfg /registration-client/target/
 cp opencv_java320.dll /registration-client/target/
 cp qr.bat /registration-client/target/
 cp qrscanner.jar /registration-client/target/
+cp maven-metadata.xml /registration-client/target/
 
 #mkdir -p /sdkjars
 
@@ -77,8 +78,8 @@ echo "encryption completed"
 cd /registration-client/target/
 mv "mosip-sw-${client_version_env}.zip" reg-client.zip
 /usr/bin/unzip reg-client.zip
-mv qr.bat jre/
-mv qrscanner.jar jre/
+cp qr.bat jre/
+cp qrscanner.jar jre/
 mkdir -p /registration-client/target/bin
 cp /registration-client/target/lib/mosip-client.jar /registration-client/target/bin/
 cp /registration-client/target/lib/mosip-services.jar /registration-client/target/bin/
@@ -102,8 +103,15 @@ mkdir -p /var/www/html/registration-client/${client_version_env}
 mkdir -p /var/www/html/registration-client/${client_version_env}/lib
 
 cp /registration-client/target/lib/* /var/www/html/registration-client/${client_version_env}/lib
+cp qr.bat /var/www/html/registration-client/${client_version_env}/lib
+cp qrscanner.jar /var/www/html/registration-client/${client_version_env}/lib
+cp opencv_java320.dll /var/www/html/registration-client/${client_version_env}/lib
+cp databin_FACETOOLS.bin /var/www/html/registration-client/${client_version_env}/lib
+cp FaceTools_Config.bin /var/www/html/registration-client/${client_version_env}/lib
+cp initBlock.dat /var/www/html/registration-client/${client_version_env}/lib
+cp QCT.cfg /var/www/html/registration-client/${client_version_env}/lib
 cp /registration-client/target/MANIFEST.MF /var/www/html/registration-client/${client_version_env}/
-cp /registration-libs/resources/maven-metadata.xml /var/www/html/registration-client/
+cp maven-metadata.xml /var/www/html/registration-client/
 cp reg-client.zip /var/www/html/registration-client/${client_version_env}/
 
 echo "setting up nginx static content - completed"

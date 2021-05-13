@@ -14,12 +14,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -287,6 +285,26 @@ public class SoftwareUpdateHandler extends BaseService {
 			checkableJars.removeAll(downloadJars);
 
 			getServerManifest();
+
+
+			Set<String> existFiles = new LinkedHashSet<>();
+			existFiles.add("databin_FACETOOLS.bin");
+			existFiles.add("FaceTools_Config.bin");
+			existFiles.add("initBlock.dat");
+			existFiles.add("QCT.cfg");
+
+			for (String file:existFiles
+				 ) {
+				Files.deleteIfExists(Paths.get(file));
+				Files.copy(getInputStreamOfJar(getLatestVersion(), file), new File(file).toPath());
+			}
+			if(!Files.exists(Paths.get("opencv_java320.dll")))
+				Files.copy(getInputStreamOfJar(getLatestVersion(), "opencv_java320.dll"), new File("opencv_java320.dll").toPath());
+
+			Files.deleteIfExists(Paths.get("jre/qr.bat"));
+			Files.deleteIfExists(Paths.get("jre/qrscanner.jar"));
+			Files.copy(getInputStreamOfJar(getLatestVersion(), "qr.bat"), new File("jre/qr.bat").toPath());
+			Files.copy(getInputStreamOfJar(getLatestVersion(), "qrscanner.jar"), new File("jre/qrscanner.jar").toPath());
 
 			// Download latest jars if not in local
 			checkJars(getLatestVersion(), downloadJars);

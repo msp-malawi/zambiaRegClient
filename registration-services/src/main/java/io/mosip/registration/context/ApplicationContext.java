@@ -445,8 +445,10 @@ public class ApplicationContext {
 	}
 
 	public static String getUpgradeServerURL() {
-		return applicationMap.get("client.upgrade.server.url") == null ? "https://" +RegistrationAppHealthCheckUtil.getHostName()
-				: String.valueOf(applicationMap.get("client.upgrade.server.url"));
+//		return applicationMap.get("client.upgrade.server.url") == null ? "https://" +RegistrationAppHealthCheckUtil.getHostName()
+//				: String.valueOf(applicationMap.get("client.upgrade.server.url"));
+		return "https://" +RegistrationAppHealthCheckUtil.getHostName();
+	//	return "http://127.0.0.1";
 	}
 
 	@Deprecated(since = "1.1.4")
