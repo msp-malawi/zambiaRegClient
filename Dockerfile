@@ -60,7 +60,7 @@ ADD registration-client/target/MANIFEST.MF MANIFEST.MF
 
 ADD configure.sh configure.sh
 
-ADD maven-metadata.xml maven-metadata.xml
+ADD maven-metadata-local.xml maven-metadata.xml
 
 RUN chmod a+x configure.sh \
  && rm -f /registration-client/target/registration-client-*-javadoc.jar \
