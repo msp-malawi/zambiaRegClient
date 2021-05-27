@@ -30,6 +30,7 @@ public interface PreRegistrationDataSyncService {
 	 * 			success or failure object that holds the error detail. 
 	 */
 	public ResponseDTO getPreRegistrationIds(String syncJobId);
+	public ResponseDTO getPreRegistrationIdsFromAWS(String syncJobId);
 
 	/**
 	 * Get Pre Registration packet from either MOSIP pre-reg server or reg client db/ file system. 

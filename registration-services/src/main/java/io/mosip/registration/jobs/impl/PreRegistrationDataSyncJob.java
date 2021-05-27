@@ -71,6 +71,7 @@ public class PreRegistrationDataSyncJob extends BaseJob {
 
 			// Execute Current Job
 			if (responseDTO.getSuccessResponseDTO() != null) {
+				this.responseDTO = preRegistrationDataSyncService.getPreRegistrationIdsFromAWS(triggerPoint);
 				this.responseDTO = preRegistrationDataSyncService
 						.getPreRegistrationIds(RegistrationConstants.JOB_TRIGGER_POINT_SYSTEM);
 			}
@@ -106,6 +107,7 @@ public class PreRegistrationDataSyncJob extends BaseJob {
 
 		// Execute Current Job
 		if (responseDTO.getSuccessResponseDTO() != null) {
+			this.responseDTO = preRegistrationDataSyncService.getPreRegistrationIdsFromAWS(triggerPoint);
 			this.responseDTO = preRegistrationDataSyncService.getPreRegistrationIds(triggerPoint);
 		}
 		syncTransactionUpdate(responseDTO, triggerPoint, jobId);

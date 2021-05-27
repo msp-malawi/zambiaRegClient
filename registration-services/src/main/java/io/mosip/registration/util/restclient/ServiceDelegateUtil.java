@@ -3,10 +3,13 @@ package io.mosip.registration.util.restclient;
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_ID;
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -46,6 +49,8 @@ import io.mosip.registration.dto.LoginUserDTO;
 import io.mosip.registration.exception.RegBaseCheckedException;
 import io.mosip.registration.exception.RegBaseUncheckedException;
 import io.mosip.registration.exception.RegistrationExceptionConstants;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * This is a helper class .it invokes with different classes to get the response
@@ -168,6 +173,72 @@ public class ServiceDelegateUtil {
 		return responseBody;
 	}
 
+
+	public Object getPrereg(String serviceName, Map<String, String> requestParams, boolean hasPathParams, String triggerPoint)
+			throws RegBaseCheckedException, HttpClientErrorException, IOException {
+
+
+		LOGGER.debug(LoggerConstants.LOG_SERVICE_DELEGATE_UTIL_GET, APPLICATION_NAME, APPLICATION_ID,
+				"Get method has been called");
+
+		Map<String, Object> responseMap = null;
+		Object responseBody = null;
+
+		RequestHTTPDTO requestHTTPDTO = new RequestHTTPDTO();
+
+		try {
+
+			requestHTTPDTO = prepareGETRequest(requestHTTPDTO, serviceName, requestParams);
+			requestHTTPDTO.setAuthRequired(
+					Boolean.valueOf(getEnvironmentProperty(serviceName, RegistrationConstants.AUTH_REQUIRED)));
+			requestHTTPDTO.setAuthZHeader(getEnvironmentProperty(serviceName, RegistrationConstants.AUTH_HEADER));
+			requestHTTPDTO.setIsSignRequired(
+					Boolean.valueOf(getEnvironmentProperty(serviceName, RegistrationConstants.SIGN_REQUIRED)));
+			requestHTTPDTO.setTriggerPoint(triggerPoint);
+			requestHTTPDTO.setRequestSignRequired(
+					Boolean.valueOf(getEnvironmentProperty(serviceName, RegistrationConstants.REQUEST_SIGN_REQUIRED)));
+
+
+			// URI creation
+			String url = getEnvironmentProperty(serviceName, RegistrationConstants.SERVICE_URL);
+			url = prepareUrlByHostName(url);
+			Map<String, String> queryParams = new HashMap<>();
+			for (String key : requestParams.keySet()) {
+				if (!url.contains("{" + key + "}")) {
+					queryParams.put(key, requestParams.get(key));
+				}
+
+			}
+
+			if (hasPathParams) {
+				requestHTTPDTO.setUri(UriComponentsBuilder.fromUriString(url).build(requestParams));
+				url = requestHTTPDTO.getUri().toString();
+			}
+			if (!queryParams.isEmpty()) {
+				/** Set URI */
+				setURI(requestHTTPDTO, queryParams, url);
+			}
+			System.out.println("url "+url);
+			System.out.println("url prereg  "+requestHTTPDTO.getHttpHeaders());
+			LOGGER.debug(LoggerConstants.LOG_SERVICE_DELEGATE_UTIL_GET, APPLICATION_NAME, APPLICATION_ID,
+					"set uri method called");
+
+			responseMap = restClientUtil.invoke(requestHTTPDTO);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (isResponseValid(responseMap, RegistrationConstants.REST_RESPONSE_BODY)) {
+			responseBody = responseMap.get(RegistrationConstants.REST_RESPONSE_BODY);
+		}
+		LOGGER.debug(LoggerConstants.LOG_SERVICE_DELEGATE_UTIL_GET, APPLICATION_NAME, APPLICATION_ID,
+				"Get method has been ended");
+
+		return responseBody;
+	}
+
+
 	private String prepareUrlByHostName(String url) {
 		String mosipHostNameVal = System.getenv("qa.hostname");
 
@@ -224,6 +295,46 @@ public class ServiceDelegateUtil {
 			requestDto.setTriggerPoint(triggerPoint);
 			requestDto.setRequestSignRequired(
 					Boolean.valueOf(getEnvironmentProperty(serviceName, RegistrationConstants.REQUEST_SIGN_REQUIRED)));
+			responseMap = restClientUtil.invoke(requestDto);
+		} catch (RegBaseCheckedException baseCheckedException) {
+			throw new RegBaseCheckedException(RegistrationConstants.SERVICE_DELEGATE_UTIL,
+					baseCheckedException.getMessage() + ExceptionUtils.getStackTrace(baseCheckedException));
+		}
+
+		if (isResponseValid(responseMap, RegistrationConstants.REST_RESPONSE_BODY)) {
+			responseBody = responseMap.get(RegistrationConstants.REST_RESPONSE_BODY);
+		}
+		LOGGER.debug(LoggerConstants.LOG_SERVICE_DELEGATE_UTIL_POST, APPLICATION_NAME, APPLICATION_ID,
+				"post method ended");
+
+		return responseBody;
+	}
+
+
+
+
+	public Object postPrereg(String serviceName, Object object, String triggerPoint)
+			throws RegBaseCheckedException, HttpClientErrorException, SocketTimeoutException, ResourceAccessException {
+		LOGGER.debug(LoggerConstants.LOG_SERVICE_DELEGATE_UTIL_POST, APPLICATION_NAME, APPLICATION_ID,
+				" post method called");
+		System.out.println("inside postprereg");
+		RequestHTTPDTO requestDto;
+		Object responseBody = null;
+		Map<String, Object> responseMap = null;
+
+		try {
+//			String awstoken = getAwsURL();
+			requestDto = preparePOSTRequest(serviceName, object);
+			requestDto.setAuthRequired(
+					Boolean.valueOf(getEnvironmentProperty(serviceName, RegistrationConstants.AUTH_REQUIRED)));
+			requestDto.setAuthZHeader(getEnvironmentProperty(serviceName, RegistrationConstants.AUTH_HEADER));
+			requestDto.setIsSignRequired(
+					Boolean.valueOf(getEnvironmentProperty(serviceName, RegistrationConstants.SIGN_REQUIRED)));
+			requestDto.setTriggerPoint(triggerPoint);
+			requestDto.setRequestSignRequired(
+					Boolean.valueOf(getEnvironmentProperty(serviceName, RegistrationConstants.REQUEST_SIGN_REQUIRED)));
+
+
 			responseMap = restClientUtil.invoke(requestDto);
 		} catch (RegBaseCheckedException baseCheckedException) {
 			throw new RegBaseCheckedException(RegistrationConstants.SERVICE_DELEGATE_UTIL,

@@ -1018,6 +1018,8 @@ public class RegistrationConstants {
 	public static final String PRE_REGISTRATION_ID = "pre_registration_id";
 	public static final String GET_PRE_REGISTRATION_IDS = "get_pre_registration_Ids";
 	public static final String GET_PRE_REGISTRATION = "get_pre_registration";
+	public static final String GET_PRE_REGISTRATION_IDS_AWS = "get_pre_registration_aws_Ids";
+	public static final String GET_PRE_REGISTRATION_AWS = "get_pre_registration_aws";
 	public static final String REGISTRATION_CLIENT_ID = "10";
 	public static final String PRE_REGISTRATION_DUMMY_ID = "mosip.pre-registration.datasync.fetch.ids";
 	public static final String VER = "1.0";

@@ -35,6 +35,11 @@ import io.mosip.registration.util.healthcheck.RegistrationSystemPropertiesChecke
 import io.mosip.registration.util.restclient.RequestHTTPDTO;
 import io.mosip.registration.util.restclient.ServiceDelegateUtil;
 
+import javax.net.ssl.HttpsURLConnection;
+import java.io.BufferedReader;
+import java.io.OutputStream;
+import java.net.URL;
+
 /**
  * The Class RestClientAuthAdvice checks whether the invoking REST service
  * should required authentication. If required then the auth service is invoked
@@ -92,6 +97,10 @@ public class RestClientAuthAdvice {
 			if (requestHTTPDTO.isAuthRequired()) {
 				String authZToken = getAuthZToken(requestHTTPDTO);
 				setAuthHeaders(requestHTTPDTO.getHttpHeaders(), requestHTTPDTO.getAuthZHeader(), authZToken);
+			}else{
+				String token =getAwsURL();
+				setAuthHeaders(requestHTTPDTO.getHttpHeaders(), requestHTTPDTO.getAuthZHeader(), token);
+
 			}
 
 			requestHTTPDTO.setHttpEntity(new HttpEntity<>(requestHTTPDTO.getRequestBody(), requestHTTPDTO.getHttpHeaders()));
@@ -133,6 +142,48 @@ public class RestClientAuthAdvice {
 			throw new RegBaseCheckedException(RegistrationExceptionConstants.AUTH_TOKEN_COOKIE_NOT_FOUND.getErrorCode(),
 					RegistrationExceptionConstants.AUTH_TOKEN_COOKIE_NOT_FOUND.getErrorMessage(), throwable);
 		}
+	}
+
+	public String getAwsURL()  {
+		String token = "";
+		try {
+			HttpsURLConnection urlConnection = null;
+			BufferedReader reader = null;
+			OutputStream ouputStream = null;
+
+
+			String https_url = "https://register.philsys.gov.ph/v1/authmanager/authenticate/useridPwd";
+
+			String jsonInputString = "{\r\n" + "  \"id\": \"string\",\r\n" + "  \"metadata\": {},\r\n"
+					+ "  \"request\": {\r\n" + "    \"appId\": \"admin\",\r\n" + "    \"password\": \"mosip\",\r\n"
+					+ "    \"userName\": \"110011\"\r\n" + "  },\r\n"
+					+ "  \"requesttime\": \"2021-01-11T11:38:52.994Z\",\r\n" + "  \"version\": \"string\"\r\n" + "}\r\n"
+					+ "";
+			URL url1 = new URL(https_url);
+			System.out.println("url " + url1);
+			urlConnection = (HttpsURLConnection) url1.openConnection();
+			urlConnection.setDoOutput(true);
+			urlConnection.setRequestMethod("POST");
+
+			urlConnection.setRequestProperty("Content-Type", "application/json");
+			urlConnection.setRequestProperty("Accept", "application/json");
+
+			ouputStream = urlConnection.getOutputStream();
+			ouputStream.write(jsonInputString.getBytes());
+			ouputStream.flush();
+
+			if (urlConnection.getResponseCode() >= 200 && urlConnection.getResponseCode() < 400) {
+
+				token = urlConnection.getHeaderField("Authorization");
+
+			} else {
+				token = "";
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			token = "";
+		}
+		return token;
 	}
 
 

@@ -177,6 +177,85 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 				"Fetching Pre-Registration Id's ended");
 		return responseDTO;
 	}
+@Override
+	synchronized public ResponseDTO getPreRegistrationIdsFromAWS(String syncJobId) {
+
+		LOGGER.info("REGISTRATION - PRE_REGISTRATION_DATA_SYNC - PRE_REGISTRATION_DATA_SYNC_SERVICE_IMPL",
+				RegistrationConstants.APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
+				"Fetching Pre-Registration Id's started");
+
+		ResponseDTO responseDTO = new ResponseDTO();
+
+		if (!StringUtils.isEmpty(syncJobId)) {
+			/* Check Network Connectivity */
+			boolean isOnline = RegistrationAppHealthCheckUtil.isNetworkAvailable();
+
+
+			/* prepare request DTO to pass on through REST call */
+			PreRegistrationDataSyncDTO preRegistrationDataSyncDTO = prepareDataSyncRequestDTOAWS();
+
+			try {
+
+				/* REST call to get Pre Registartion Id's */
+				if(isOnline) {
+				LinkedHashMap<String, Object> response = (LinkedHashMap<String, Object>) serviceDelegateUtil
+						.postPrereg(RegistrationConstants.GET_PRE_REGISTRATION_IDS_AWS, preRegistrationDataSyncDTO, syncJobId);
+				TypeReference<MainResponseDTO<LinkedHashMap<String, Object>>> ref = new TypeReference<MainResponseDTO<LinkedHashMap<String, Object>>>() {
+				};
+				MainResponseDTO<LinkedHashMap<String, Object>> mainResponseDTO = new ObjectMapper()
+						.readValue(new JSONObject(response).toString(), ref);
+				if (isResponseNotEmpty(mainResponseDTO)) {
+
+					PreRegistrationIdsDTO preRegistrationIdsDTO = new ObjectMapper().readValue(
+							new JSONObject(mainResponseDTO.getResponse()).toString(), PreRegistrationIdsDTO.class);
+
+					Map<String, String> preRegIds = (Map<String, String>) preRegistrationIdsDTO.getPreRegistrationIds();
+
+					getPreRegistrationPackets(syncJobId, responseDTO, preRegIds);
+
+				} else {
+					String errMsg = RegistrationConstants.PRE_REG_TO_GET_ID_ERROR;
+					boolean isNoRecordMsg = false;
+					if (mainResponseDTO != null && mainResponseDTO.getErrors() != null
+							&& !mainResponseDTO.getErrors().isEmpty()
+							&& mainResponseDTO.getErrors().get(0).getMessage() != null) {
+						if ("Record not found for date range and reg center id"
+								.equalsIgnoreCase(mainResponseDTO.getErrors().get(0).getMessage())) {
+							setSuccessResponse(responseDTO, RegistrationConstants.PRE_REG_SUCCESS_MESSAGE, null);
+							isNoRecordMsg = true;
+						}
+					}
+					LOGGER.error("PRE_REGISTRATION_DATA_SYNC_SERVICE_IMPL", RegistrationConstants.APPLICATION_NAME,
+							RegistrationConstants.APPLICATION_ID, errMsg);
+					if (!isNoRecordMsg)
+						setErrorResponse(responseDTO, errMsg, null);
+				}
+				}else {
+					setErrorResponse(responseDTO, RegistrationConstants.PRE_REG_PACKET_NETWORK_ERROR, null);
+				}
+
+			} catch (HttpClientErrorException | ResourceAccessException | HttpServerErrorException
+					| RegBaseCheckedException | java.io.IOException exception) {
+
+				LOGGER.error("REGISTRATION - PRE_REGISTRATION_DATA_SYNC - PRE_REGISTRATION_DATA_SYNC_SERVICE_IMPL",
+						RegistrationConstants.APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
+						exception.getMessage() + ExceptionUtils.getStackTrace(exception));
+
+				setErrorResponse(responseDTO, RegistrationConstants.PRE_REG_TO_GET_ID_ERROR, null);
+			}
+		}
+		else {
+			LOGGER.error("REGISTRATION - PRE_REGISTRATION_DATA_SYNC - PRE_REGISTRATION_DATA_SYNC_SERVICE_IMPL",
+					RegistrationConstants.APPLICATION_NAME, RegistrationConstants.APPLICATION_ID, "The syncJobId is empty");
+
+			setErrorResponse(responseDTO, RegistrationConstants.PRE_REG_TO_GET_ID_ERROR, null);
+		}
+
+		LOGGER.info("REGISTRATION - PRE_REGISTRATION_DATA_SYNC - PRE_REGISTRATION_DATA_SYNC_SERVICE_IMPL",
+				RegistrationConstants.APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
+				"Fetching Pre-Registration Id's ended");
+		return responseDTO;
+	}
 
 	/**
 	 * Gets the pre registration packets.
@@ -308,9 +387,22 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 			String triggerPoint = getTriggerPoint(isJob);
 
 			try {
+//				/* REST call to get packet */
+//				LinkedHashMap<String, Object> mainResponseDTO = (LinkedHashMap<String, Object>) serviceDelegateUtil
+//						.get(RegistrationConstants.GET_PRE_REGISTRATION, requestParamMap, true, syncJobId);
+
 				/* REST call to get packet */
-				LinkedHashMap<String, Object> mainResponseDTO = (LinkedHashMap<String, Object>) serviceDelegateUtil
-						.get(RegistrationConstants.GET_PRE_REGISTRATION, requestParamMap, true, syncJobId);
+				LinkedHashMap<String, Object> mainResponseDTO = new LinkedHashMap<>();
+				if(preRegistrationId.length()==14){
+					mainResponseDTO = (LinkedHashMap<String, Object>) serviceDelegateUtil
+							.get(RegistrationConstants.GET_PRE_REGISTRATION, requestParamMap, true, syncJobId);
+
+				}if(preRegistrationId.length()==15){
+					mainResponseDTO = (LinkedHashMap<String, Object>) serviceDelegateUtil
+							.getPrereg(RegistrationConstants.GET_PRE_REGISTRATION_AWS, requestParamMap, true, syncJobId);
+
+				}
+
 
 				if (null != mainResponseDTO
 						&& null != mainResponseDTO.get(RegistrationConstants.RESPONSE)) {
@@ -545,6 +637,37 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 		}
 		preRegistrationDataSyncRequestDTO.setToDate(getToDate(reqTime));
 		//preRegistrationDataSyncRequestDTO.setUserId(getUserIdFromSession());
+
+		preRegistrationDataSyncDTO.setDataSyncRequestDto(preRegistrationDataSyncRequestDTO);
+
+		return preRegistrationDataSyncDTO;
+
+	}
+
+
+	private PreRegistrationDataSyncDTO prepareDataSyncRequestDTOAWS() {
+
+		// prepare required DTO to send through API
+		PreRegistrationDataSyncDTO preRegistrationDataSyncDTO = new PreRegistrationDataSyncDTO();
+
+		Timestamp reqTime = new Timestamp(System.currentTimeMillis());
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+		preRegistrationDataSyncDTO.setId(RegistrationConstants.PRE_REGISTRATION_DUMMY_ID);
+		preRegistrationDataSyncDTO.setRequesttime(dateFormat.format(reqTime));
+		preRegistrationDataSyncDTO.setVersion(RegistrationConstants.VER);
+
+		PreRegistrationDataSyncRequestDTO preRegistrationDataSyncRequestDTO = new PreRegistrationDataSyncRequestDTO();
+		preRegistrationDataSyncRequestDTO.setFromDate(getFromDate(reqTime));
+		if (SessionContext.isSessionContextAvailable()) {
+			preRegistrationDataSyncRequestDTO.setRegistrationCenterId(
+					SessionContext.userContext().getRegistrationCenterDetailDTO().getRegistrationCenterId());
+		} else {
+			preRegistrationDataSyncRequestDTO.setRegistrationCenterId(getCenterId());
+		}
+		preRegistrationDataSyncRequestDTO.setToDate(getToDate(reqTime));
+				//preRegistrationDataSyncRequestDTO.setUserId(getUserIdFromSession());
 
 		preRegistrationDataSyncDTO.setDataSyncRequestDto(preRegistrationDataSyncRequestDTO);
 
