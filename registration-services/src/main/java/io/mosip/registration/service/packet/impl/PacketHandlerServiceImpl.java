@@ -175,7 +175,8 @@ public class PacketHandlerServiceImpl extends BaseService implements PacketHandl
 		try {
 
 			LOGGER.info(LOG_PKT_HANLDER, APPLICATION_NAME, APPLICATION_ID, "Fetching schema started");
-			SchemaDto schema = identitySchemaService.getIdentitySchema(registrationDTO.getIdSchemaVersion());
+			//SchemaDto schema = identitySchemaService.getIdentitySchema(registrationDTO.getIdSchemaVersion());
+			SchemaDto schema = identitySchemaService.getIdentitySchema(0.1);
 			LOGGER.info(LOG_PKT_HANLDER, APPLICATION_NAME, APPLICATION_ID, "Fetching schema completed");
 			// packetCreator.initialize();
 
@@ -220,8 +221,13 @@ public class PacketHandlerServiceImpl extends BaseService implements PacketHandl
 					"Requesting packet manager to persist packet");
 
 			packetWriter.persistPacket(registrationDTO.getRegistrationId(),
-					String.valueOf(registrationDTO.getIdSchemaVersion()), schema.getSchemaJson(), source.toUpperCase(),
+					String.valueOf(0.1), schema.getSchemaJson(), source.toUpperCase(),
 					registrationDTO.getRegistrationCategory().toUpperCase(), true);
+
+
+//			packetWriter.persistPacket(registrationDTO.getRegistrationId(),
+//					String.valueOf(registrationDTO.getIdSchemaVersion()), schema.getSchemaJson(), source.toUpperCase(),
+//					registrationDTO.getRegistrationCategory().toUpperCase(), true);
 
 //			packetWriter.persistPacket(registrationDTO.getRegistrationId(),
 //					String.valueOf(registrationDTO.getIdSchemaVersion()), schema.getSchemaJson(), source,

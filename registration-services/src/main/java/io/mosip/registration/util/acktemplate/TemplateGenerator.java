@@ -110,7 +110,8 @@ public class TemplateGenerator extends BaseService {
             boolean isPrevTemplate = templateType.equals(RegistrationConstants.ACKNOWLEDGEMENT_TEMPLATE) ? false : true;
             ResourceBundle applicationLanguageProperties = ApplicationContext.applicationLanguageBundle();
             InputStream is = new ByteArrayInputStream(templateText.getBytes(StandardCharsets.UTF_8));
-            List<UiSchemaDTO> schemaFields = getSchemaFields(registration.getIdSchemaVersion());
+            //List<UiSchemaDTO> schemaFields = getSchemaFields(registration.getIdSchemaVersion());
+            List<UiSchemaDTO> schemaFields = getSchemaFields(0.1);
 
             //Basic values
             setBasicDetails(templateValues, registration, isPrevTemplate, applicationLanguageProperties, response);
@@ -321,7 +322,8 @@ public class TemplateGenerator extends BaseService {
                                  ResourceBundle applicationLanguageProperties, ResponseDTO responseDTO) {
         try {
             templateValues.put("isPreview", isPrevTemplate);
-            templateValues.put("IDSchemaVersion", registration.getIdSchemaVersion());
+            //templateValues.put("IDSchemaVersion", registration.getIdSchemaVersion());
+            templateValues.put("IDSchemaVersion", 0.1);
             templateValues.put("secLangPresent", isLocalLanguageAvailable());
             templateValues.put(RegistrationConstants.TEMPLATE_RID_USER_LANG_LABEL, applicationLanguageProperties.getString("registrationid"));
             templateValues.put(RegistrationConstants.TEMPLATE_RID_LOCAL_LANG_LABEL,	getSecondaryLanguageLabel("registrationid"));

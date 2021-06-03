@@ -33,7 +33,8 @@ public class RequiredFieldValidator {
 	private IdentitySchemaService identitySchemaService;
 	
 	public boolean isRequiredField(String fieldId, RegistrationDTO registrationDTO) throws RegBaseCheckedException {
-		SchemaDto schema = identitySchemaService.getIdentitySchema(registrationDTO.getIdSchemaVersion());
+		//SchemaDto schema = identitySchemaService.getIdentitySchema(registrationDTO.getIdSchemaVersion());
+		SchemaDto schema = identitySchemaService.getIdentitySchema(0.1);
 		Optional<UiSchemaDTO> schemaField = schema.getSchema().stream().filter(field -> field.getId().equals(fieldId)).findFirst();
 		if(!schemaField.isPresent())
 			return false;
@@ -65,7 +66,8 @@ public class RequiredFieldValidator {
 	
 	public List<String> isRequiredBiometricField(String subType, RegistrationDTO registrationDTO) throws RegBaseCheckedException {
 		List<String> requiredAttributes = new ArrayList<String>();
-		SchemaDto schema = identitySchemaService.getIdentitySchema(registrationDTO.getIdSchemaVersion());
+//		SchemaDto schema = identitySchemaService.getIdentitySchema(registrationDTO.getIdSchemaVersion());
+		SchemaDto schema = identitySchemaService.getIdentitySchema(0.1);
 		List<UiSchemaDTO> fields = schema.getSchema().stream().filter(field -> field.getType() != null 
 				&& PacketManagerConstants.BIOMETRICS_DATATYPE.equals(field.getType()) 
 				&& field.getSubType() != null && field.getSubType().equals(subType)).collect(Collectors.toList());
