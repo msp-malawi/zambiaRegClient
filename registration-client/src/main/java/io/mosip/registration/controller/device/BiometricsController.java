@@ -1984,7 +1984,7 @@ public class BiometricsController extends BaseController /* implements Initializ
 
     private void changeLabelColor(Label label, BiometricsDto biometricsDto) {
         if (biometricsDto.getModalityName().equalsIgnoreCase(RegistrationConstants.IRIS_DOUBLE)) {
-            if (biometricsDto.getIdemiaQualityScore() >= 50) {
+            if (biometricsDto.getIdemiaQualityScore() >= Integer.parseInt((String) ApplicationContext.map().get("mosip.iris.idemia.quality_score"))) {
                 label.setTextFill(Color.web("green"));
 
             } else {
@@ -1992,7 +1992,7 @@ public class BiometricsController extends BaseController /* implements Initializ
 
             }
         } else {
-            if (biometricsDto.getIdemiaQualityScore() >= 60) {
+            if (biometricsDto.getIdemiaQualityScore() >= Integer.parseInt((String) ApplicationContext.map().get("mosip.fingerprint.idemia.quality_score"))) {
                 label.setTextFill(Color.web("green"));
 
             } else {
