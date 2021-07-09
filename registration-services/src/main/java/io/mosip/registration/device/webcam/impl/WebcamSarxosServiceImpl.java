@@ -38,23 +38,21 @@ public class WebcamSarxosServiceImpl extends MosipWebcamServiceImpl {
 
 	private JPanel jPanelWindow;
 
-	//@Value("${mosip.camera.resolution.width}")
+	@Value("${mosip.camera.resolution.width}")
 	private int width;
 
-	//@Value("${mosip.camera.resolution.height}")
+	@Value("${mosip.camera.resolution.height}")
 	private int height;
 
 	@PostConstruct
 	public void initializeWebCamResolutions() {
-//		width = System.getenv(RegistrationConstants.WEBCAM_WIDTH) != null
-//				? Integer.valueOf(System.getenv(RegistrationConstants.WEBCAM_WIDTH))
-//				: width;
-		 width  =(ApplicationContext.map().get("mosip.camera.resolution.width"))==null?0:Integer.parseInt((String) ApplicationContext.map().get("mosip.camera.resolution.width"));
+		width = System.getenv(RegistrationConstants.WEBCAM_WIDTH) != null
+				? Integer.valueOf(System.getenv(RegistrationConstants.WEBCAM_WIDTH))
+				: width;
 
-//		height = System.getenv(RegistrationConstants.WEBCAM_HEIGHT) != null
-//				? Integer.valueOf(System.getenv(RegistrationConstants.WEBCAM_HEIGHT))
-//				: height;
-		height = (ApplicationContext.map().get("mosip.camera.resolution.height"))==null?0:Integer.parseInt((String) ApplicationContext.map().get("mosip.camera.resolution.height"));
+		height = System.getenv(RegistrationConstants.WEBCAM_HEIGHT) != null
+				? Integer.valueOf(System.getenv(RegistrationConstants.WEBCAM_HEIGHT))
+				: height;
 	}
 
 	@Override
