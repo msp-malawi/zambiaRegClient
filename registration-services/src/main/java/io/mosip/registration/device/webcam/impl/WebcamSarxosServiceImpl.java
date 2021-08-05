@@ -38,10 +38,10 @@ public class WebcamSarxosServiceImpl extends MosipWebcamServiceImpl {
 
 	private JPanel jPanelWindow;
 
-	@Value("${mosip.camera.resolution.width}")
+	//@Value("${mosip.camera.resolution.width}")
 	private int width;
 
-	@Value("${mosip.camera.resolution.height}")
+	//@Value("${mosip.camera.resolution.height}")
 	private int height;
 
 	@PostConstruct
