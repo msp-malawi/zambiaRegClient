@@ -50,6 +50,11 @@ public class AppAuthenticationDAOImpl implements AppAuthenticationDAO {
 				RegistrationConstants.APPLICATION_ID, "Fetching list of login modes");
 		
 		Set<String> role = new HashSet<>();
+		System.out.println("rolelist size : "+roleList.size());
+//		for (String s: roleList
+//		) {
+//			System.out.println(" rolelist  "+s);
+//		} test
 		
 		if(roleList.size() == RegistrationConstants.PARAM_ONE) {
 			role.add(roleList.iterator().next());
@@ -61,7 +66,10 @@ public class AppAuthenticationDAOImpl implements AppAuthenticationDAO {
 		if(!authType.equalsIgnoreCase(ProcessNames.LOGIN.getType())) {
 			role.add("*");
 		}
-
+//		for (String s: role
+//			 ) {
+//			System.out.println("rols "+s);
+//		}
 		List<AppAuthenticationDetails> loginList = appAuthenticationRepository
 				.findByIsActiveTrueAndAppAuthenticationMethodIdProcessIdAndAppAuthenticationMethodIdRoleCodeInOrderByMethodSequence(authType, role);
 		

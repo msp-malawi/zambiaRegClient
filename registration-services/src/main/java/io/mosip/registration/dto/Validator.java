@@ -23,6 +23,7 @@ public class Validator {
 	/**
 	 * Validator value
 	 */
+//	private  String langCode;
 	private String validator;
 	/**
 	 * Arguments if required

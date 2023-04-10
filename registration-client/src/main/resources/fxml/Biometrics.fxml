@@ -254,6 +254,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </Button>
+                                                 <CheckBox fx:id="checkBoxMds" onAction="#configureCheckbox" text="Non-icao" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP" />
                                                  <Button fx:id="recaptureBtn" mnemonicParsing="false" onAction="#recapture" styleClass="onboardScanBtn" text="%recapture" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP" visible="false">
                                                      <graphic>
                                                          <ImageView fx:id="scanImageView1" fitHeight="15.0" fitWidth="15.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">

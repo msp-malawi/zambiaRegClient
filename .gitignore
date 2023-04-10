@@ -27,7 +27,7 @@ local.properties
 *.useq
 /PacketStore/*
 /PreRegPacketStore/*
-**/db/**
+db1/**
 registration-libs/src/main/resources/jre/**
 *.lck
 *.ctrl

@@ -180,10 +180,20 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
 
             LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                     "Entering into Capture method....." + System.currentTimeMillis());
-            RequestConfig config = RequestConfig.custom()
-                    .setConnectTimeout(15000)
-                    .setConnectionRequestTimeout(15000)
-                    .setSocketTimeout(15000).build();
+            RequestConfig config;
+            if(mdmRequestDto.getModality().contains(RegistrationConstants.FACE)){
+                System.out.println("face 60 seconds "+mdmRequestDto.getModality());
+                 config = RequestConfig.custom()
+                        .setConnectTimeout(65000)
+                        .setConnectionRequestTimeout(65000)
+                        .setSocketTimeout(65000).build();
+            }else {
+                System.out.println("face 15 seconds   "+mdmRequestDto.getModality());
+                 config = RequestConfig.custom()
+                        .setConnectTimeout(15000)
+                        .setConnectionRequestTimeout(15000)
+                        .setSocketTimeout(15000).build();
+            }
 
             String requestBody = null;
             ObjectMapper mapper = new ObjectMapper();

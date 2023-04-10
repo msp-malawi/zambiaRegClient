@@ -289,10 +289,28 @@ public class RegistrationUIConstants {
 	public static final String UPDATE_UIN_ENTER_UIN_ALERT = bundle.getString("UPDATE_UIN_ENTER_UIN_ALERT");
 	public static final String UPDATE_UIN_VALIDATION_ALERT = bundle.getString("UPDATE_UIN_VALIDATION_ALERT");
 	public static final String UPDATE_UIN_SELECTION_ALERT = bundle.getString("UPDATE_UIN_SELECTION_ALERT");
+	public static final String UPDATE_VID_SELECTION_ALERT = "Please enter a valid PCN";
+	public static final String UPDATE_VID_ENTER_UIN_ALERT = "Please enter PCN";
 	public static final String UPDATE_UIN_INDIVIDUAL_AND_PARENT_SAME_UIN_ALERT = bundle
 			.getString("UPDATE_UIN_INDIVIDUAL_AND_PARENT_SAME_UIN_ALERT");
 	public static final String UPDATE_UIN_NO_BIOMETRIC_CONFIG_ALERT = bundle
 			.getString("UPDATE_UIN_NO_BIOMETRIC_CONFIG_ALERT");
+
+	// UIN GROUP UPDATE
+	public static final String UPDATE_GROUP_FullName = "Full Name";
+	public static final String UPDATE_GROUP_DateofBirth = "Date of Birth";
+	public static final String UPDATE_GROUP_PlaceofBirth = "Place of Birth";
+	public static final String UPDATE_GROUP_ResidentStatus = "Resident Status";
+	public static final String UPDATE_GROUP_PermanentAddress = "Permanent Address";
+	public static final String UPDATE_GROUP_PresentAddress = "Present Address";
+	public static final String UPDATE_GROUP_Document = "Document";
+	public static final String UPDATE_GROUP_IntroducerDetails = "Introducer Details";
+	public static final String UPDATE_GROUP_GuardianDetails = "Guardian Details";
+	public static final String UPDATE_GROUP_ModeofClaim = "Mode of Claim";
+	public static final String UPDATE_GROUP_Email = "Email Address";
+	public static final String UPDATE_GROUP_Phone = "Mobile No.";
+	public static final String DISABLED_CHECKBOX_GROUPS = "Documents:IntroducerDetails:Mode of Calim:Registration Type";
+
 
 	// Biometric Exception
 	public static final String BIOMETRIC_EXCEPTION_ALERT = bundle.getString("BIOMETRIC_EXCEPTION_ALERT");

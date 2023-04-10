@@ -179,11 +179,13 @@ public class ScanPopUpViewController extends BaseController {
     }
 
 
-    private static final Integer STARTTIME = 15;
+    private static Integer STARTTIME = 15;
+    private static Integer STARTTIME_FACE = 60;
     private Timeline timeline;
     @FXML
     private Label timerLabel;
     private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
+    private IntegerProperty timeSecondsface = new SimpleIntegerProperty(STARTTIME_FACE);
 
     /**
      * @return the popupStage
@@ -757,14 +759,15 @@ public class ScanPopUpViewController extends BaseController {
         if (timeline != null) {
             timeline.stop();
         }
-        timeSeconds.set(STARTTIME);
+//        STARTTIME=60;
+        timeSecondsface.set(STARTTIME_FACE);
         timeline = new Timeline();
         timeline.getKeyFrames().add(
-                new KeyFrame(Duration.seconds(STARTTIME+1),
-                        new KeyValue(timeSeconds, 0)));
+                new KeyFrame(Duration.seconds(STARTTIME_FACE+1),
+                        new KeyValue(timeSecondsface, 0)));
         timeline.playFromStart();
 
-        timerLabel.textProperty().bind(timeSeconds.asString());
+        timerLabel.textProperty().bind(timeSecondsface.asString());
         timerLabel.setTextFill(Color.BLUE);
         timerLabel.setStyle("-fx-font-size: 3em;");
         biometricsController.rCaptureTaskService();
@@ -776,6 +779,7 @@ public class ScanPopUpViewController extends BaseController {
         if (timeline != null) {
             timeline.stop();
         }
+//        STARTTIME=15;
         timeSeconds.set(STARTTIME);
         timeline = new Timeline();
         timeline.getKeyFrames().add(

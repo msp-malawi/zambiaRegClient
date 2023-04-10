@@ -131,17 +131,20 @@ public class LoginServiceImpl extends BaseService implements LoginService {
 	@Override
 	public List<String> getModesOfLogin(String authType, Set<String> roleList) {
 		// Retrieve Login information
+		System.out.println("auth type: "+authType);
 
 		LOGGER.info(LOG_REG_LOGIN_SERVICE, APPLICATION_NAME, APPLICATION_ID, "Fetching list of login modes");
 
 		List<String> loginModes = new ArrayList<>();
+
 
 		try {
 			getModesOfLoginValidation(authType, roleList);
 
 			boolean mandatePwdLogin = RegistrationAppHealthCheckUtil.isNetworkAvailable() && !authTokenUtilService.hasAnyValidToken();
 
-			LOGGER.info(LOG_REG_LOGIN_SERVICE, APPLICATION_NAME, APPLICATION_ID, "PWD LOGIN MANDATED ? " + mandatePwdLogin);
+			LOGGER.info(LOG_REG_LOGIN_SERVICE, APPLICATION_NAME, APPLICATION_ID, "PWD LOGIN MANDATED ? " + mandatePwdLogin +" !authTokenUtilService.hasAnyValidToken() :"+!authTokenUtilService.hasAnyValidToken());
+			System.out.println("PWD LOGIN MANDATED ? " + mandatePwdLogin +" !authTokenUtilService.hasAnyValidToken() :"+!authTokenUtilService.hasAnyValidToken());
 
 			auditFactory.audit(AuditEvent.LOGIN_MODES_FETCH, Components.LOGIN_MODES,
 					RegistrationConstants.APPLICATION_NAME, AuditReferenceIdTypes.APPLICATION_ID.getReferenceTypeId());
@@ -150,7 +153,15 @@ public class LoginServiceImpl extends BaseService implements LoginService {
 				loginModes.add(RegistrationConstants.PWORD);
 			}
 			else {
+//				roleList.clear();//test
+//				roleList.add(RegistrationConstants.OFFICER);//test
 				loginModes = appAuthenticationDAO.getModesOfLogin(authType, roleList);
+//				mandatePwdLogin=false;//test by magi
+//				for (String s:loginModes
+//					 ) {
+//					System.out.println("login modes list : "+ s);
+//				}//test
+
 
 				if(mandatePwdLogin) {
 					Optional<String> pwdMode = loginModes.stream().filter(loginMode ->
@@ -174,10 +185,15 @@ public class LoginServiceImpl extends BaseService implements LoginService {
 						loginModes.remove(RegistrationConstants.FACE);
 				}
 			}
-			
+//			loginModes.clear();//test
+//			loginModes.add(RegistrationConstants.FINGERPRINT);//test
 			LOGGER.info(LOG_REG_LOGIN_SERVICE, APPLICATION_NAME, APPLICATION_ID,
 					"Completed fetching list of login modes");
-			
+//			for (String s:loginModes
+//			) {
+//				System.out.println("login modes list : "+ s);
+//			}//test
+
 		} catch (RegBaseCheckedException regBaseCheckedException) {
 			LOGGER.error(LOG_REG_LOGIN_SERVICE, APPLICATION_NAME, APPLICATION_ID,
 					ExceptionUtils.getStackTrace(regBaseCheckedException));

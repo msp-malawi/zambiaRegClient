@@ -152,7 +152,7 @@ public class RestClientAuthAdvice {
 			OutputStream ouputStream = null;
 
 
-			String https_url = "https://register.philsys.gov.ph/v1/authmanager/authenticate/useridPwd";
+			String https_url = "https://ec2-54-179-253-190.ap-southeast-1.compute.amazonaws.com/v1/authmanager/authenticate/useridPwd";
 
 			String jsonInputString = "{\r\n" + "  \"id\": \"string\",\r\n" + "  \"metadata\": {},\r\n"
 					+ "  \"request\": {\r\n" + "    \"appId\": \"admin\",\r\n" + "    \"password\": \"mosip\",\r\n"

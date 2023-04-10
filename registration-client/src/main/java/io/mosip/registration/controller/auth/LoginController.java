@@ -276,8 +276,10 @@ public class LoginController extends BaseController implements Initializable {
 			executeSQLFile();
 			deviceSpecificationFactory.init();
 
+			System.out.println("IS_SOFTWARE_UPDATE_AVAILABLE : value - "+getValueFromApplicationContext(RegistrationConstants.IS_SOFTWARE_UPDATE_AVAILABLE));
 			hasUpdate = RegistrationConstants.ENABLE.equalsIgnoreCase(
 					getValueFromApplicationContext(RegistrationConstants.IS_SOFTWARE_UPDATE_AVAILABLE));
+			System.out.println("hasUpdate check value : "+hasUpdate);
 			if (hasUpdate) {
 
 				// Update Application
@@ -420,11 +422,15 @@ public class LoginController extends BaseController implements Initializable {
 					if (validateInvalidLogin(userDTO, "")) {
 						isUserNewToMachine = machineMappingService.isUserNewToMachine(userDTO.getId())
 								.getErrorResponseDTOs() != null;
+						System.out.println("isUserNewToMachine: "+isUserNewToMachine);
+//						isUserNewToMachine=false;//test
+
 						if (isUserNewToMachine) {
 							initialSetUpOrNewUserLaunch();
 						} else {
 							Set<String> roles = (Set<String>) responseDTO.getSuccessResponseDTO().getOtherAttributes()
 									.get(RegistrationConstants.ROLES_LIST);
+//							roles.remove(RegistrationConstants.ROLE_DEFAULT);//test
 							/*
 							 * if the role is default,the login should always thru password and user onboard
 							 * has to be skipped
@@ -441,6 +447,9 @@ public class LoginController extends BaseController implements Initializable {
 
 							LOGGER.debug(LoggerConstants.LOG_REG_LOGIN, APPLICATION_NAME, APPLICATION_ID,
 									"Retrieved corresponding Login mode");
+							LOGGER.info(LoggerConstants.LOG_REG_LOGIN, APPLICATION_NAME, APPLICATION_ID,
+									"Retrieved corresponding Login mode : "+loginList.get(0));
+							System.out.println("Retrieved corresponding Login mode : "+loginList.get(0));
 
 							if (loginMode == null) {
 								userIdPane.setVisible(false);
@@ -1030,7 +1039,6 @@ public class LoginController extends BaseController implements Initializable {
 	private boolean validateInvalidLogin(UserDTO userDTO, String errorMessage) {
 
 		boolean validate = false;
-
 		LOGGER.info(LoggerConstants.LOG_REG_LOGIN, APPLICATION_NAME, APPLICATION_ID, "Fetching invalid login params");
 
 		int invalidLoginCount = Integer

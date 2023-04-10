@@ -231,6 +231,8 @@ public class UserOnboardDAOImpl implements UserOnboardDAO {
 
 		LOGGER.info(LOG_REG_USER_ONBOARD, APPLICATION_NAME, APPLICATION_ID,
 				"getStationID() machineName --> " + machineName);
+		LOGGER.info(LOG_REG_USER_ONBOARD, APPLICATION_NAME, APPLICATION_ID,
+				"ApplicationContext get applicationLanguage --> " + ApplicationContext.applicationLanguage());
 
 		try {
 

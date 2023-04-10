@@ -228,6 +228,9 @@ public class BaseController {
 	public static void putIntoLabelMap(String key, String value) {
 		labelMap.put(key, value);
 	}
+	public static void removeFromLabelMap(String key){
+		labelMap.remove(key);
+	}
 
 	private static List<String> ALL_BIO_ATTRIBUTES = null;
 
@@ -696,6 +699,16 @@ public class BaseController {
 		FXMLLoader loader = new FXMLLoader(url, ApplicationContext.applicationLanguageBundle());
 		loader.setControllerFactory(Initialization.getApplicationContext()::getBean);
 		return loader;
+	}
+
+
+	public boolean isAppLangAndLocalLangSame() {
+
+		return applicationContext.getLocalLanguage() != null && applicationContext.getApplicationLanguage().equals(applicationContext.getLocalLanguage());
+	}
+	public boolean isLocalLanguageAvailable() {
+
+		return applicationContext.getLocalLanguage() != null && !applicationContext.getLocalLanguage().isEmpty();
 	}
 
 	/**

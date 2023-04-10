@@ -10,10 +10,7 @@ import java.security.cert.X509Certificate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.*;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -86,10 +83,10 @@ public class RestClientUtil {
 			LOGGER.error("REGISTRATION - REST_CLIENT_UTIL - INVOKE", APPLICATION_NAME, APPLICATION_ID,
 					noSuchAlgorithmException.getMessage() + ExceptionUtils.getStackTrace(noSuchAlgorithmException));
 		}
-		
+		System.out.println("requestHTTPDTO.getUri()"+requestHTTPDTO.getUri());
 		responseEntity = restTemplate.exchange(requestHTTPDTO.getUri(), requestHTTPDTO.getHttpMethod(),
 				requestHTTPDTO.getHttpEntity(), requestHTTPDTO.getClazz());
-		
+		System.out.println("responseEntity");
 		if (responseEntity != null && responseEntity.hasBody()) {
 			responseMap = new LinkedHashMap<>();
 			responseMap.put(RegistrationConstants.REST_RESPONSE_BODY, responseEntity.getBody());
@@ -141,6 +138,18 @@ public class RestClientUtil {
 		final SSLContext sc = SSLContext.getInstance("SSL");
 		sc.init(null, UNQUESTIONING_TRUST_MANAGER, null);
 		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+/*
+* mani
+* checking aws test env
+* */
+		// Create all-trusting host name verifier
+		/*HostnameVerifier allHostsValid = new HostnameVerifier() {
+			public boolean verify(String hostname, SSLSession session) {
+				return true;
+			}
+		};
+// Install the all-trusting host verifier
+		HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);*/
 	}
 
 	/** The Constant UNQUESTIONING_TRUST_MANAGER. */

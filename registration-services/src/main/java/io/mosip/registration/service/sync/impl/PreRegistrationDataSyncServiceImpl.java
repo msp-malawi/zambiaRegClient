@@ -382,7 +382,7 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 
 			/* prepare request params to pass through URI */
 			Map<String, String> requestParamMap = new HashMap<>();
-			requestParamMap.put(RegistrationConstants.PRE_REGISTRATION_ID, preRegistrationId);
+
 
 			String triggerPoint = getTriggerPoint(isJob);
 
@@ -394,10 +394,18 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 				/* REST call to get packet */
 				LinkedHashMap<String, Object> mainResponseDTO = new LinkedHashMap<>();
 				if(preRegistrationId.length()==14){
+					requestParamMap.put(RegistrationConstants.PRE_REGISTRATION_ID, preRegistrationId);
 					mainResponseDTO = (LinkedHashMap<String, Object>) serviceDelegateUtil
 							.get(RegistrationConstants.GET_PRE_REGISTRATION, requestParamMap, true, syncJobId);
 
 				}if(preRegistrationId.length()==15){
+					if(preRegistrationId.substring(0, 1).equalsIgnoreCase("O")){
+						preRegistrationId = preRegistrationId.replaceFirst("O", "");
+						System.out.println(""+preRegistrationId);
+					}
+
+					requestParamMap.put(RegistrationConstants.PRE_REGISTRATION_ID, preRegistrationId);
+
 					mainResponseDTO = (LinkedHashMap<String, Object>) serviceDelegateUtil
 							.getPrereg(RegistrationConstants.GET_PRE_REGISTRATION_AWS, requestParamMap, true, syncJobId);
 

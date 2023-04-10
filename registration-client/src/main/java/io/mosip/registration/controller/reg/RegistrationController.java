@@ -29,6 +29,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
@@ -86,6 +87,12 @@ public class RegistrationController extends BaseController {
 
 	@Autowired
 	private IdentitySchemaService identitySchemaService;
+
+	@Value("${mosip.kernel.vid.length:-1}")
+	private int vidLength;
+
+	@Value("${mosip.kernel.uin.length:-1}")
+	private int uinLength;
 
 	/*
 	 * (non-Javadoc)

@@ -429,6 +429,7 @@ public class MosipDeviceSpecificationFactory {
 
 		String key = String.format("%s_%s", getDeviceType(modality).toLowerCase(),
 				getDeviceSubType(modality).toLowerCase());
+		System.out.println("key mds "+key);
 
 		if (deviceInfoMap.containsKey(key)) {
 			return deviceInfoMap.get(key);

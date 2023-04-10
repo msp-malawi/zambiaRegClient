@@ -253,6 +253,7 @@ public class PacketSynchServiceImpl extends BaseService implements PacketSynchSe
 					RegistrationExceptionConstants.REG_PKT_TRIGGER_PT.getErrorMessage());
 		}
 		try {
+			System.out.println("json packet :"+javaObjectToJsonString(encodedString));
 			LinkedHashMap<String, Object> response = (LinkedHashMap<String, Object>) serviceDelegateUtil
 					.post(RegistrationConstants.PACKET_SYNC, javaObjectToJsonString(encodedString), triggerPoint);
 			if (response.get("response") != null) {
@@ -265,6 +266,7 @@ public class PacketSynchServiceImpl extends BaseService implements PacketSynchSe
 				successResponseDTO.setOtherAttributes(statusMap);
 				responseDTO.setSuccessResponseDTO(successResponseDTO);
 			} else if (response.get("errors") != null) {
+				System.out.println("packet error "+response.get("errors").toString());
 				List<ErrorResponseDTO> errorResponseDTOs = new ArrayList<>();
 				ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO();
 				errorResponseDTO.setMessage(response.get("errors").toString());
@@ -274,17 +276,20 @@ public class PacketSynchServiceImpl extends BaseService implements PacketSynchSe
 						APPLICATION_ID, response.get("errors").toString());
 			}
 		} catch (HttpClientErrorException e) {
+			e.printStackTrace();
 			LOGGER.error("REGISTRATION - SYNC_PACKETS_TO_SERVER_CLIENT_ERROR - PACKET_SYNC_SERVICE", APPLICATION_NAME,
 					APPLICATION_ID,
 					e.getRawStatusCode() + "Error in sync packets to the server" + ExceptionUtils.getStackTrace(e));
 			throw new RegBaseCheckedException(Integer.toString(e.getRawStatusCode()), e.getStatusText());
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			LOGGER.error("REGISTRATION - SYNC_PACKETS_TO_SERVER_RUNTIME - PACKET_SYNC_SERVICE", APPLICATION_NAME,
 					APPLICATION_ID,
 					e.getMessage() + "Error in sync and push packets to the server" + ExceptionUtils.getStackTrace(e));
 			throw new RegBaseUncheckedException(RegistrationExceptionConstants.REG_PACKET_SYNC_EXCEPTION.getErrorCode(),
 					RegistrationExceptionConstants.REG_PACKET_SYNC_EXCEPTION.getErrorMessage());
 		} catch (SocketTimeoutException e) {
+			e.printStackTrace();
 			LOGGER.error("REGISTRATION - SYNC_PACKETS_TO_SERVER_SOCKET_ERROR - PACKET_SYNC_SERVICE", APPLICATION_NAME,
 					APPLICATION_ID,
 					e.getMessage() + "Error in sync packets to the server" + ExceptionUtils.getStackTrace(e));

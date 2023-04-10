@@ -309,6 +309,7 @@ public class SoftwareUpdateHandler extends BaseService {
 			// Download latest jars if not in local
 			checkJars(getLatestVersion(), downloadJars);
 			checkJars(getLatestVersion(), checkableJars);
+			System.out.println("download jars completed");
 
 			setLocalManifest(serverManifest);
 			setServerManifest(null);
@@ -403,6 +404,7 @@ public class SoftwareUpdateHandler extends BaseService {
 	}
 
 	private InputStream getInputStreamOfJar(String version, String jarName) throws IOException {
+		System.out.println("downloading jars");
 		return getInputStreamOf(getURL(serverRegClientURL) + version + SLASH + libFolder + jarName);
 
 	}
@@ -464,6 +466,7 @@ public class SoftwareUpdateHandler extends BaseService {
 	}
 
 	private void setServerManifest(Manifest serverManifest) {
+		System.out.println("serverManifest out "+serverManifest.getMainAttributes());
 		this.serverManifest = serverManifest;
 	}
 
@@ -513,6 +516,7 @@ public class SoftwareUpdateHandler extends BaseService {
 
 		// Space Check
 		if (hasSpace(connection.getContentLength())) {
+			System.out.println("space check complete ");
 			return connection.getInputStream();
 		} else {
 			throw new IOException("No Disk Space");

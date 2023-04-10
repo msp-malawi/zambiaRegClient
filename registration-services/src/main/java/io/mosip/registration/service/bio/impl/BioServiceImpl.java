@@ -118,6 +118,7 @@ public class BioServiceImpl extends BaseService implements BioService {
 
 		MosipDeviceSpecificationProvider deviceSpecificationProvider = deviceSpecificationFactory
 				.getMdsProvider(bioDevice.getSpecVersion());
+		System.out.println("biodevice spec version "+bioDevice.getSpecVersion());//test
 
 		List<BiometricsDto> biometricsDtos = deviceSpecificationProvider.rCapture(bioDevice, mdmRequestDto);
 

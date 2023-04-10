@@ -275,6 +275,10 @@ public class BiometricsController extends BaseController /* implements Initializ
     @FXML
     private GridPane checkBoxPane;
 
+    @FXML
+    public CheckBox checkBoxMds;
+    public static boolean ismdsFaceThreshold;
+
     private ResourceBundle applicationLabelBundle;
 
     private String currentModality;
@@ -396,6 +400,11 @@ public class BiometricsController extends BaseController /* implements Initializ
                     ApplicationContext.applicationLanguageBundle().getString(RegistrationConstants.LOSTUINLBL));
 
         }
+    }
+    @FXML
+    public void configureCheckbox(ActionEvent event){
+        ismdsFaceThreshold= checkBoxMds.isSelected();
+        System.out.println("check box is clicked + "+ismdsFaceThreshold);
     }
 
     public void populateBiometricPage(boolean isUserOnboard, boolean isGoingBack) {
@@ -804,7 +813,8 @@ public class BiometricsController extends BaseController /* implements Initializ
 
         if(!modality.equalsIgnoreCase(RegistrationConstants.FACE)){
             recaptureBtn.setVisible(false);
-        }
+            checkBoxMds.setVisible(false);
+        }else{checkBoxMds.setVisible(true);}
 
         // get List of captured Biometrics based on nonExceptionBio Attributes
         List<BiometricsDto> capturedBiometrics = null;
@@ -1543,8 +1553,13 @@ public class BiometricsController extends BaseController /* implements Initializ
                 exceptionBioAttributes.toArray(new String[0]), "Registration",
                 io.mosip.registration.context.ApplicationContext.getStringValueFromApplicationMap(
                         RegistrationConstants.SERVER_ACTIVE_PROFILE),
-                Integer.valueOf(getCaptureTimeOut()), count,
-                getThresholdScoreInInt(getThresholdKeyByBioType(modality)));
+                 Integer.valueOf(getCaptureTimeOut(modality)), count,
+                !modality.toUpperCase().equals(RegistrationConstants.FACE)?getThresholdScoreInInt(getThresholdKeyByBioType(modality)):ismdsFaceThreshold?getThresholdScoreInInt(RegistrationConstants.FACE_THRESHOLD_MDS):getThresholdScoreInInt(getThresholdKeyByBioType(modality)));
+//        System.out.println(!modality.toUpperCase().equals(RegistrationConstants.FACE)?getThresholdScoreInInt(getThresholdKeyByBioType(modality)):ismdsFaceThreshold?getThresholdScoreInInt(RegistrationConstants.FACE_THRESHOLD_MDS):getThresholdScoreInInt(getThresholdKeyByBioType(modality)));
+        System.out.println("checkbox code-------!!!!!!!!"+modality+" current score given+"+ getThresholdScoreInInt(getThresholdKeyByBioType(modality)));
+        System.out.println("checkbox code-------!!!!!!!!"+modality+" mds score from config+"+ getThresholdScoreInInt(RegistrationConstants.FACE_THRESHOLD_MDS));
+        System.out.println("face req time out "+Integer.valueOf(getCaptureTimeOut(modality)));
+        System.out.println("modality "+modality);
 
         LOGGER.debug(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
                 "exceptionBioAttributes passed to mock/real MDM >>> " + exceptionBioAttributes);
@@ -1658,9 +1673,15 @@ public class BiometricsController extends BaseController /* implements Initializ
         return thresholdScore != null ? Double.valueOf(thresholdScore) : 0;
     }
 
-    private String getCaptureTimeOut() {
+    private String getCaptureTimeOut(String modality) {
 
         /* Get Configued capture timeOut */
+        if(modality.contains(RegistrationConstants.FACE)){
+            System.out.println("get capture time modality"+modality);
+            return  getValueFromApplicationContext(RegistrationConstants.CAPTURE_TIME_OUT_FACE);
+
+        }
+        System.out.println("else get capture time modality"+modality);
         return getValueFromApplicationContext(RegistrationConstants.CAPTURE_TIME_OUT);
     }
 
@@ -1986,7 +2007,6 @@ public class BiometricsController extends BaseController /* implements Initializ
         if (biometricsDto.getModalityName().equalsIgnoreCase(RegistrationConstants.IRIS_DOUBLE)) {
             if (biometricsDto.getIdemiaQualityScore() >= Integer.parseInt((String) ApplicationContext.map().get("mosip.iris.idemia.quality_score"))) {
                 label.setTextFill(Color.web("green"));
-
             } else {
                 label.setTextFill(Color.web("red"));
 
@@ -2443,14 +2463,14 @@ public class BiometricsController extends BaseController /* implements Initializ
                     BiometricsDto biometricDTO = getBiometrics(subType, bioAttribute);
                     if (biometricDTO != null) {
                         if (biometricDTO.getModalityName().equalsIgnoreCase(RegistrationConstants.IRIS_DOUBLE)) {
-                            if (biometricDTO.getIdemiaQualityScore() >= 50 || (qualityScore / (bioAttributes.size() - exceptionBioCount)) >= thresholdScore) {
+                            if (biometricDTO.getIdemiaQualityScore() >= 50 && (qualityScore / (bioAttributes.size() - exceptionBioCount)) >= thresholdScore) {
                                 isCaptured = true;
                             } else {
                                 isCaptured = false;
                                 break;
                             }
                         } else {
-                            if (biometricDTO.getIdemiaQualityScore() >= 60 || (qualityScore / (bioAttributes.size() - exceptionBioCount)) >= thresholdScore) {
+                            if (biometricDTO.getIdemiaQualityScore() >= 60 && (qualityScore / (bioAttributes.size() - exceptionBioCount)) >= thresholdScore) {
                                 isCaptured = true;
                             } else {
                                 isCaptured = false;

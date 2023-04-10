@@ -2,22 +2,22 @@
 <metadata modelVersion="1.1.0">
   <groupId>io.mosip.registration</groupId>
   <artifactId>registration-client</artifactId>
-  <version>1.4.2-SNAPSHOT</version>
+  <version>1.4.4-SNAPSHOT</version>
   <versioning>
     <snapshot>
       <localCopy>true</localCopy>
     </snapshot>
-    <lastUpdated>20210731054347</lastUpdated>
+    <lastUpdated>20211115095811</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>1.4.2-SNAPSHOT</value>
-        <updated>20210731054347</updated>
+        <value>1.4.4-SNAPSHOT</value>
+        <updated>20211115095811</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>1.4.2-SNAPSHOT</value>
-        <updated>20210731054347</updated>
+        <value>1.4.4-SNAPSHOT</value>
+        <updated>20211115095811</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>

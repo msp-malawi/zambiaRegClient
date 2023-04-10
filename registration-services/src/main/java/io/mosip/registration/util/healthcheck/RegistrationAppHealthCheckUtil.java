@@ -125,6 +125,7 @@ public class RegistrationAppHealthCheckUtil {
 			// URI(url.toString()));
 			// Proxy proxy = proxyList.get(0);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			HttpsURLConnection.setDefaultHostnameVerifier ((hostname, session) -> true);
 			connection.setConnectTimeout(10000);
 			connection.connect();
 

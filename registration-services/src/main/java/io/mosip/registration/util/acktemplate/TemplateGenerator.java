@@ -328,7 +328,7 @@ public class TemplateGenerator extends BaseService {
             templateValues.put(RegistrationConstants.TEMPLATE_RID_USER_LANG_LABEL, applicationLanguageProperties.getString("registrationid"));
             templateValues.put(RegistrationConstants.TEMPLATE_RID_LOCAL_LANG_LABEL,	getSecondaryLanguageLabel("registrationid"));
             templateValues.put(RegistrationConstants.TEMPLATE_RID, registration.getRegistrationId());
-            templateValues.put(RegistrationConstants.TEMPLATE_UIN_USER_LANG_LABEL, applicationLanguageProperties.getString("uin"));
+            templateValues.put(RegistrationConstants.TEMPLATE_UIN_USER_LANG_LABEL, applicationLanguageProperties.getString("pcn"));
             templateValues.put(RegistrationConstants.TEMPLATE_UIN_LOCAL_LANG_LABEL, getSecondaryLanguageLabel("uin"));
             templateValues.put(RegistrationConstants.TEMPLATE_UIN, registration.getDemographics().get("UIN"));
             templateValues.put(RegistrationConstants.TEMPLATE_PRE_REG_ID_USER_LANG_LABEL, applicationLanguageProperties.getString("preRegistrationId"));

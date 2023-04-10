@@ -347,6 +347,7 @@ public class MasterSyncServiceImpl extends BaseService implements MasterSyncServ
 				comboBox.setLangCode(gender.getLangCode());
 				gendetDtoList.add(comboBox);
 			});
+			System.out.println("gendetDtoList "+gendetDtoList.size());
 		} else {
 			LOGGER.info(LOG_REG_MASTER_SYNC, APPLICATION_NAME, APPLICATION_ID,
 					RegistrationConstants.LANG_CODE_MANDATORY);
@@ -417,7 +418,7 @@ public class MasterSyncServiceImpl extends BaseService implements MasterSyncServ
 		List<GenericDto> listOfIndividualDTO = new ArrayList<>();
 
 		List<IndividualType> masterDocuments = masterSyncDao.getIndividulType(langCode);
-
+		System.out.println("masterDocuments "+masterDocuments.size());
 		masterDocuments.forEach(individual -> {
 			GenericDto individualDto = new GenericDto();
 			individualDto.setName(individual.getName());
@@ -432,7 +433,7 @@ public class MasterSyncServiceImpl extends BaseService implements MasterSyncServ
 	public List<GenericDto> getDynamicField(String fieldName, String langCode) throws RegBaseCheckedException {
 		List<GenericDto> fieldValues = new ArrayList<>();
 		List<DynamicFieldValueDto> syncedValues = dynamicFieldDAO.getDynamicFieldValues(fieldName, langCode);
-
+		System.out.println("syncedValues "+syncedValues.size());
 		if (syncedValues != null) {
 			for (DynamicFieldValueDto valueDto : syncedValues) {
 				if (valueDto.isActive()) {
@@ -668,10 +669,10 @@ public class MasterSyncServiceImpl extends BaseService implements MasterSyncServ
 			LOGGER.info(LOG_REG_MASTER_SYNC, APPLICATION_NAME, APPLICATION_ID, new JSONObject(requestParam).toString());
 
 			if (RegistrationAppHealthCheckUtil.isNetworkAvailable()) {
-
+				System.out.println("requestParam"+requestParam);
 				masterSyncResponse = (LinkedHashMap<String, Object>) serviceDelegateUtil
 						.get(RegistrationConstants.MASTER_VALIDATOR_SERVICE_NAME, requestParam, true, triggerPoint);
-
+				System.out.println("requestParam"+requestParam);
 				boolean isMachineRemap = isMachineActiveWithCenter(getErrorCode(getErrorList(masterSyncResponse)),
 						RegistrationConstants.MACHINE_REMAP_CODE);
 
@@ -774,7 +775,7 @@ public class MasterSyncServiceImpl extends BaseService implements MasterSyncServ
 					SchemaDto schemaDto = MapperUtils.convertJSONStringToDto(jsonString,
 							new TypeReference<SchemaDto>() {
 							});
-
+					System.out.println("schemaDto"+schemaDto);
 					identitySchemaDao.createIdentitySchema(schemaDto);
 					setSuccessResponse(responseDTO, RegistrationConstants.SUCCESS, null);
 				} else

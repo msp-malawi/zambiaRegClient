@@ -339,4 +339,22 @@ public class RegistrationDTO {
 
 		return qualityScore;
 	}
+	public void setAgeDateField(String fieldId, String day, String month, String year) {
+		if (isValidValue(day) && isValidValue(month) && isValidValue(year)) {
+			LocalDate date = LocalDate.of(Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(day));
+			if (fieldId != null) {
+				this.demographics.put(fieldId, date.format(DateTimeFormatter.ofPattern(
+						ApplicationContext.getDateFormat()
+				)));
+			}
+
+			this.age = Period.between(date, LocalDate.now(ZoneId.of("UTC"))).getYears();
+
+			int minAge = Integer
+					.parseInt((String) applicationContext.getApplicationMap().get(RegistrationConstants.MIN_AGE));
+			int maxAge = Integer
+					.parseInt((String) applicationContext.getApplicationMap().get(RegistrationConstants.MAX_AGE));
+			this.isChild = this.age < minAge;
+		}
+	}
 }

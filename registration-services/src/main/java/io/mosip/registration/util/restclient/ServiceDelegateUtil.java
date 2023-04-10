@@ -142,6 +142,8 @@ public class ServiceDelegateUtil {
 			if (hasPathParams) {
 				requestHTTPDTO.setUri(UriComponentsBuilder.fromUriString(url).build(requestParams));
 				url = requestHTTPDTO.getUri().toString();
+
+System.out.println("pre reg url****************"+url);
 			}
 			if (!queryParams.isEmpty()) {
 				/** Set URI */

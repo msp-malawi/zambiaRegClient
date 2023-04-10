@@ -120,7 +120,7 @@ public class IdentitySchemaDaoImpl implements IdentitySchemaDao {
 		identitySchema.setFileName(getFileName(schemaReponseDto.getIdVersion()));
 		identitySchema.setIdVersion(schemaReponseDto.getIdVersion());
 		identitySchema.setFileHash(CryptoUtil.computeFingerPrint(content, null).toLowerCase());
-		
+		System.out.println("testing before save");
 		identitySchemaRepository.save(identitySchema);
 	}
 	

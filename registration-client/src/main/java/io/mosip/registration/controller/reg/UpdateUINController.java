@@ -3,6 +3,7 @@ package io.mosip.registration.controller.reg;
 import io.mosip.kernel.core.exception.ExceptionUtils;
 import io.mosip.kernel.core.idvalidator.exception.InvalidIDException;
 import io.mosip.kernel.core.idvalidator.spi.UinValidator;
+import io.mosip.kernel.core.idvalidator.spi.VidValidator;
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.kernel.core.util.StringUtils;
 import io.mosip.registration.config.AppConfig;
@@ -27,6 +28,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -63,6 +65,9 @@ public class UpdateUINController extends BaseController implements Initializable
 	@Autowired
 	private UinValidator<String> uinValidatorImpl;
 
+	@Value("${mosip.kernel.vid.length:-1}")
+	private int vidLength;
+
 	@Autowired
 	Validations validation;
 
@@ -72,6 +77,8 @@ public class UpdateUINController extends BaseController implements Initializable
 	private ObservableList<Node> parentFlow;
 
 	private HashMap<String, Object> checkBoxKeeper;
+
+	private Map<String,String> checkBoxMap;
 
 	private Map<String, List<UiSchemaDTO>> groupedMap;
 
@@ -89,9 +96,29 @@ public class UpdateUINController extends BaseController implements Initializable
 		fxUtils = FXUtils.getInstance();
 		checkBoxKeeper = new HashMap<>();
 		Map<String, UiSchemaDTO> schemaMap = getValidationMap();
+		checkBoxMap = new HashMap<>();
+		checkBoxMap.put("FullName",RegistrationUIConstants.UPDATE_GROUP_FullName);
+		checkBoxMap.put("DateOfBirth",RegistrationUIConstants.UPDATE_GROUP_DateofBirth);
+		checkBoxMap.put("placeofbirthLoc",RegistrationUIConstants.UPDATE_GROUP_PlaceofBirth);
+		checkBoxMap.put("ResidenceStatus",RegistrationUIConstants.UPDATE_GROUP_ResidentStatus);
+		checkBoxMap.put("PermanentAddress",RegistrationUIConstants.UPDATE_GROUP_PermanentAddress);
+		checkBoxMap.put("PresentAddress",RegistrationUIConstants.UPDATE_GROUP_PresentAddress);
+		checkBoxMap.put("Documents",RegistrationUIConstants.UPDATE_GROUP_Document);
+		checkBoxMap.put("IntroducerDetails",RegistrationUIConstants.UPDATE_GROUP_IntroducerDetails);
+		checkBoxMap.put("GuardianDetails",RegistrationUIConstants.UPDATE_GROUP_GuardianDetails);
+		checkBoxMap.put("Mode of Calim",RegistrationUIConstants.UPDATE_GROUP_ModeofClaim);
+		checkBoxMap.put("Email",RegistrationUIConstants.UPDATE_GROUP_Email);
+		checkBoxMap.put("Phone",RegistrationUIConstants.UPDATE_GROUP_Phone);
+
 
 		groupedMap = schemaMap.values().stream().filter(field -> field.getGroup() != null && field.isInputRequired())
 				.collect(Collectors.groupingBy(UiSchemaDTO::getGroup));
+		String[] removeCheckboxList = RegistrationUIConstants.DISABLED_CHECKBOX_GROUPS.split(":");
+		for (String list:
+				removeCheckboxList) {
+			groupedMap.remove(list);
+		}
+
 
 		parentFlow = parentFlowPane.getChildren();
 		groupedMap.forEach((groupName, list) -> {
@@ -119,8 +146,14 @@ public class UpdateUINController extends BaseController implements Initializable
 	}
 
 	private GridPane addCheckBox(String groupName) {
+		CheckBox checkBox;
+		if(checkBoxMap.containsKey(groupName)){
+			checkBox = new CheckBox(checkBoxMap.get(groupName));
+		}else{
+			checkBox = new CheckBox(groupName);
+		}
 
-		CheckBox checkBox = new CheckBox(groupName);
+
 		checkBox.getStyleClass().add(RegistrationConstants.updateUinCheckBox);
 		fxUtils.listenOnSelectedCheckBox(checkBox);
 		checkBoxKeeper.put(groupName, checkBox);
@@ -162,7 +195,7 @@ public class UpdateUINController extends BaseController implements Initializable
 		LOGGER.info(LOG_REG_UIN_UPDATE, APPLICATION_NAME, APPLICATION_ID, "Updating UIN details");
 		try {
 			if (StringUtils.isEmpty(uinId.getText())) {
-				generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.UPDATE_UIN_ENTER_UIN_ALERT);
+				generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.UPDATE_VID_ENTER_UIN_ALERT);
 			} else {
 				Map<String, UiSchemaDTO> selectedFields = new HashMap<String, UiSchemaDTO>();
 				List<String> selectedFieldGroups = new ArrayList<String>();
@@ -180,17 +213,36 @@ public class UpdateUINController extends BaseController implements Initializable
 						"selectedFieldGroups size : " + selectedFieldGroups.size());
 				LOGGER.debug(LOG_REG_UIN_UPDATE, APPLICATION_NAME, APPLICATION_ID,
 						"selectedFields size : " + selectedFields.size());
-
-				if (uinValidatorImpl.validateId(uinId.getText()) && !selectedFields.isEmpty()) {
+//				if (uinValidatorImpl.validateId(uinId.getText()) && !selectedFields.isEmpty()) {
+//					System.out.println("uin condition check : "+uinId.getText());
+//					registrationController.init(uinId.getText(), checkBoxKeeper, selectedFields, selectedFieldGroups);
+//					Parent createRoot = BaseController.load(
+//							getClass().getResource(RegistrationConstants.CREATE_PACKET_PAGE),
+//							applicationContext.getApplicationLanguageBundle());
+//
+//					getScene(createRoot).setRoot(createRoot);
+//				} else
+				if (uinId.getText().length() == vidLength && !selectedFields.isEmpty()) {
+					System.out.println("vid condition check : "+uinId.getText());
 					registrationController.init(uinId.getText(), checkBoxKeeper, selectedFields, selectedFieldGroups);
 					Parent createRoot = BaseController.load(
 							getClass().getResource(RegistrationConstants.CREATE_PACKET_PAGE),
 							applicationContext.getApplicationLanguageBundle());
 
 					getScene(createRoot).setRoot(createRoot);
-				} else {
-					generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.UPDATE_UIN_SELECTION_ALERT);
+				}else {
+//					generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.UPDATE_UIN_SELECTION_ALERT);
+					generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.UPDATE_VID_SELECTION_ALERT);
 				}
+//				else if (uinValidatorImpl.validateId(uinId.getText()) && !selectedFields.isEmpty()) {
+//					registrationController.init(uinId.getText(), checkBoxKeeper, selectedFields, selectedFieldGroups);
+//					Parent createRoot = BaseController.load(
+//							getClass().getResource(RegistrationConstants.CREATE_PACKET_PAGE),
+//							applicationContext.getApplicationLanguageBundle());
+//
+//					getScene(createRoot).setRoot(createRoot);
+//				}
+
 			}
 		} catch (InvalidIDException invalidIdException) {
 			LOGGER.error(LOG_REG_UIN_UPDATE, APPLICATION_NAME, APPLICATION_ID,

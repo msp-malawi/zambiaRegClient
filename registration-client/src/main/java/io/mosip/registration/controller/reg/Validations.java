@@ -273,7 +273,6 @@ public class Validations extends BaseController {
 		try {
 			String label = id.replaceAll(RegistrationConstants.ON_TYPE, RegistrationConstants.EMPTY)
 					.replaceAll(RegistrationConstants.LOCAL_LANGUAGE, RegistrationConstants.EMPTY);
-
 			boolean showAlert = (noAlert.contains(node.getId()) && id.contains(RegistrationConstants.ON_TYPE));
 			String ageDateFieldId = getAgeDateFieldId(label);
 			UiSchemaDTO uiSchemaDTO = getValidationMap().get(ageDateFieldId == null ? label : ageDateFieldId);

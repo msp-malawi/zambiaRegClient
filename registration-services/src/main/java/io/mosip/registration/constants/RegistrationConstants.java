@@ -908,6 +908,7 @@ public class RegistrationConstants {
 	public static final String FINGERPRINT_AUTHENTICATION_THRESHHOLD = "mosip.fingerprint_authentication.quality_score";
 	public static final String IRIS_AUTHENTICATION_THRESHHOLD = "mosip.iris_authentication.quality_score";
 	public static final String CAPTURE_TIME_OUT = "mosip.registration.capture_time_out";
+	public static final String CAPTURE_TIME_OUT_FACE = "mosip.registration.capture_time_out_face";
 	public static final String FINGER_PRINT_SCORE = "mosip.registration.finger_print_score";
 	public static final String INVALID_LOGIN_COUNT = "mosip.registration.invalid_login_count";
 	public static final String INVALID_LOGIN_TIME = "mosip.registration.invalid_login_time";
@@ -1045,6 +1046,7 @@ public class RegistrationConstants {
 	// Iris & Fingerprint Capture for Individual Registration
 	public static final String IRIS_THRESHOLD = "mosip.registration.iris_threshold";
 	public static final String FACE_THRESHOLD = "mosip.registration.face_threshold";
+	public static final String FACE_THRESHOLD_MDS = "mosip.registration.face_threshold_mds";
 	public static final String IMAGE_FORMAT_KEY = "imageFormat";
 	public static final String IMAGE_BYTE_ARRAY_KEY = "imageBytes";
 	public static final String IMAGE_BYTE_ISO = "byteIso";

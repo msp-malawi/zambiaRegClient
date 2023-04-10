@@ -331,15 +331,6 @@ public class DemographicDetailController extends BaseController {
         preRegParentPane.setDisable(true);
     }
 
-    private boolean isAppLangAndLocalLangSame() {
-
-        return primaryLanguage.equals(secondaryLanguage);
-    }
-
-    private boolean isLocalLanguageAvailable() {
-
-        return secondaryLanguage != null && !secondaryLanguage.isEmpty();
-    }
 
     public void addKeyboard(int position) {
 
@@ -414,12 +405,14 @@ public class DemographicDetailController extends BaseController {
                 content = addContentForDobAndAge(schemaDTO, languageType);
                 break;
             case RegistrationConstants.TEXTBOX:
+                System.out.println("TEXTBOX schemaDTO.getId() "+schemaDTO.getId()+"    languageType :   "+languageType);
                 content = addContentWithTextField(schemaDTO, schemaDTO.getId(), languageType);
                 break;
             case RegistrationConstants.CHECKBOX:
                 content = addContentWithCheckbox(schemaDTO.getId(), schemaDTO, languageType);
                 break;
             case RegistrationConstants.BUTTON:
+                System.out.println("BUTTON schemaDTO.getId() "+schemaDTO.getId());
                 content = addContentWithButtons(schemaDTO.getId(), schemaDTO, languageType);
                 break;
         }
@@ -707,14 +700,11 @@ public class DemographicDetailController extends BaseController {
             hBox.setSpacing(10);
             hBox.setPadding(new Insets(10, 10, 10, 10));
             localButton.setPrefWidth(vbox.getPrefWidth());
-            if (localButton.getId().equalsIgnoreCase("residenceStatusFR")) {
-                localButton.getStyleClass().addAll("selectedResidence", "button");
-            } else {
-                localButton.getStyleClass().addAll("residence", "button");
-            }
+            localButton.getStyleClass().addAll("residence", "button");
+            setFieldChangeListener(localButton);
             hBox.getChildren().add(localButton);
-
         });
+        System.out.println("listOfButtons "+listOfButtons.size());
         vbox.getChildren().addAll(hBox, validationMessage);
         return vbox;
     }
@@ -739,6 +729,7 @@ public class DemographicDetailController extends BaseController {
 
     private void populateButtons(String key, String languageType) {
         try {
+            System.out.println("key "+key);
             List<GenericDto> values = masterSyncService.getFieldValues(key, languageType.equals(RegistrationConstants.LOCAL_LANGUAGE) ?
                     ApplicationContext.localLanguage() : ApplicationContext.applicationLanguage());
 
@@ -989,6 +980,7 @@ public class DemographicDetailController extends BaseController {
 
     public void uinUpdate() {
         List<String> selectionList = getRegistrationDTOFromSession().getUpdatableFields();
+        System.out.println("getRegistrationDTOFromSession default updatable : "+getRegistrationDTOFromSession().getDefaultUpdatableFields());
         if (selectionList != null) {
             disablePreRegFetch();
             registrationNavlabel.setText(applicationLabelBundle.getString("uinUpdateNavLbl"));
@@ -998,19 +990,19 @@ public class DemographicDetailController extends BaseController {
             updateDemographicScreen(selectionField.getKey(), selectionList, false);
             updateDemographicScreen(selectionField.getKey() + RegistrationConstants.LOCAL_LANGUAGE, selectionList,
                     false);
-
-            if (getRegistrationDTOFromSession().getDefaultUpdatableFields().contains(selectionField.getKey())) {
-                updateDemographicScreen(selectionField.getKey(), selectionList, true);
-                updateDemographicScreen(selectionField.getKey() + RegistrationConstants.LOCAL_LANGUAGE, selectionList,
-                        true);
-
-            }
+//commented default updatable fields
+//            if (getRegistrationDTOFromSession().getDefaultUpdatableFields().contains(selectionField.getKey())) {
+//                updateDemographicScreen(selectionField.getKey(), selectionList, true);
+//                updateDemographicScreen(selectionField.getKey() + RegistrationConstants.LOCAL_LANGUAGE, selectionList,
+//                        true);
+//
+//            }
         }
 
     }
 
     private void updateDemographicScreen(String key, List<String> selectionList, boolean isDefault) {
-
+        System.out.println("updatedemoscreen key : "+key+" isdefault : "+isDefault);
         if (getFxElement(key) != null) {
             if (getFxElement(key).getParent() != null) {
 
@@ -1019,8 +1011,25 @@ public class DemographicDetailController extends BaseController {
                 if (selectionList.contains(key.replaceAll(RegistrationConstants.LOCAL_LANGUAGE, "")) || isDefault) {
                     isDisable = false;
                 }
+                if (selectionList.contains(key.replaceAll(RegistrationConstants.LOCAL_LANGUAGE, "")) && key.replaceAll(RegistrationConstants.LOCAL_LANGUAGE, "").equalsIgnoreCase("email")) {
+                    Label label = (Label) getFxElement(key + RegistrationConstants.LABEL);
+                    TextField text = (TextField) getFxElement(key);
+                    label.setText("Email ID *");
+                    text.setPromptText("Email ID *");
+                    removeFromLabelMap(key);
+                    putIntoLabelMap(key,"Email ID");
+                }else if(selectionList.contains(key.replaceAll(RegistrationConstants.LOCAL_LANGUAGE, "")) && key.replaceAll(RegistrationConstants.LOCAL_LANGUAGE, "").equalsIgnoreCase("mobileno")) {
+                    Label label = (Label) getFxElement(key + RegistrationConstants.LABEL);
+                    label.setText("Mobile Number *");
+                    TextField text = (TextField) getFxElement(key);
+                    text.setPromptText("Mobile Number *");
+                    removeFromLabelMap(key);
+                    putIntoLabelMap(key,"Mobile Number");
+
+                }
 
                 getFxElement(key).getParent().getParent().setDisable(isDisable);
+
 
             }
         }
@@ -1284,7 +1293,7 @@ fetchPreRegistration();
 
 
                 if (!listOfTextField.get("mobileno").getText().isEmpty()) {
-                    if (listOfComboBoxWithObject.get("presentCountry").getSelectionModel() != null) {
+                    if (listOfComboBoxWithObject.get("presentCountry").getSelectionModel().getSelectedItem() != null) {
                         if (listOfComboBoxWithObject.get("presentCountry").getSelectionModel().getSelectedItem().getName().equals("Philippines")) {
                             regex = RegistrationConstants.MOBILE_NO_REGEX;
                             String[] validmobilecode = {"63905", "63906", "63913", "63914", "63915", "63916",
@@ -1336,6 +1345,35 @@ fetchPreRegistration();
                             }
 
                         }
+                    }else if (listOfTextField.get("mobileno").getText().length() == RegistrationConstants.MOBILE_NUMBER_LENGTH) {
+
+                        String[] validmobilecode = {"63905", "63906", "63913", "63914", "63915", "63916",
+                                "63917", "63926", "63927", "63935", "63936", "63937", "63988", "63907",
+                                "63908", "63909", "63910", "63912", "63918", "63919", "63920", "63921",
+                                "63922", "63923", "63925", "63928", "63929", "63930", "63931", "63932",
+                                "63933", "63938", "63939", "63942", "63943", "63946", "63947", "63948",
+                                "63949", "63950", "63951", "63958", "63960", "63961", "63962", "63963",
+                                "63964", "63968", "63969", "63970", "63981", "63985", "63998", "63999",
+                                "63813", "63817", "63904", "63911", "63924", "63934", "63940", "63941",
+                                "63944", "63945", "63953", "63954", "63955", "63956", "63965", "63966",
+                                "63967", "63973", "63974", "63975", "63976", "63977", "63978", "63979",
+                                "63989", "63992", "63994", "63995", "63996", "63997"};
+
+                        if (!stringContainsItemFromList(listOfTextField.get("mobileno").getText().substring(0, 5), validmobilecode)) {
+                            System.out.println("test 1");
+                            generateAlert(parentFlowPane, "mobileno", getFromLabelMap("mobileno").concat(RegistrationConstants.SPACE)
+                                    .concat(applicationMessageBundle.getString(RegistrationConstants.REG_DDC_004)));
+
+                            flag = false;
+                            listOfTextField.get("mobileno").requestFocus();
+                            generateAlert(parentFlowPane, "mobileno", getFromLabelMap("mobileno").concat(RegistrationConstants.SPACE)
+                                    .concat(applicationMessageBundle.getString(RegistrationConstants.REG_DDC_004)));
+                        }
+                    }else{
+                        flag = false;
+                        listOfTextField.get("mobileno").requestFocus();
+                        generateAlert(parentFlowPane, "mobileno", getFromLabelMap("mobileno").concat(RegistrationConstants.SPACE)
+                                .concat(applicationMessageBundle.getString(RegistrationConstants.REG_DDC_004)));
                     }
 
                 }
@@ -1614,6 +1652,7 @@ fetchPreRegistration();
                     if (visibilityExpr.getEngine().equalsIgnoreCase(RegistrationConstants.MVEL_TYPE)) {
                         VariableResolverFactory resolverFactory = new MapVariableResolverFactory(context);
                         Object required = MVEL.eval(visibilityExpr.getExpr(), resolverFactory);
+//                        System.out.println("field id : "+uiSchemaDTO.getId()+"required :"+(boolean)required);
                         updateFields(Arrays.asList(uiSchemaDTO), required != null ? (boolean) required : false);
                     }
                 }
@@ -1625,6 +1664,7 @@ fetchPreRegistration();
     private void updateFields(List<UiSchemaDTO> fields, boolean isVisible) {
         //LOGGER.debug(loggerClassName, APPLICATION_NAME, RegistrationConstants.APPLICATION_ID, "Updating fields");
         for (UiSchemaDTO field : fields) {
+            System.out.println("refresh visibility groups or fields for demographic page"+field.getId() + "isvisible: "+ isVisible);
 			/*LOGGER.debug(loggerClassName, APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
 					"Updating visibility for field : " + field.getId() + " as visibility : " + isVisible);*/
             Node node = getFxElement(field.getId());
