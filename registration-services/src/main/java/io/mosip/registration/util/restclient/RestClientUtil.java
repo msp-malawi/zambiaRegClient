@@ -84,6 +84,10 @@ public class RestClientUtil {
 					noSuchAlgorithmException.getMessage() + ExceptionUtils.getStackTrace(noSuchAlgorithmException));
 		}
 		System.out.println("requestHTTPDTO.getUri()"+requestHTTPDTO.getUri());
+		System.out.println("requestHTTPDTO.getRequestBody()"+requestHTTPDTO.getRequestBody());
+		System.out.println("requestHTTPDTO.getHttpEntity()"+requestHTTPDTO.getHttpEntity());
+		System.out.println("requestHTTPDTO.getHttpEntity().getHeaders()"+requestHTTPDTO.getHttpEntity().getHeaders());
+		System.out.println("requestHTTPDTO.etHttpEntity().getBody()"+requestHTTPDTO.getHttpEntity().getBody());
 		responseEntity = restTemplate.exchange(requestHTTPDTO.getUri(), requestHTTPDTO.getHttpMethod(),
 				requestHTTPDTO.getHttpEntity(), requestHTTPDTO.getClazz());
 		System.out.println("responseEntity");

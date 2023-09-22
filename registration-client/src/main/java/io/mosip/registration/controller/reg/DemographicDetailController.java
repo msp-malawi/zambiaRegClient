@@ -845,6 +845,40 @@ public class DemographicDetailController extends BaseController {
         }
     }
 
+    public void setAddressDetailsForPhilsys(){
+        RegistrationDTO registrationDTO = getRegistrationDTOFromSession();
+
+        Map<String,Object> demographics = registrationDTO.getDemographics();
+//        System.out.println("demo key set : "+demographics.keySet());
+        Map<String,String> filter = new HashMap<>();
+        filter.put("permanentAddressLine2","permanentProvince");
+        filter.put("permanentAddressLine3","permanentCity");
+        filter.put("permanentAddressLine4","permanentBarangay");
+        filter.put("permanentAddressLine5","permanentZipcode");
+        filter.put("presentAddressLine2","presentProvince");
+        filter.put("presentAddressLine3","presentCity");
+        filter.put("presentAddressLine4","presentBarangay");
+        filter.put("presentAddressLine5","presentZipcode");
+
+        for (String key:filter.keySet()
+             ) {
+            if(demographics.containsKey(key)){
+                demographics.put(filter.get(key),demographics.get(key));
+                demographics.remove(key);
+
+            }
+        }
+        registrationDTO.setDemographics(demographics);
+//        RegistrationDTO registrationDTO2 = getRegistrationDTOFromSession();
+
+//        System.out.println("saved dto key set :: "+registrationDTO2.getDemographics().keySet());
+
+        LOGGER.info(RegistrationConstants.REGISTRATION_CONTROLLER, RegistrationConstants.APPLICATION_NAME,
+                RegistrationConstants.APPLICATION_ID, "Saving the philsys demographic fields to DTO");
+
+
+    }
+
     private void addFieldValueToSession(UiSchemaDTO schemaField) {
         RegistrationDTO registrationDTO = getRegistrationDTOFromSession();
         switch (schemaField.getType()) {
@@ -968,6 +1002,7 @@ public class DemographicDetailController extends BaseController {
 
             registrationDTO.getOsiDataDTO().setOperatorID(SessionContext.userContext().getUserId());
 
+            setAddressDetailsForPhilsys();
             LOGGER.debug(RegistrationConstants.REGISTRATION_CONTROLLER, APPLICATION_NAME,
                     RegistrationConstants.APPLICATION_ID, "Saved the demographic fields to DTO");
 
@@ -1281,6 +1316,7 @@ fetchPreRegistration();
                         getPageByAction(RegistrationConstants.DEMOGRAPHIC_DETAIL, RegistrationConstants.NEXT));
             }
         }
+        setAddressDetailsForPhilsys();
     }
 
     private boolean validateAgeEmailandMobile() {

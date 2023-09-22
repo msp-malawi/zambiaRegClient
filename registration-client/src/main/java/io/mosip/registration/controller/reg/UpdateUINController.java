@@ -65,6 +65,9 @@ public class UpdateUINController extends BaseController implements Initializable
 	@Autowired
 	private UinValidator<String> uinValidatorImpl;
 
+	@Autowired
+	private VidValidator<String> vidValidatorImpl;
+
 	@Value("${mosip.kernel.vid.length:-1}")
 	private int vidLength;
 
@@ -222,7 +225,7 @@ public class UpdateUINController extends BaseController implements Initializable
 //
 //					getScene(createRoot).setRoot(createRoot);
 //				} else
-				if (uinId.getText().length() == vidLength && !selectedFields.isEmpty()) {
+				if (vidValidatorImpl.validateId(uinId.getText()) && !selectedFields.isEmpty()) {
 					System.out.println("vid condition check : "+uinId.getText());
 					registrationController.init(uinId.getText(), checkBoxKeeper, selectedFields, selectedFieldGroups);
 					Parent createRoot = BaseController.load(
@@ -248,7 +251,7 @@ public class UpdateUINController extends BaseController implements Initializable
 			LOGGER.error(LOG_REG_UIN_UPDATE, APPLICATION_NAME, APPLICATION_ID,
 					invalidIdException.getMessage() + ExceptionUtils.getStackTrace(invalidIdException));
 
-			generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.UPDATE_UIN_VALIDATION_ALERT);
+			generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.UPDATE_VID_VALIDATION_ALERT);
 		} catch (IOException ioException) {
 			LOGGER.error(LOG_REG_UIN_UPDATE, APPLICATION_NAME, APPLICATION_ID,
 					ioException.getMessage() + ExceptionUtils.getStackTrace(ioException));

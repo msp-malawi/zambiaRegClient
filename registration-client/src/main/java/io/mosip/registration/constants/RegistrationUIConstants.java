@@ -288,8 +288,9 @@ public class RegistrationUIConstants {
 	// UIN update
 	public static final String UPDATE_UIN_ENTER_UIN_ALERT = bundle.getString("UPDATE_UIN_ENTER_UIN_ALERT");
 	public static final String UPDATE_UIN_VALIDATION_ALERT = bundle.getString("UPDATE_UIN_VALIDATION_ALERT");
+	public static final String UPDATE_VID_VALIDATION_ALERT = "Please enter a valid PCN";
 	public static final String UPDATE_UIN_SELECTION_ALERT = bundle.getString("UPDATE_UIN_SELECTION_ALERT");
-	public static final String UPDATE_VID_SELECTION_ALERT = "Please enter a valid PCN";
+	public static final String UPDATE_VID_SELECTION_ALERT = "Please select any one detail for updation";
 	public static final String UPDATE_VID_ENTER_UIN_ALERT = "Please enter PCN";
 	public static final String UPDATE_UIN_INDIVIDUAL_AND_PARENT_SAME_UIN_ALERT = bundle
 			.getString("UPDATE_UIN_INDIVIDUAL_AND_PARENT_SAME_UIN_ALERT");

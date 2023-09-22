@@ -137,6 +137,7 @@ public class RegistrationController extends BaseController {
 		registrationDTO.setUpdatableFieldGroups(selectedFieldGroups);
 		registrationDTO.setBiometricMarkedForUpdate(
 				selectedFieldGroups.contains(RegistrationConstants.BIOMETRICS_GROUP) ? true : false);
+		System.out.println("RegistrationConstants-BIOMETRICS_GROUP : "+selectedFieldGroups.contains(RegistrationConstants.BIOMETRICS_GROUP));
 	}
 
 	protected void initializeLostUIN() {

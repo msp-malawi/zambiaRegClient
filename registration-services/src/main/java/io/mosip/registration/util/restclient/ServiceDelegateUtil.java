@@ -297,6 +297,10 @@ System.out.println("pre reg url****************"+url);
 			requestDto.setTriggerPoint(triggerPoint);
 			requestDto.setRequestSignRequired(
 					Boolean.valueOf(getEnvironmentProperty(serviceName, RegistrationConstants.REQUEST_SIGN_REQUIRED)));
+//			System.out.println("request dto : "+ requestDto.getRequestBody().toString());
+//			System.out.println("request dto getAuthZHeader() : "+ requestDto.getAuthZHeader());
+//			System.out.println("request dto : getHttpHeaders() "+ requestDto.getHttpHeaders());
+//			System.out.println("request dto : getTriggerPoint() "+ requestDto.getTriggerPoint());
 			responseMap = restClientUtil.invoke(requestDto);
 		} catch (RegBaseCheckedException baseCheckedException) {
 			throw new RegBaseCheckedException(RegistrationConstants.SERVICE_DELEGATE_UTIL,

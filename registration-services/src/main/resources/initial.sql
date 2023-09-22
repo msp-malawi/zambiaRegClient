@@ -74,7 +74,7 @@ CREATE TABLE "REG"."ID_TYPE" ("CODE" VARCHAR(36) NOT NULL, "NAME" VARCHAR(64) NO
 
 CREATE TABLE "REG"."AUTHENTICATION_METHOD" ("CODE" VARCHAR(36) NOT NULL, "METHOD_SEQ" SMALLINT, "LANG_CODE" VARCHAR(3) NOT NULL, "IS_ACTIVE" BOOLEAN NOT NULL, "CR_BY" VARCHAR(32) NOT NULL, "CR_DTIMES" TIMESTAMP NOT NULL, "UPD_BY" VARCHAR(32), "UPD_DTIMES" TIMESTAMP, "IS_DELETED" BOOLEAN, "DEL_DTIMES" TIMESTAMP);
 
-CREATE TABLE "REG"."DOC_TYPE" ("CODE" VARCHAR(36) NOT NULL, "NAME" VARCHAR(64) NOT NULL, "DESCR" VARCHAR(128), "LANG_CODE" VARCHAR(3) NOT NULL, "IS_ACTIVE" BOOLEAN NOT NULL, "CR_BY" VARCHAR(32) NOT NULL, "CR_DTIMES" TIMESTAMP NOT NULL, "UPD_BY" VARCHAR(32), "UPD_DTIMES" TIMESTAMP, "IS_DELETED" BOOLEAN, "DEL_DTIMES" TIMESTAMP);
+CREATE TABLE "REG"."DOC_TYPE" ("CODE" VARCHAR(36) NOT NULL, "NAME" VARCHAR(256) NOT NULL, "DESCR" VARCHAR(256), "LANG_CODE" VARCHAR(3) NOT NULL, "IS_ACTIVE" BOOLEAN NOT NULL, "CR_BY" VARCHAR(32) NOT NULL, "CR_DTIMES" TIMESTAMP NOT NULL, "UPD_BY" VARCHAR(32), "UPD_DTIMES" TIMESTAMP, "IS_DELETED" BOOLEAN, "DEL_DTIMES" TIMESTAMP);
 
 CREATE TABLE "REG"."ROLE_LIST" ("CODE" VARCHAR(36) NOT NULL, "DESCR" VARCHAR(256), "LANG_CODE" VARCHAR(3) NOT NULL, "IS_ACTIVE" BOOLEAN NOT NULL, "CR_BY" VARCHAR(32) NOT NULL, "CR_DTIMES" TIMESTAMP NOT NULL, "UPD_BY" VARCHAR(32), "UPD_DTIMES" TIMESTAMP, "IS_DELETED" BOOLEAN, "DEL_DTIMES" TIMESTAMP);
 
@@ -340,6 +340,18 @@ INSERT INTO "REG"."GLOBAL_PARAM" VALUES ('mosip.kernel.uin.length.sequence-limit
 INSERT INTO "REG"."GLOBAL_PARAM" VALUES ('mosip.kernel.uin.length.repeating-limit','mosip.kernel.uin.length.repeating-limit','2','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
 
 INSERT INTO "REG"."GLOBAL_PARAM" VALUES ('mosip.kernel.uin.length.conjugative-even-digits-limit','mosip.kernel.uin.length.conjugative-even-digits-limit','3','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
+
+INSERT INTO "REG"."GLOBAL_PARAM" VALUES ('mosip.kernel.vid.not-start-with','mosip.kernel.vid.not-start-with','0,1','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
+
+INSERT INTO "REG"."GLOBAL_PARAM" VALUES ('mosip.kernel.vid.restricted-numbers','mosip.kernel.vid.restricted-numbers','786,666','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
+
+INSERT INTO "REG"."GLOBAL_PARAM" VALUES ('mosip.kernel.vid.length.repeating-block-limit','mosip.kernel.vid.length.repeating-block-limit','2','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
+
+INSERT INTO "REG"."GLOBAL_PARAM" VALUES ('mosip.kernel.vid.length.sequence-limit','mosip.kernel.vid.length.sequence-limit','3','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
+
+INSERT INTO "REG"."GLOBAL_PARAM" VALUES ('mosip.kernel.vid.length.repeating-limit','mosip.kernel.vid.length.repeating-limit','2','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
+
+INSERT INTO "REG"."GLOBAL_PARAM" VALUES ('mosip.kernel.vid.length','mosip.kernel.vid.length','16','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
 
 INSERT INTO "REG"."GLOBAL_PARAM" VALUES ('mosip.kernel.transliteration.arabic-language-code','mosip.kernel.transliteration.arabic-language-code','ara','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
 

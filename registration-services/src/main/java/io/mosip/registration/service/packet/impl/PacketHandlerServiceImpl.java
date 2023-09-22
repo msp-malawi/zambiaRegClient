@@ -10,14 +10,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,6 +144,7 @@ public class PacketHandlerServiceImpl extends BaseService implements PacketHandl
 
 	@Value("${objectstore.packet.supervisor_biometrics_file_name}")
 	private String supervisorBiometricsFileName;
+
 
 	/*
 	 * (non-Javadoc)
@@ -436,8 +431,40 @@ public class PacketHandlerServiceImpl extends BaseService implements PacketHandl
 
 	}
 
+	public Map<String, Object> setAddressDetailsForPhilsys(Map<String, Object> demographics){
+
+//		System.out.println("demo key set : "+demographics.keySet());
+		Map<String,String> filter = new HashMap<>();
+		filter.put("permanentAddressLine2","permanentProvince");
+		filter.put("permanentAddressLine3","permanentCity");
+		filter.put("permanentAddressLine4","permanentBarangay");
+		filter.put("permanentAddressLine5","permanentZipcode");
+		filter.put("presentAddressLine2","presentProvince");
+		filter.put("presentAddressLine3","presentCity");
+		filter.put("presentAddressLine4","presentBarangay");
+		filter.put("presentAddressLine5","presentZipcode");
+
+		for (String key:filter.keySet()
+		) {
+			if(demographics.containsKey(key)){
+				demographics.put(filter.get(key),demographics.get(key));
+				demographics.remove(key);
+
+			}
+		}
+
+//		System.out.println("packet creation demographic map key set :: "+demographics.keySet());
+
+		LOGGER.info(LOG_PKT_HANLDER, APPLICATION_NAME, APPLICATION_ID,
+				"filter demographics for philsys : ");
+		return demographics;
+
+	}
+
 	private void setDemographics(RegistrationDTO registrationDTO, SchemaDto schema) throws RegBaseCheckedException {
-		Map<String, Object> demographics = registrationDTO.getDemographics();
+
+//		Map<String, Object> demographics = registrationDTO.getDemographics();
+		Map<String, Object> demographics = setAddressDetailsForPhilsys(registrationDTO.getDemographics());
 
 		for (String fieldName : demographics.keySet()) {
 			LOGGER.info(LOG_PKT_HANLDER, APPLICATION_NAME, APPLICATION_ID,

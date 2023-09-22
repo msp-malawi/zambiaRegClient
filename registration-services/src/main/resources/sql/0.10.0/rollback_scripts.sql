@@ -32,6 +32,18 @@ insert into reg.global_param values ('mosip.kernel.uin.length.repeating-limit','
 
 insert into reg.global_param values ('mosip.kernel.uin.length.conjugative-even-digits-limit','mosip.kernel.uin.length.conjugative-even-digits-limit','3','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
 
+INSERT INTO reg.global_param VALUES ('mosip.kernel.vid.not-start-with','mosip.kernel.vid.not-start-with','0,1','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
+
+INSERT INTO reg.global_param VALUES ('mosip.kernel.vid.restricted-numbers','mosip.kernel.vid.restricted-numbers','786,666','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
+
+INSERT INTO reg.global_param VALUES ('mosip.kernel.vid.length.repeating-block-limit','mosip.kernel.vid.length.repeating-block-limit','2','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
+
+INSERT INTO reg.global_param VALUES ('mosip.kernel.vid.length.sequence-limit','mosip.kernel.vid.length.sequence-limit','3','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
+
+INSERT INTO reg.global_param VALUES ('mosip.kernel.vid.length.repeating-limit','mosip.kernel.vid.length.repeating-limit','2','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
+
+insert INTO reg.global_param VALUES ('mosip.kernel.vid.length','mosip.kernel.vid.length','16','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
+
 insert into reg.global_param values ('mosip.kernel.transliteration.arabic-language-code','mosip.kernel.transliteration.arabic-language-code','ara','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
 
 insert into reg.global_param values ('mosip.kernel.transliteration.franch-language-code','mosip.kernel.transliteration.franch-language-code','fra','CONFIGURATION','eng',true,'SYSTEM',current timestamp, 'SYSTEM',current timestamp, false, current timestamp);
