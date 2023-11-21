@@ -132,6 +132,8 @@ public class RegistrationController extends BaseController {
 		RegistrationDTO registrationDTO = getRegistrationDTOFromSession();
 		registrationDTO.setSelectionListDTO(selectionListDTO);
 		List<String> fieldIds = new ArrayList<String>(selectedFields.keySet());
+//		System.out.println("updatable fileds : "+ fieldIds);
+//		System.out.println("updatable selectedFields.keySet() : "+ selectedFields.keySet());
 		registrationDTO.setUpdatableFields(fieldIds);
 		registrationDTO.addDemographicField("UIN", UIN);
 		registrationDTO.setUpdatableFieldGroups(selectedFieldGroups);

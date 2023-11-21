@@ -466,7 +466,9 @@ public class SoftwareUpdateHandler extends BaseService {
 	}
 
 	private void setServerManifest(Manifest serverManifest) {
-		System.out.println("serverManifest out "+serverManifest.getMainAttributes());
+//		if(serverManifest !=null){
+//			System.out.println("serverManifest out " + serverManifest.getMainAttributes());
+//		}
 		this.serverManifest = serverManifest;
 	}
 

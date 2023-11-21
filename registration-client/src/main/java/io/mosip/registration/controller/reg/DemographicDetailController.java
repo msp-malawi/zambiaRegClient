@@ -595,8 +595,10 @@ public class DemographicDetailController extends BaseController {
                                 k.replace(RegistrationConstants.LOCAL_LANGUAGE, RegistrationConstants.EMPTY), ApplicationContext.localLanguage()));
                     }
                 } else {
+                    System.out.println("populate drop down init----------------"+k);
                     listOfComboBoxWithObject.get(k).getItems()
                             .addAll(masterSyncService.getFieldValues(k, ApplicationContext.applicationLanguage()));
+                    System.out.println("bloodtype genri value dto check : "+ listOfComboBoxWithObject.get(k).getItems());
                 }
             }
         } catch (RegBaseCheckedException e) {
@@ -1015,7 +1017,6 @@ public class DemographicDetailController extends BaseController {
 
     public void uinUpdate() {
         List<String> selectionList = getRegistrationDTOFromSession().getUpdatableFields();
-        System.out.println("getRegistrationDTOFromSession default updatable : "+getRegistrationDTOFromSession().getDefaultUpdatableFields());
         if (selectionList != null) {
             disablePreRegFetch();
             registrationNavlabel.setText(applicationLabelBundle.getString("uinUpdateNavLbl"));
@@ -1037,7 +1038,6 @@ public class DemographicDetailController extends BaseController {
     }
 
     private void updateDemographicScreen(String key, List<String> selectionList, boolean isDefault) {
-        System.out.println("updatedemoscreen key : "+key+" isdefault : "+isDefault);
         if (getFxElement(key) != null) {
             if (getFxElement(key).getParent() != null) {
 
@@ -1083,8 +1083,12 @@ public class DemographicDetailController extends BaseController {
 
             for (UiSchemaDTO schemaField : validation.getValidationMap().values()) {
                 Object value = demographics.get(schemaField.getId());
-                if (value == null)
+                if (value == null) {
+                    System.out.println("populate values  null for demograpics id: "+schemaField.getId());
                     continue;
+                }else{
+                    System.out.println("demo map : "+(List<SimpleDto>) value);
+                }
 
                 switch (schemaField.getType()) {
                     case RegistrationConstants.SIMPLE_TYPE:
@@ -1700,11 +1704,12 @@ fetchPreRegistration();
     private void updateFields(List<UiSchemaDTO> fields, boolean isVisible) {
         //LOGGER.debug(loggerClassName, APPLICATION_NAME, RegistrationConstants.APPLICATION_ID, "Updating fields");
         for (UiSchemaDTO field : fields) {
-            System.out.println("refresh visibility groups or fields for demographic page"+field.getId() + "isvisible: "+ isVisible);
+//            System.out.println("refresh visibility groups or fields for demographic page"+field.getId() + "isvisible: "+ isVisible);
 			/*LOGGER.debug(loggerClassName, APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
 					"Updating visibility for field : " + field.getId() + " as visibility : " + isVisible);*/
             Node node = getFxElement(field.getId());
             if (node != null) {
+//                System.out.println("node not null field id : "+field.getId() +" is visible : "+isVisible);
                 if (!isVisible) {
                     clearFieldValue(node);
                 }

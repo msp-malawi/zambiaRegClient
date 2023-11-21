@@ -433,7 +433,7 @@ public class MasterSyncServiceImpl extends BaseService implements MasterSyncServ
 	public List<GenericDto> getDynamicField(String fieldName, String langCode) throws RegBaseCheckedException {
 		List<GenericDto> fieldValues = new ArrayList<>();
 		List<DynamicFieldValueDto> syncedValues = dynamicFieldDAO.getDynamicFieldValues(fieldName, langCode);
-		System.out.println("syncedValues "+syncedValues.size());
+		System.out.println("syncedValues "+syncedValues.size() + " : fieldname : " +fieldName + " _ "+langCode );
 		if (syncedValues != null) {
 			for (DynamicFieldValueDto valueDto : syncedValues) {
 				if (valueDto.isActive()) {

@@ -13,20 +13,13 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.WeakHashMap;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
@@ -314,6 +307,21 @@ public class TemplateGenerator extends BaseService {
             data.put("secondaryLabel", field.getLabel().get("secondary"));
             data.put("primaryValue", getValueForTemplate(value.toUpperCase()));
             data.put("secondaryValue", getSecondaryLanguageValue(registration.getDemographics().get(field.getId())));
+        }
+        if("dateOfBirth".equalsIgnoreCase(field.getId()) && value != null && !value.isEmpty()){
+            try {
+                String date = getValueForTemplate(value.toUpperCase());
+                System.out.println("date old : "+date);
+                Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(date);
+// displaying month in MMMM format
+                SimpleDateFormat simpleformat = new SimpleDateFormat("MMMM dd yyyy");
+                String dateModified = simpleformat.format(date1);
+
+                data.put("primaryValue", dateModified);
+                System.out.println("date value : "+ dateModified);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         return data;
     }

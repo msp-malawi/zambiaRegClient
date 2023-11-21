@@ -227,6 +227,7 @@ public class UpdateUINController extends BaseController implements Initializable
 //				} else
 				if (vidValidatorImpl.validateId(uinId.getText()) && !selectedFields.isEmpty()) {
 					System.out.println("vid condition check : "+uinId.getText());
+
 					registrationController.init(uinId.getText(), checkBoxKeeper, selectedFields, selectedFieldGroups);
 					Parent createRoot = BaseController.load(
 							getClass().getResource(RegistrationConstants.CREATE_PACKET_PAGE),

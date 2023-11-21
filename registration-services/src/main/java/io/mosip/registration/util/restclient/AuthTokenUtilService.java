@@ -140,6 +140,8 @@ public class AuthTokenUtilService {
             setTimeout(requestHTTPDTO);
             setURI(requestHTTPDTO, new HashMap<>(), getEnvironmentProperty("auth_by_password", RegistrationConstants.SERVICE_URL));
             Map<String, Object> responseMap = restClientUtil.invokeForToken(requestHTTPDTO);
+//            LOGGER.info(AUTH_REFRESH_TOKEN_UTIL, APPLICATION_NAME, APPLICATION_ID,
+//                    "refreshAuthToken invoked for userId >>>>> printing response map 1 " + responseMap);
 
             long currentTimeInSeconds = System.currentTimeMillis()/1000;
             JSONObject jsonObject = getAuthTokenResponse(responseMap);
@@ -190,6 +192,10 @@ public class AuthTokenUtilService {
             setTimeout(requestHTTPDTO);
             setURI(requestHTTPDTO, new HashMap<>(), getEnvironmentProperty("auth_by_password", RegistrationConstants.SERVICE_URL));
             Map<String, Object> responseMap = restClientUtil.invokeForToken(requestHTTPDTO);
+
+//            LOGGER.info(AUTH_REFRESH_TOKEN_UTIL, APPLICATION_NAME, APPLICATION_ID,
+//                    "Fetching Auth Token and refresh token based on Login Mode >>> printing response map 2 " + responseMap);
+
 
             long currentTimeInSeconds = System.currentTimeMillis()/1000;
             JSONObject jsonObject = getAuthTokenResponse(responseMap);

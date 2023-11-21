@@ -78,6 +78,8 @@ public class RegistrationDTO {
 	public Map<String, byte[]> streamImages = new HashMap<>();
 
 	public void addDemographicField(String fieldId, String value) {
+
+		System.out.println("addDemographicField : fieldId : "+fieldId+ "value : "+ value );
 		this.demographics.put(fieldId, (value != null && !value.isEmpty()) ? value : null);
 	}
 
@@ -95,6 +97,7 @@ public class RegistrationDTO {
 
 		if (values.isEmpty())
 			this.demographics.remove(fieldId);
+
 	}
 
 	public void addDefaultDemographicField(String fieldId, String applicationLanguage, String value,
