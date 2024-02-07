@@ -210,10 +210,15 @@ public class DemographicDetailController extends BaseController {
             localLabelBundle = applicationContext.getLocalLanguageProperty();
             parentFlow = parentFlowPane.getChildren();
             int position = parentFlow.size() - 1;
+            System.out.println("initial position : "+position);
 
             templateGroup = getTemplateGroupMap();
             for (Entry<String, List<UiSchemaDTO>> templateGroupEntry : templateGroup.entrySet()) {
 
+                System.out.println("templateGroupEntry key "+templateGroupEntry.getKey());
+                if(templateGroupEntry.getKey().equalsIgnoreCase("miscellaneous")) {
+                    System.out.println("templategroup map miscelaneous : " + templateGroupEntry.getKey() + " DTO : " + templateGroupEntry.getValue());
+                }
                 List<UiSchemaDTO> list = templateGroupEntry.getValue();
                 if (list.size() <= 4) {
                     addGroupInUI(list, position, templateGroupEntry.getKey() + position);
@@ -274,7 +279,8 @@ public class DemographicDetailController extends BaseController {
         groupGridPane.setId(gridPaneId);
 
         addGroupContent(subList, groupGridPane);
-
+//        parentFlowPane.getChildren().add(groupGridPane);//from github mosip 1.1.5.5
+//commented as per github
         parentFlow.add(groupGridPane);
         position++;
         positionTracker.put(groupGridPane.getId(), position);
@@ -399,6 +405,7 @@ public class DemographicDetailController extends BaseController {
         VBox content = null;
         switch (schemaDTO.getControlType()) {
             case RegistrationConstants.DROPDOWN:
+                System.out.println("DROPDOWN schemaDTO.getId() "+schemaDTO.getId()+"    languageType :   "+languageType);
                 content = addContentWithComboBoxObject(schemaDTO.getId(), schemaDTO, languageType);
                 break;
             case RegistrationConstants.AGE_DATE:
@@ -659,6 +666,13 @@ public class DemographicDetailController extends BaseController {
         listOfComboBoxWithObject.put(fieldName + languageType, field);
         fxUtils.populateLocalComboBox(parentFlowPane, listOfComboBoxWithObject.get(fieldName), field);
         setFieldChangeListener(field);
+        //mosip github 1.1.5.5 start
+        field.managedProperty().bind(field.visibleProperty());
+        validationMessage.visibleProperty().bind(field.visibleProperty());
+        validationMessage.managedProperty().bind(field.visibleProperty());
+        vbox.visibleProperty().bind(field.visibleProperty());
+        vbox.managedProperty().bind(field.visibleProperty());
+        //mosip github 1.1.5.5 end
         return vbox;
     }
 
@@ -1550,6 +1564,7 @@ fetchPreRegistration();
                 }
 
                 if (horizontalRowGridPane == null) {
+                    System.out.println("Setting vertical row gridpane for : " + uiSchemaDTOs.get(index).getId());
                     LOGGER.debug(loggerClassName, APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
                             "Setting vertical row gridpane for : " + uiSchemaDTOs.get(index).getId());
                     groupGridPane.getChildren().add(rowGridPane);
@@ -1560,6 +1575,7 @@ fetchPreRegistration();
         }
 
         if (horizontalRowGridPane != null) {
+            System.out.println("Setting horizontal row gridpane for group : "+groupGridPane.getId());
             LOGGER.debug(loggerClassName, APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
                     "Setting horizontal row gridpane for group : ");
             groupGridPane.getChildren().add(horizontalRowGridPane);
@@ -1692,7 +1708,7 @@ fetchPreRegistration();
                     if (visibilityExpr.getEngine().equalsIgnoreCase(RegistrationConstants.MVEL_TYPE)) {
                         VariableResolverFactory resolverFactory = new MapVariableResolverFactory(context);
                         Object required = MVEL.eval(visibilityExpr.getExpr(), resolverFactory);
-//                        System.out.println("field id : "+uiSchemaDTO.getId()+"required :"+(boolean)required);
+                        System.out.println("field id : "+uiSchemaDTO.getId()+"required :"+(boolean)required);
                         updateFields(Arrays.asList(uiSchemaDTO), required != null ? (boolean) required : false);
                     }
                 }
@@ -1709,7 +1725,7 @@ fetchPreRegistration();
 					"Updating visibility for field : " + field.getId() + " as visibility : " + isVisible);*/
             Node node = getFxElement(field.getId());
             if (node != null) {
-//                System.out.println("node not null field id : "+field.getId() +" is visible : "+isVisible);
+                System.out.println("node not null field id : "+field.getId() +" is visible : "+isVisible);
                 if (!isVisible) {
                     clearFieldValue(node);
                 }
