@@ -45,6 +45,9 @@ public class DateValidation extends BaseController {
     int maxAge = 0;
 
     public boolean isNewValueValid(String newValue, String fieldType) {
+        if(newValue.contains(" ")){
+            newValue = newValue.split(" ")[0];
+        }
         if (newValue.isEmpty())
             return true;
 
@@ -58,7 +61,7 @@ public class DateValidation extends BaseController {
                     return newValue.length() > 4 ? false : true;
                 case RegistrationConstants.AGE_FIELD:
                     int age = Integer.parseInt(newValue);
-                    return (age < 1 ||
+                    return (age < 0 ||
                             Integer.parseInt(newValue) > Integer.parseInt(getValueFromApplicationContext(RegistrationConstants.MAX_AGE)))
                             ? false : true;
             }
@@ -91,12 +94,13 @@ public class DateValidation extends BaseController {
     public boolean validateAge(Pane parentPane, TextField ageField) {
         String fieldId = ageField.getId().split("__")[0];
         resetFieldStyleClass(parentPane, fieldId, false);
-        boolean isValid = ageField.getText().matches(RegistrationConstants.NUMBER_REGEX);
-
+//        boolean isValid = ageField.getText().matches(RegistrationConstants.NUMBER_REGEX);
+        boolean isValid = ageField.getText().matches(RegistrationConstants.NUMBER_TEXT_REGEX);
+//add number and text regex
         if (isValid) {
             int maxAge = Integer.parseInt(getValueFromApplicationContext(RegistrationConstants.MAX_AGE));
             try {
-                int age = Integer.parseInt(ageField.getText());
+                int age = Integer.parseInt(ageField.getText().split(" ")[0]);
                 if (age > maxAge)
                     isValid = false;
                 else {
@@ -139,9 +143,9 @@ public class DateValidation extends BaseController {
 
         if (isError) {
             System.out.println("error");
-            dobMessage.setText(RegistrationUIConstants.INVALID_DATE.concat(" / ")
-                    .concat(RegistrationUIConstants.INVALID_AGE + getValueFromApplicationContext(RegistrationConstants.MAX_AGE)));
-            dobMessage.setVisible(true);
+//            dobMessage.setText(RegistrationUIConstants.INVALID_DATE.concat(" / ")
+//                    .concat(RegistrationUIConstants.INVALID_AGE + getValueFromApplicationContext(RegistrationConstants.MAX_AGE)));
+//            dobMessage.setVisible(true);
             generateAlert(parentPane, RegistrationConstants.DOB, dobMessage.getText());
         } else {
             dobMessage.setText(RegistrationConstants.EMPTY);
@@ -151,13 +155,32 @@ public class DateValidation extends BaseController {
 
     private void populateAge(Pane parentPane, String fieldId, LocalDate date) {
         TextField ageField = (TextField) getFxElement(parentPane, fieldId + "__" + RegistrationConstants.AGE_FIELD);
-        int age = Period.between(date, LocalDate.now(ZoneId.of("UTC"))).getYears();
+//        int age = Period.between(date, LocalDate.now(ZoneId.of("UTC"))).getYears();
+        String age = ageCalculator(date);
         ageField.setText(String.valueOf(age));
         ageField.setEditable(false);
 
         Node node = getFxElement(parentPane, ageField.getId() + RegistrationConstants.LOCAL_LANGUAGE);
         if (node != null) {
             ((TextField) node).setText(String.valueOf(age));
+        }
+    }
+
+    private String ageCalculator(LocalDate dateOfBirth){
+//        LocalDate dateOfBirth = LocalDate.of(1990, 5, 15);
+        LocalDate currentDate = LocalDate.now(ZoneId.of("UTC"));
+
+        Period period = Period.between(dateOfBirth, currentDate);
+        int years = period.getYears();
+        int months = period.getMonths();
+        int days = period.getDays();
+
+        if (years > 0) {
+            return  (years == 1) ? "1 Year" : years + " Years";
+        } else if (months > 0) {
+            return  (months == 1) ? "1 Month" : months + " Months";
+        } else {
+            return (days == 1) ? "1 Day" : days + " Days";
         }
     }
 
@@ -204,6 +227,23 @@ public class DateValidation extends BaseController {
 
                     dobMessage.setText(RegistrationUIConstants.INVALID_DATE.concat(" / ")
                             .concat(RegistrationUIConstants.INVALID_AGE + getValueFromApplicationContext(RegistrationConstants.MAX_AGE)));
+                    dobMessage.setVisible(true);
+                    generateAlert(parentPane, RegistrationConstants.DOB, dobMessage.getText());
+                    return false;
+                } else if (LocalDate.now().isEqual(date)) {
+                Label dobMessage = (Label) getFxElement(parentPane, fieldId + "__" + RegistrationConstants.DOB_MESSAGE);
+
+                dobMessage.setText(RegistrationUIConstants.INVALID_DATE);
+                dobMessage.setVisible(true);
+                generateAlert(parentPane, RegistrationConstants.DOB, dobMessage.getText());
+                return false;
+
+            }
+                else if(LocalDate.now().isBefore(date)){
+                    Label dobMessage = (Label) getFxElement(parentPane, fieldId + "__" + RegistrationConstants.DOB_MESSAGE);
+
+                    dobMessage.setText(RegistrationUIConstants.INVALID_DATE.concat(" / ")
+                            .concat(RegistrationUIConstants.FUTURE_DOB));
                     dobMessage.setVisible(true);
                     generateAlert(parentPane, RegistrationConstants.DOB, dobMessage.getText());
                     return false;

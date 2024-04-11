@@ -1193,6 +1193,7 @@ public class RegistrationConstants {
 	public static final int FULL_NAME_LENGTH = 50;
 	public static final String ADDRESS_LINE1_REGEX = "^.{1,50}$";
 	public static final String NUMBER_REGEX = "\\d+";
+	public static final String NUMBER_TEXT_REGEX = "^\\d+\\s*.*$";
 	public static final String NUMBER_OR_NOTHING_REGEX = "^\\d*$";
 	public static final String FOUR_NUMBER_REGEX = "\\d{4}";
 	public static final String TWO_NUMBER_REGEX = "\\d{2}";
