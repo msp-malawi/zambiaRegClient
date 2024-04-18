@@ -269,7 +269,7 @@ public class BioServiceImpl extends BaseService implements BioService {
 	public InputStream getStream(String modality) throws RegBaseCheckedException {
 		LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
 				"Stream request : " + System.currentTimeMillis() + modality);
-
+		System.out.println("stream req : "+modality);
 		MdmBioDevice bioDevice = deviceSpecificationFactory.getDeviceInfoByModality(modality);
 
 		LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,

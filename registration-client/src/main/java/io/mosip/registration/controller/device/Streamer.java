@@ -106,9 +106,19 @@ public class Streamer {
 						ByteArrayInputStream imageStream = new ByteArrayInputStream(imageBytes);
 						Image img = new Image(imageStream);
 						streamImage.setImage(img);
+						if(scanImage == null){
+							streamImage.setFitHeight(350.0);
+							streamImage.setFitWidth(350.0);
+							streamImage.setX(-45.0);
+							if(img.getHeight()<720.0d){
+								streamImage.setX(25.0);
+								streamImage.setFitHeight(250.0);
+								streamImage.setFitWidth(250.0);
+							}
+						}
 						if (null != scanImage) {
 							// scanImage.setImage(img);
-
+							System.out.println("inside scan image"+scanImage.getFitHeight() +"* "+scanImage.getFitWidth());
 							setImageView(scanImage);
 							setStreamImage(img);
 						}

@@ -212,8 +212,8 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
                     .setEntity(requestEntity).build();
             LOGGER.info(loggerClassName, APPLICATION_NAME, APPLICATION_ID,
                     "Requesting capture url...." + System.currentTimeMillis());
-
-            if(mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_RIGHT) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_LEFT) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_THUMBS)){
+            System.out.println("device url : "+bioDevice.getCallbackId() + MosipBioDeviceConstants.CAPTURE_ENDPOINT);
+            if(mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FACE_FULLFACE) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_RIGHT) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_LEFT) || mdmRequestDto.getModality().equalsIgnoreCase(RegistrationConstants.FINGERPRINT_SLAB_THUMBS)){
                 Thread.sleep(5000);
             }
             CloseableHttpResponse response = client.execute(request);
@@ -240,17 +240,17 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
                         "Getting data payload of biometric" + System.currentTimeMillis());
 
                 //TODO Iris exception - Gautam
-                if(rCaptureRequestDTO.getBio().get(0).getType().equalsIgnoreCase(RegistrationConstants.VALIDATION_TYPE_IRIS)) {
-                    Long exception = Arrays.stream(rCaptureRequestDTO.getBio().get(0).getException()).count();
-                    if (exception==0) {
-                        try {
-                            captureResponseBiometricsDTOs.get(1);
-                        } catch (Exception ex){
-                            throw new RegBaseCheckedException(RegistrationExceptionConstants.MDS_RCAPTURE_ERROR.getErrorCode(),
-                                    RegistrationExceptionConstants.MDS_RCAPTURE_ERROR.getErrorMessage());
-                        }
-                    }
-                }
+//                if(rCaptureRequestDTO.getBio().get(0).getType().equalsIgnoreCase(RegistrationConstants.VALIDATION_TYPE_IRIS)) {
+//                    Long exception = Arrays.stream(rCaptureRequestDTO.getBio().get(0).getException()).count();
+//                    if (exception==0) {
+//                        try {
+//                            captureResponseBiometricsDTOs.get(1);
+//                        } catch (Exception ex){
+//                            throw new RegBaseCheckedException(RegistrationExceptionConstants.MDS_RCAPTURE_ERROR.getErrorCode(),
+//                                    RegistrationExceptionConstants.MDS_RCAPTURE_ERROR.getErrorMessage());
+//                        }
+//                    }
+//                }
                    if (rCaptureResponseBiometricsDTO.getData() == null
                            || rCaptureResponseBiometricsDTO.getData().isEmpty()) {
                        throw new RegBaseCheckedException(RegistrationExceptionConstants.MDS_RCAPTURE_ERROR.getErrorCode(),

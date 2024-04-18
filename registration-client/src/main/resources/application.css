@@ -425,6 +425,17 @@
 	-fx-effect: dropshadow(three-pass-box, rgba(0.0, 0.0, 0.0, 0.6), 5.0,
 	0.0, 0.0, 1.0);
 }
+.loginSubmitStyle2 {
+	-fx-pref-height: 30.0px;
+	-fx-pref-width: 81.0px;
+	-fx-background-color: #ffffff;
+	-fx-background-radius: 6.0, 5.0;
+	-fx-background-insets: 0.0, 1.0;
+	-fx-text-fill: #ffffff;
+	-fx-font-size: 15.0px;
+	-fx-effect: dropshadow(three-pass-box, rgba(0.0, 0.0, 0.0, 0.6), 5.0,
+	0.0, 0.0, 1.0);
+}
 
 .loginSubmitStyle1 {
 	-fx-pref-height: 30.0px;
@@ -443,8 +454,18 @@
 	-fx-border-color: #FFFFFF;
 	-fx-text-fill: #FFFFFF;
 }
+.loginSubmitStyle2:hover {
+	-fx-background-color: #005baa;
+	-fx-border-color: #FFFFFF;
+	-fx-text-fill: #FFFFFF;
+}
 
 .loginSubmitStyle:pressed {
+	-fx-background-color: #005baa;
+	-fx-border-color: #FFFFFF;
+	-fx-text-fill: #FFFFFF;
+}
+.loginSubmitStyle2:pressed {
 	-fx-background-color: #005baa;
 	-fx-border-color: #FFFFFF;
 	-fx-text-fill: #FFFFFF;
@@ -615,6 +636,11 @@ Working on new Css by taleev
 .loginSubmitStyle {
 	-fx-pref-height: 35.0px;
 	-fx-pref-width: 312.0px;
+	-fx-background-color: #005baa
+}
+.loginSubmitStyle2 {
+	-fx-pref-height: 35.0px;
+	-fx-pref-width: 100.0px;
 	-fx-background-color: #005baa
 }
 

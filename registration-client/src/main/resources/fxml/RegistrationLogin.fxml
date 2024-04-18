@@ -88,18 +88,23 @@
              		<ProgressIndicator fx:id="irisProgressIndicator" layoutX="130.0" layoutY="50.0" progress="0.0" visible="false" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="facePane" layoutX="10.0" layoutY="38.0" prefHeight="510.0" prefWidth="458.0" styleClass="loginAnchorPaneStyle" visible="false"> 
+            <AnchorPane fx:id="facePane" layoutX="10.0" layoutY="38.0" prefHeight="510.0" prefWidth="458.0" styleClass="loginAnchorPaneStyle" visible="false">
                <children>
                <Label layoutX="35.0" layoutY="14.0" styleClass="higlightedLoginLable" text="%registrationlogin" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="14.0" />
                   <Label layoutX="35.0" layoutY="71.0" text="%withface" />
-                  <Button layoutX="134.0" layoutY="474.0" mnemonicParsing="false" onAction="#captureFace" styleClass="loginSubmitStyle1" text="%submit" />
-                  <Button layoutX="217.0" layoutY="474.0" mnemonicParsing="false" onAction="#streamFace" styleClass="loginSubmitStyle1" text="Stream" />
-                  <ImageView fx:id="faceImage" fitHeight="353.0" fitWidth="378.0" layoutX="38.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
+                  <Button layoutX="100.0" layoutY="375.0" mnemonicParsing="false" onAction="#captureFace" styleClass="loginSubmitStyle2" text="%submit" />
+                  <Button  layoutX="220.0" layoutY="375.0" mnemonicParsing="false" onAction="#streamFace" styleClass="loginSubmitStyle2" text="Stream" />
+<!--				   <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="38.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">-->
+<!--					   <image>-->
+<!--						   <Image url="@../images/FaceScan.png" />-->
+<!--					   </image>-->
+<!--				   </ImageView>-->
+                  <ImageView fx:id="faceImage" fitHeight="230.0" fitWidth="230.0" layoutX="75.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
       					<image>
       						<Image url="@../images/FaceScan.png" />
       					</image>
       				</ImageView>
-      				 <Hyperlink layoutX="52.0" layoutY="476.0" mnemonicParsing="false" onAction="#back" styleClass="hyperLinkStyle" text="%back" />
+      				 <Hyperlink layoutX="38.0" layoutY="390.0" mnemonicParsing="false" onAction="#back" styleClass="hyperLinkStyle" text="%back" />
              		<ProgressIndicator fx:id="faceProgressIndicator" layoutX="130.0" layoutY="50.0" progress="0.0" visible="false" />
                </children>
             </AnchorPane>

@@ -420,10 +420,13 @@ public class SessionContext {
 		BioService bioService = applicationContext.getBean(BioService.class);
 		AuthenticationService authService = applicationContext.getBean(AuthenticationService.class);
 
-		MDMRequestDto mdmRequestDto = new MDMRequestDto(RegistrationConstants.FACE_FULLFACE, null, "Registration", io.mosip.registration.context.ApplicationContext.getStringValueFromApplicationMap(RegistrationConstants.SERVER_ACTIVE_PROFILE),
-				io.mosip.registration.context.ApplicationContext
-						.getIntValueFromApplicationMap(RegistrationConstants.CAPTURE_TIME_OUT), 1, io.mosip.registration.context.ApplicationContext
-				.getIntValueFromApplicationMap(RegistrationConstants.FACE_THRESHOLD));
+		String[] exp = {};
+		MDMRequestDto mdmRequestDto = new MDMRequestDto(RegistrationConstants.FACE_FULLFACE, exp, "Registration", io.mosip.registration.context.ApplicationContext.getStringValueFromApplicationMap(RegistrationConstants.SERVER_ACTIVE_PROFILE),
+				60000, 1, -1);
+//		io.mosip.registration.context.ApplicationContext
+//				.getIntValueFromApplicationMap(RegistrationConstants.CAPTURE_TIME_OUT)
+//TODO -START STREAM DURING OPERATOR AUTHENTICATION - GAUTAM
+//		bioService.getStream(RegistrationConstants.FACE_FULLFACE);
 
 		List<BiometricsDto> biometrics = bioService.captureModalityForAuth(mdmRequestDto);
 		if(authService.authValidator(authenticationValidatorDTO.getUserId(), BiometricType.FACE.value(), biometrics)) {

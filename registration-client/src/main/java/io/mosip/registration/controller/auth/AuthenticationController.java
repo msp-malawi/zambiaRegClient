@@ -1131,13 +1131,17 @@ public class AuthenticationController extends BaseController implements Initiali
 	 * @throws RegBaseCheckedException
 	 */
 	private boolean captureAndValidateFace(String userId) throws RegBaseCheckedException, IOException {
+		//TODO -START STREAM DURING OPERATOR AUTHENTICATION
+//		bioService.getStream(RegistrationConstants.FACE_FULLFACE);
 		MDMRequestDto mdmRequestDto = new MDMRequestDto(RegistrationConstants.FACE_FULLFACE, null, "Registration",
 				io.mosip.registration.context.ApplicationContext
 						.getStringValueFromApplicationMap(RegistrationConstants.SERVER_ACTIVE_PROFILE),
-				io.mosip.registration.context.ApplicationContext
-						.getIntValueFromApplicationMap(RegistrationConstants.CAPTURE_TIME_OUT),
-				1, io.mosip.registration.context.ApplicationContext
-						.getIntValueFromApplicationMap(RegistrationConstants.FACE_THRESHOLD));
+			60000,
+				1, -1);//non-icoa
+//		io.mosip.registration.context.ApplicationContext
+//				.getIntValueFromApplicationMap(RegistrationConstants.CAPTURE_TIME_OUT)
+//		io.mosip.registration.context.ApplicationContext
+//				.getIntValueFromApplicationMap(RegistrationConstants.FACE_THRESHOLD));
 
 		List<BiometricsDto> biometrics = bioService.captureModalityForAuth(mdmRequestDto);
 
