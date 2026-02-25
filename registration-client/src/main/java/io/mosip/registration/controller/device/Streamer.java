@@ -118,7 +118,7 @@ public class Streamer {
 						}
 						if (null != scanImage) {
 							// scanImage.setImage(img);
-							System.out.println("inside scan image"+scanImage.getFitHeight() +"* "+scanImage.getFitWidth());
+//							System.out.println("inside scan image"+scanImage.getFitHeight() +"* "+scanImage.getFitWidth());
 							setImageView(scanImage);
 							setStreamImage(img);
 						}

@@ -56,10 +56,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
 
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_ID;
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
@@ -77,8 +75,12 @@ public class LoginController extends BaseController implements Initializable {
 	 * Instance of {@link Logger}
 	 */
 	private static final Logger LOGGER = AppConfig.getLogger(LoginController.class);
-
 	@FXML
+	public TextField visiblePasswordField;
+
+	public ImageView toggleEye;
+
+    @FXML
 	private BorderPane loginScreen;
 
 	@FXML
@@ -188,16 +190,33 @@ public class LoginController extends BaseController implements Initializable {
 
 	@FXML
 	private Label versionValueLabel;
+	private  boolean isPasswordVisible;
 
 	@Autowired
 	private MosipDeviceSpecificationFactory deviceSpecificationFactory;
 
 	@Autowired
 	private AuthTokenUtilService authTokenUtilService;
+	private void bindTogglePassword() {
 
+		visiblePasswordField.textProperty().bindBidirectional(password.textProperty());
+
+		toggleEye.setOnMouseClicked(event -> {
+			isPasswordVisible = !isPasswordVisible;
+
+			visiblePasswordField.setVisible(isPasswordVisible);
+			visiblePasswordField.setManaged(isPasswordVisible);
+
+			password.setVisible(!isPasswordVisible);
+			password.setManaged(!isPasswordVisible);
+
+			toggleEye.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
+					isPasswordVisible ? "/images/passwordEye.png" : "/images/passwordEyeClose.png"))));
+		});
+	}
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-
+		bindTogglePassword();
 		versionValueLabel.setText(softwareUpdateHandler.getCurrentVersion());
 
 		new Thread(() -> {

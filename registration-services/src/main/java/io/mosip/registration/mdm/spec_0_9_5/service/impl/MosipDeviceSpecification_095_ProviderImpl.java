@@ -128,9 +128,13 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
             String request = new ObjectMapper().writeValueAsString(streamRequestDTO);
             //TODO time out exception by gautam
             RequestConfig config = RequestConfig.custom()
-                    .setConnectTimeout(15000)
-                    .setConnectionRequestTimeout(15000)
-                    .setSocketTimeout(15000).build();
+                    .setConnectTimeout(60000)
+                    .setConnectionRequestTimeout(60000)
+                    .setSocketTimeout(60000).build();
+//            RequestConfig config = RequestConfig.custom()
+//                    .setConnectTimeout(15000)
+//                    .setConnectionRequestTimeout(15000)
+//                    .setSocketTimeout(15000).build();
 
             CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
             StringEntity requestEntity = new StringEntity(request, ContentType.create("Content-Type", Consts.UTF_8));
@@ -190,9 +194,9 @@ public class MosipDeviceSpecification_095_ProviderImpl implements MosipDeviceSpe
             }else {
                 System.out.println("face 15 seconds   "+mdmRequestDto.getModality());
                  config = RequestConfig.custom()
-                        .setConnectTimeout(15000)
-                        .setConnectionRequestTimeout(15000)
-                        .setSocketTimeout(15000).build();
+                        .setConnectTimeout(65000)
+                        .setConnectionRequestTimeout(65000)
+                        .setSocketTimeout(65000).build();
             }
 
             String requestBody = null;

@@ -223,7 +223,10 @@ public class DaoConfig extends HibernateDaoConfig {
 	 */
 	private void createDatabase(String dbPath) throws Exception {
 		if(createDb(dbPath)) {
+
 			LOGGER.debug(LOGGER_CLASS_NAME, APPLICATION_NAME, APPLICATION_ID, "****** DATASOURCE dbPath : " + dbPath);
+//			LOGGER.info(LOGGER_CLASS_NAME, APPLICATION_NAME, APPLICATION_ID, "****** DATASOURCE dbPath secret  : " + String.format(URL + ";create=true;",
+//					dbPath, getDBSecret()));
 			Connection connection = null;
 			try {
 				connection = DriverManager.getConnection(String.format(URL + ";create=true;",

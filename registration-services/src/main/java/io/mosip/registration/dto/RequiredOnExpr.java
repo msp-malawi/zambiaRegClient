@@ -12,4 +12,9 @@ import lombok.NoArgsConstructor;
 public class RequiredOnExpr {
 	private String engine;
 	private String expr;
+
+    public RequiredOnExpr(Object o) {
+    }
+
+
 }

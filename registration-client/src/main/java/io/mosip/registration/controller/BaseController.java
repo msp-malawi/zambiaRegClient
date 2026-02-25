@@ -443,11 +443,9 @@ public class BaseController {
 	 * @return
 	 */
 	protected boolean pageNavigantionAlert() {
-		if (!fXComponents.getScene().getRoot().getId().equals("mainBox") && !SessionContext.map()
-				.get(RegistrationConstants.ISPAGE_NAVIGATION_ALERT_REQ).equals(RegistrationConstants.ENABLE)) {
 
 			Alert alert = createAlert(AlertType.CONFIRMATION, RegistrationUIConstants.INFORMATION,
-					RegistrationUIConstants.ALERT_NOTE_LABEL, RegistrationUIConstants.PAGE_NAVIGATION_MESSAGE,
+					RegistrationUIConstants.ALERT_NOTE_LABEL, RegistrationUIConstants.PAGE_LOGOUT_MESSAGE,
 					RegistrationConstants.PAGE_NAVIGATION_CONFIRM, RegistrationConstants.PAGE_NAVIGATION_CANCEL);
 
 			alert.show();
@@ -458,16 +456,41 @@ public class BaseController {
 			alert.setX(xValue);
 			alert.setY(yValue);
 			alert.showAndWait();
-			/* Get Option from user */
 			ButtonType result = alert.getResult();
 			if (result == ButtonType.OK) {
 				return true;
-			} else {
+			}
+
+
+			else {
 				return false;
 			}
 		}
-		return true;
-	}
+//		if (!fXComponents.getScene().getRoot().getId().equals("mainBox") && !SessionContext.map()
+//				.get(RegistrationConstants.ISPAGE_NAVIGATION_ALERT_REQ).equals(RegistrationConstants.ENABLE)) {
+//
+//			Alert alert = createAlert(AlertType.CONFIRMATION, RegistrationUIConstants.INFORMATION,
+//					RegistrationUIConstants.ALERT_NOTE_LABEL, RegistrationUIConstants.PAGE_NAVIGATION_MESSAGE,
+//					RegistrationConstants.PAGE_NAVIGATION_CONFIRM, RegistrationConstants.PAGE_NAVIGATION_CANCEL);
+//
+//			alert.show();
+//			Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
+//			Double xValue = screenSize.getWidth() / 2 - alert.getWidth() + 250;
+//			Double yValue = screenSize.getHeight() / 2 - alert.getHeight();
+//			alert.hide();
+//			alert.setX(xValue);
+//			alert.setY(yValue);
+//			alert.showAndWait();
+//			/* Get Option from user */
+//			ButtonType result = alert.getResult();
+//			if (result == ButtonType.OK) {
+//				return true;
+//			} else {
+//				return false;
+//			}
+//		}
+//		return true;
+
 
 	/**
 	 * Alert creation with specified context.
@@ -1508,7 +1531,8 @@ public class BaseController {
 												? RegistrationConstants.FACE_THRESHOLD
 												: RegistrationConstants.EMPTY;
 	}
-
+//: bioType.toLowerCase().contains(RegistrationConstants.EXCEPTION_PHOTO.toLowerCase())
+//			? RegistrationConstants.FACE_THRESHOLD
 	public interface ToRun<T> {
 		public T toRun();
 	}

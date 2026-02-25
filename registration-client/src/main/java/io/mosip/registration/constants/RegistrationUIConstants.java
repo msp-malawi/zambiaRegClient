@@ -36,6 +36,8 @@ public class RegistrationUIConstants {
 	// ALERT
 	public static final String ERROR = bundle.getString("ERROR");
 	public static final String INFORMATION = bundle.getString("INFORMATION");
+	public static final String PAGE_LOGOUT_MESSAGE = bundle.getString("PAGE_LOGOUT_MESSAGE");
+
 	public static final String SUCCESS = bundle.getString("SUCCESS");
 	public static final String FAILURE = bundle.getString("FAILURE");
 

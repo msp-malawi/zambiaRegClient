@@ -1,4 +1,4 @@
-Manifest-Version: 1.4.6-SNAPSHOT
+Manifest-Version: 1.4.8-SNAPSHOT
 
 Name: aws-java-sdk-resourcegroups-1.11.368.jar
 Content-Type: B63AF6F4D3CB37C35CA688F1AF1D8C88947AC0DBB05D57B48E64DCC87D

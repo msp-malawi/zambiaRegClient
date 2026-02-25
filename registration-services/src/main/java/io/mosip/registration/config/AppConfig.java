@@ -18,6 +18,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,9 +33,13 @@ import io.mosip.kernel.logger.logback.appender.RollingFileAppender;
 import io.mosip.kernel.logger.logback.factory.Logfactory;
 import io.mosip.kernel.templatemanager.velocity.builder.TemplateManagerBuilderImpl;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * Spring Configuration class for Registration-Service Module
- * 
+ *
  * @author Balaji Sridharan
  * @since 1.0.0
  *
@@ -67,9 +72,9 @@ public class AppConfig {
 
 	/*
 	 * @Value("${mosip.registration.face.provider}") private String faceSdk;
-	 * 
+	 *
 	 * @Value("${mosip.registration.iris.provider}") private String irisSdk;
-	 * 
+	 *
 	 * @Value("${mosip.registration.finger.provider}") private String fingerSdk;
 	 */
 	static {
@@ -103,8 +108,16 @@ public class AppConfig {
 //		return new TemplateManagerBuilderImpl();
 //	}
 
-
-
+	@Bean(name = "taskExecutor")
+	public Executor taskExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(5);      // Number of core threads
+		executor.setMaxPoolSize(10);      // Max threads allowed
+		executor.setQueueCapacity(25);    // Queue size
+		executor.setThreadNamePrefix("AsyncExecutor-");
+		executor.initialize();
+		return executor;
+	}
 	@Bean
 	public CacheManager cacheManager() {
 		return new ConcurrentMapCacheManager("entities");
