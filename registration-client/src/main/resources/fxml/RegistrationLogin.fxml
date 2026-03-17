@@ -9,13 +9,13 @@
 			styleClass="loginBorderPaneStyle" xmlns="http://javafx.com/javafx/17.0.2-ea"
 			fx:controller="io.mosip.registration.controller.auth.LoginController">
 	<top>
-		<HBox prefHeight="27.0" prefWidth="523.0" id="header-section" alignment="CENTER" >
+		<HBox  id="header-section" alignment="CENTER" >
 			<children>
 
 
 				<ImageView>
 					<image>
-<!--						<Image url="@/images/Loginlogo.png"/>-->
+						<Image url="@/images/Loginlogo.png"/>
 					</image>
 				</ImageView>
 
