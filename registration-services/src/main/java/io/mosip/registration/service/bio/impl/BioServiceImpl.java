@@ -1,15 +1,18 @@
 package io.mosip.registration.service.bio.impl;
 
-import static io.mosip.registration.constants.LoggerConstants.BIO_SERVICE;
-import static io.mosip.registration.constants.LoggerConstants.LOG_REG_FINGERPRINT_FACADE;
+import static io.mosip.registration.constants.LoggerConstants.*;
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_ID;
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,14 @@ import io.mosip.registration.service.bio.BioService;
  */
 @Service
 public class BioServiceImpl extends BaseService implements BioService {
-
+	@Autowired
+	ISO iso;
+	@Autowired
+	FaceStreamer faceStreamer;
+	@Autowired
+	FaceDetection faceDetection;
+	@Autowired
+	ImageProcessingService imageProcessingService;
 	@Autowired
 	private MosipDeviceSpecificationFactory deviceSpecificationFactory;
 
@@ -67,6 +77,15 @@ public class BioServiceImpl extends BaseService implements BioService {
 	 * Instance of {@link Logger}
 	 */
 	private static final Logger LOGGER = AppConfig.getLogger(BioServiceImpl.class);
+	private BufferedImage capturedImage;
+
+	public void setCapturedImage(BufferedImage img) {
+		this.capturedImage = img;
+	}
+
+	public BufferedImage getCapturedImage() {
+		return this.capturedImage;
+	}
 
 	@Autowired
 	private BioAPIFactory bioAPIFactory;
@@ -108,59 +127,135 @@ public class BioServiceImpl extends BaseService implements BioService {
 		return biometricsDtos;
 	}
 
-	private List<BiometricsDto> captureRealModality(MDMRequestDto mdmRequestDto) throws RegBaseCheckedException {
+//	private List<BiometricsDto> captureRealModality(MDMRequestDto mdmRequestDto) throws RegBaseCheckedException {
+//		LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
+//				"Entering into captureModality method.." + System.currentTimeMillis());
+//		List<BiometricsDto> finalList = new ArrayList<>();
+//	List<BiometricsDto> biometricsDtos = new ArrayList<>();
+//	String currentModality = mdmRequestDto.getModality();
+//		List<BiometricsDto> list = new ArrayList<BiometricsDto>();
+//	if (isFace(currentModality) || isExceptionPhoto(currentModality)) {
+//			LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID, "Face modality detected: " + currentModality);
+//			biometricsDtos = faceCapture(currentModality, mdmRequestDto);
+//		}
+//		MdmBioDevice bioDevice = deviceSpecificationFactory.getDeviceInfoByModality(mdmRequestDto.getModality());
+//
+//		MosipDeviceSpecificationProvider deviceSpecificationProvider = deviceSpecificationFactory
+//				.getMdsProvider(bioDevice.getSpecVersion());
+//		System.out.println("biodevice spec version "+bioDevice.getSpecVersion());//test
+//
+//		 biometricsDtos = deviceSpecificationProvider.rCapture(bioDevice, mdmRequestDto);
+//
+//		try {
+//			for (BiometricsDto biometricsDto : biometricsDtos) {
+//				if (biometricsDto != null
+//						&& isQualityScoreMaxInclusive(String.valueOf(biometricsDto.getQualityScore()))) {
+////					if (ApplicationContext.map().containsKey(RegistrationConstants.QUALITY_CHECK_WITH_SDK)
+////							&& Applica1100ionContext
+////									.getStringValueFromApplicationMap(RegistrationConstants.QUALITY_CHECK_WITH_SDK)
+////									.equalsIgnoreCase(RegistrationConstants.ENABLE)) {
+////						LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
+////								"Quality check with Biometric SDK flag is enabled..");
+//
+//					BiometricType biometricType = BiometricType
+//							.fromValue(Biometric.getSingleTypeByAttribute(biometricsDto.getBioAttribute()).name());
+//
+//					BIR bir = buildBir(biometricsDto);
+//					BIR[] birList = new BIR[] { bir };
+//					Map<BiometricType, Float> scoreMap = bioAPIFactory
+//							.getBioProvider(biometricType, BiometricFunction.QUALITY_CHECK)
+//							.getModalityQuality(birList, null);
+//
+//					LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
+//							"Quality score is evaluated and assigning to biometricsDto..");
+//
+//					biometricsDto.setIdemiaQualityScore(scoreMap.get(biometricType));
+//					//}
+//					list.add(biometricsDto);
+//				}
+//			}
+//		} catch (Exception exception) {
+//			throw new RegBaseCheckedException(
+//					RegistrationExceptionConstants.REG_BIOMETRIC_QUALITY_CHECK_ERROR.getErrorCode(),
+//					RegistrationExceptionConstants.REG_BIOMETRIC_QUALITY_CHECK_ERROR.getErrorMessage()
+//							+ ExceptionUtils.getStackTrace(exception));
+//		}
+//
+//		LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
+//				"Ended captureModality method.." + System.currentTimeMillis());
+//		return list;
+//	}
+
+	private List<BiometricsDto> captureRealModality(MDMRequestDto mdmRequestDto)
+			throws RegBaseCheckedException {
+
 		LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
-				"Entering into captureModality method.." + System.currentTimeMillis());
+				"Entering captureModality method");
 
-		List<BiometricsDto> list = new ArrayList<BiometricsDto>();
+		List<BiometricsDto> result = new ArrayList<>();
+		List<BiometricsDto> biometricsDtos;
 
-		MdmBioDevice bioDevice = deviceSpecificationFactory.getDeviceInfoByModality(mdmRequestDto.getModality());
+		String modality = mdmRequestDto.getModality();
+		System.out.println("modality check = " + modality);
 
-		MosipDeviceSpecificationProvider deviceSpecificationProvider = deviceSpecificationFactory
-				.getMdsProvider(bioDevice.getSpecVersion());
-		System.out.println("biodevice spec version "+bioDevice.getSpecVersion());//test
+		if (isFace(modality) || isExceptionPhoto(modality)) {
+			biometricsDtos = faceCapture(modality, mdmRequestDto);
+		} else {
+			MdmBioDevice bioDevice = deviceSpecificationFactory.getDeviceInfoByModality(modality);
 
-		List<BiometricsDto> biometricsDtos = deviceSpecificationProvider.rCapture(bioDevice, mdmRequestDto);
+			MosipDeviceSpecificationProvider provider =
+					deviceSpecificationFactory.getMdsProvider(bioDevice.getSpecVersion());
+
+			biometricsDtos = provider.rCapture(bioDevice, mdmRequestDto);
+		}
 
 		try {
-			for (BiometricsDto biometricsDto : biometricsDtos) {
-				if (biometricsDto != null
-						&& isQualityScoreMaxInclusive(String.valueOf(biometricsDto.getQualityScore()))) {
-//					if (ApplicationContext.map().containsKey(RegistrationConstants.QUALITY_CHECK_WITH_SDK)
-//							&& Applica1100ionContext
-//									.getStringValueFromApplicationMap(RegistrationConstants.QUALITY_CHECK_WITH_SDK)
-//									.equalsIgnoreCase(RegistrationConstants.ENABLE)) {
-//						LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
-//								"Quality check with Biometric SDK flag is enabled..");
+			for (BiometricsDto dto : biometricsDtos) {
 
-					BiometricType biometricType = BiometricType
-							.fromValue(Biometric.getSingleTypeByAttribute(biometricsDto.getBioAttribute()).name());
+				if (dto != null && isQualityScoreMaxInclusive(String.valueOf(dto.getQualityScore()))) {
 
-					BIR bir = buildBir(biometricsDto);
-					BIR[] birList = new BIR[] { bir };
-					Map<BiometricType, Float> scoreMap = bioAPIFactory
-							.getBioProvider(biometricType, BiometricFunction.QUALITY_CHECK)
-							.getModalityQuality(birList, null);
+					BiometricType biometricType = BiometricType.fromValue(
+							Biometric.getSingleTypeByAttribute(dto.getBioAttribute()).name());
 
-					LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
-							"Quality score is evaluated and assigning to biometricsDto..");
+					BIR bir = buildBir(dto);
 
-					biometricsDto.setIdemiaQualityScore(scoreMap.get(biometricType));
-					//}
-					list.add(biometricsDto);
+					Map<BiometricType, Float> scoreMap =
+							bioAPIFactory.getBioProvider(biometricType, BiometricFunction.QUALITY_CHECK)
+									.getModalityQuality(new BIR[]{bir}, null);
+
+					dto.setIdemiaQualityScore(scoreMap.get(biometricType));
+
+					result.add(dto);
+				}
+				else if (isFace(modality) || isExceptionPhoto(modality)) {
+//						if(mdmRequestDto.getRequestedScore() == -1){
+//							biometricsDto.setQualityScore(rawScore);
+//							biometricsDto.setIdemiaQualityScore(rawScore);
+//						}else {
+					dto.setQualityScore(faceStreamer.getQualityScore());
+					dto.setIdemiaQualityScore(faceStreamer.getQualityScore());
+//						}
 				}
 			}
-		} catch (Exception exception) {
+		} catch (Exception e) {
 			throw new RegBaseCheckedException(
 					RegistrationExceptionConstants.REG_BIOMETRIC_QUALITY_CHECK_ERROR.getErrorCode(),
-					RegistrationExceptionConstants.REG_BIOMETRIC_QUALITY_CHECK_ERROR.getErrorMessage()
-							+ ExceptionUtils.getStackTrace(exception));
+					RegistrationExceptionConstants.REG_BIOMETRIC_QUALITY_CHECK_ERROR.getErrorMessage());
 		}
 
 		LOGGER.info(BIO_SERVICE, APPLICATION_NAME, APPLICATION_ID,
-				"Ended captureModality method.." + System.currentTimeMillis());
-		return list;
+				"Ended captureModality method");
+
+		return result;
 	}
+	private boolean isExceptionPhoto(String modality) {
+		LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID, "Checking subType is whether exception photo or not");
+		return modality != null && modality.equalsIgnoreCase(RegistrationConstants.EXCEPTION_PHOTO);
+	}
+	private boolean isFace(String currentModality) {
+		return currentModality.toUpperCase().contains(RegistrationConstants.FACE.toUpperCase());
+	}
+
 
 	private List<String> getSubTypes(SingleType singleType, String bioAttribute) {
 		List<String> subtypes = new LinkedList<>();
@@ -188,6 +283,131 @@ public class BioServiceImpl extends BaseService implements BioService {
 		}
 		return subtypes;
 	}
+	public static BufferedImage deepCopyImage(BufferedImage img) {
+		System.out.println("img = " + img);
+		int type = img.getType() == 0 ? BufferedImage.TYPE_3BYTE_BGR : img.getType();
+		BufferedImage copy = new BufferedImage(img.getWidth(), img.getHeight(), type);
+		Graphics2D g = copy.createGraphics();
+		g.drawImage(img, 0, 0, null);
+		g.dispose();
+		return copy;
+	}
+//	public List<BiometricsDto> faceCapture(String modality, MDMRequestDto mdmRequestDto) throws RuntimeException {
+//		byte[] headerImage = null;
+//		BufferedImage img = faceStreamer.getFaceCamFrame();
+//
+//
+//		if (img == null) {
+//			faceStreamer.stopCam();
+//
+//			throw new RuntimeException("Captured image is null");
+//		}
+//
+//		System.out.println("Capture img is OK");
+//
+//		BufferedImage copyImg = deepCopyImage(img);
+//		if (!mdmRequestDto.isExceptionPhoto()) {
+//			boolean faceOk = faceDetection.addUiElements(img); // includes quality + pose check
+//
+//			if (!faceOk && mdmRequestDto.getRequestedScore() != -1) {
+//
+//
+//				throw new RuntimeException("Face is not OK: pose or quality issue");
+//			}
+//		}
+//
+//
+//		try {
+//			img = faceDetection.cropToPassportSize(copyImg);
+//			System.out.println("Crop image: ok");
+//
+//			if (img == null) {
+//				throw new RuntimeException("Cropped image is null");
+//			}
+//			float brightnessFactor = 1.2f; // 1.0 = original, >1 = brighter, <1 = darker
+//			RescaleOp rescaleOp = new RescaleOp(brightnessFactor, 0, null);
+//			rescaleOp.filter(img, img);
+//			byte[] faceImage = imageProcessingService.convertToJP2ByteArray(img);
+//			headerImage = iso.crtImg(faceImage);
+//			setCapturedImage(copyImg);
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			throw new RuntimeException("Face capture failed", e);
+//		} finally {
+//			img.flush();
+//			copyImg.flush();
+//			faceStreamer.stopCam();
+//		}
+//
+//		List<BiometricsDto> biometricDTOs = new ArrayList<>();
+//		String uiAttribute = io.mosip.registration.mdm.dto.Biometric.getUiSchemaAttributeName("face", "0.9.2");
+//
+//		BiometricsDto biometricDTO = new BiometricsDto(uiAttribute, headerImage, 70.0);
+//		biometricDTO.setCaptured(true);
+//		biometricDTO.setModalityName(modality);
+//		biometricDTOs.add(biometricDTO);
+//
+//		return biometricDTOs;
+//	}
+public List<BiometricsDto> faceCapture(String modality, MDMRequestDto mdmRequestDto) throws RuntimeException {
+	byte[] headerImage = null;
+	BufferedImage img = faceStreamer.getFaceCamFrame();
+	System.out.println("modality  = " + modality);
+
+	if (img == null) {
+		faceStreamer.stopCam();
+
+		throw new RuntimeException("Captured image is null");
+	}
+
+	System.out.println("Capture img is OK");
+
+	BufferedImage copyImg = deepCopyImage(img);
+	if (RegistrationConstants.FACE.equalsIgnoreCase(modality)) {
+		boolean faceOk = faceDetection.addUiElements(img);
+
+		if (!faceOk && mdmRequestDto.getRequestedScore() != -1) {
+			throw new RuntimeException("Face is not OK: pose or quality issue");
+		}
+	} else {
+		faceDetection.addUiElements(img); // skip validation
+	}
+
+
+	try {
+		img = faceDetection.cropToPassportSize(copyImg);
+		System.out.println("Crop image: ok");
+
+		if (img == null) {
+			throw new RuntimeException("Cropped image is null");
+		}
+		float brightnessFactor = 1.2f; // 1.0 = original, >1 = brighter, <1 = darker
+		RescaleOp rescaleOp = new RescaleOp(brightnessFactor, 0, null);
+		rescaleOp.filter(img, img);
+		byte[] faceImage = imageProcessingService.convertToJP2ByteArray(img);
+		headerImage = iso.crtImg(faceImage);
+		setCapturedImage(copyImg);
+
+	} catch (Exception e) {
+		e.printStackTrace();
+		throw new RuntimeException("Face capture failed", e);
+	} finally {
+		img.flush();
+		copyImg.flush();
+		faceStreamer.stopCam();
+	}
+
+	List<BiometricsDto> biometricDTOs = new ArrayList<>();
+	String uiAttribute = io.mosip.registration.mdm.dto.Biometric.getUiSchemaAttributeName("face", "0.9.2");
+
+	BiometricsDto biometricDTO = new BiometricsDto(uiAttribute, headerImage, 70.0);
+	biometricDTO.setCaptured(true);
+	biometricDTO.setModalityName(modality);
+	biometricDTOs.add(biometricDTO);
+
+	return biometricDTOs;
+}
 
 	private List<BiometricsDto> captureMockModality(MDMRequestDto mdmRequestDto, boolean isUserOnboarding)
 			throws RegBaseCheckedException {

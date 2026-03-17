@@ -2,7 +2,7 @@ package io.mosip.registration.constants;
 
 /**
  * Contains the constants to be used for logging
- * 
+ *
  * @author Balaji Sridharan
  * @since 1.0.0
  */
@@ -92,14 +92,23 @@ public class LoggerConstants {
 	public static final String AUTHENTICATION_SRVICE = "AUTHENTICATION_SRVICE";
 	public static final String FINGER_PRINT_AUTHENTICATION = "FINGER_PRINT_AUTHENTICATION";
 	public static final String VALIDATE_FP_WITH_BIO_API = " VALIDATE_FP_WITH_BIO_API";
-	
+
 	public static final String BIO_SERVICE = "BIO_SERVICE";
+	public static final String FACE_DETECTION = "FACE_DETECTION";
+	public static final String FACE_STREAMER = "FACE_STREAMER";
+
 	public static final String LOG_REG_PAGE_FLOW = PGE_FLW + "PAGE_FLOW";
 	public static final String LOG_REG_USER_DETAIL = SYNC + "USER_DETAIL_SERVICE_IMPL";
 	public static final String LOG_REG_USER_DETAIL_DAO = SYNC + "USER_DETAIL_DAO_IMPL";
 	public static final String LOG_REG_AUTH = AUTH + "AUTHENTICATION_CONTROLLER";
 	public static final String LOG_REG_BIOMETRIC_CONTROLLER = USER_REGISTRATION
 			+ "BIOMETRICS_CONTROLLER";
+	public static final String LOG_REG_TOKEN_SYSTEM_CONTROLLER = USER_REGISTRATION
+			+ "TOKEN_SYSTEM_CONTROLLER";
+
+	public static final String LOG_REG_SIGN_CAPTURE = USER_ONBOARD + "SIGN_CONTROLLER";
+	public static final String LOG_REG_PREVIEW = USER_ONBOARD + "PREVIEW_DATA_CONTROLLER";
+
 	// USER ONBOARD
 	public static final String LOG_REG_FINGERPRINT_CAPTURE_USER_ONBOARD = USER_ONBOARD
 			+ "FINGERPRINT_CAPTURE_CONTROLLER";
@@ -180,7 +189,7 @@ public class LoggerConstants {
 
 	public static final String ID_OBJECT_SCHEMA_VALIDATOR = UI_VALIDATIONS + "ID_OBJECT_SCHEMA_VALIDATOR";
 	public static final String ID_OBJECT_PATTERN_VALIDATOR = UI_VALIDATIONS + "ID_OBJECT_PATTERN_VALIDATOR";
-	
+
 	public static final String LOG_PACKET_UPLOAD = PKT_UPLOAD + "UPLOAD_CONTROLLER";
 	public static final String LOG_PKT_DELETE = PKT_STATUS_SYNC + "REG_PACKET_STATUS_SERVICE";
 	public static final String LOG_PKT_SYNC = PKT_STATUS_SYNC + "SYNC";
@@ -189,10 +198,10 @@ public class LoggerConstants {
 	public static final String LOG_GET_REGISTER_PKT = REGISTER_PKT + "GET";
 	public static final String LOG_UPADTE_REGISTER_PKT = REGISTER_PKT + "UPDATE_STATUS";
 	public static final String LOG_ALERT_GENERATION = ALERT_GENERATION + "ALERT_GENERATION";
-	
+
 
 	public static final String STREAMER = "STREAMER";
-	
+
 	public static final String TPM_CLIENT_SECURITY_IMPL = "TPM_CLIENT_SECURITY_IMPL";
 	public static final String LOCAL_CLIENT_SECURITY_IMPL = "LOCAL_CLIENT_SECURITY_IMPL";
 

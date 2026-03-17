@@ -12,6 +12,7 @@ public class MDMRequestDto {
 	private int timeout;
 	private int count;
 	private int requestedScore;
+	private boolean exceptionPhoto;
 
 	public MDMRequestDto(String modality, String[] exceptions, String mosipProcess, String environment, int timeout,
 			int count, int requestedScore) {
@@ -23,6 +24,7 @@ public class MDMRequestDto {
 		this.timeout = timeout;
 		this.count = count;
 		this.requestedScore = requestedScore;
+//		this.exceptionPhoto = exceptionPhoto;
 	}
 
 }

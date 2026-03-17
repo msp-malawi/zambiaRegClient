@@ -65,6 +65,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collector;
 
 import static io.mosip.registration.constants.LoggerConstants.LOG_REG_BIOMETRIC_CONTROLLER;
 import static io.mosip.registration.constants.LoggerConstants.LOG_REG_FINGERPRINT_CAPTURE_CONTROLLER;
@@ -1070,7 +1071,7 @@ public class BiometricsController extends BaseController /* implements Initializ
                     protected MdmBioDevice call() throws RegBaseCheckedException {
 
                         LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
-                                "Capture request started" + System.currentTimeMillis());
+                                "deviceSearchTask request started" + System.currentTimeMillis());
 
                         return deviceSpecificationFactory
                                 .getDeviceInfoByModality(isFace(currentModality) || isExceptionPhoto(currentModality)
@@ -1081,13 +1082,31 @@ public class BiometricsController extends BaseController /* implements Initializ
                 };
             }
         };
+//        if (!bioService.isMdmEnabled()) {
+//            LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+//                    "rCaptureTaskService start : before thread waiting period");
+//            rCaptureTaskService();
+//        } else {
+//            deviceSearchTask.start();
+//        }
+        // mdmBioDevice = null;
         if (!bioService.isMdmEnabled()) {
+            LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID, "rCaptureTaskService start : before thread waiting period");
+            rCaptureTaskService();
+        } else if (isFace(currentModality) || isExceptionPhoto(currentModality)) {
+            System.out.println("bio scan currentModality = " + currentModality);
+            try {
+                streamer.startCameraCapture(currentModality, scanPopUpViewController.getScanImage(), biometricImage);
+            } catch (Exception e) {
+                streamer.stop();
+                e.printStackTrace();
+                scanPopUpViewController.getPopupStage().close();
+            }
+        } else if (isFinger(currentModality)) {
             rCaptureTaskService();
         } else {
             deviceSearchTask.start();
         }
-        // mdmBioDevice = null;
-
         deviceSearchTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent t) {
@@ -1104,7 +1123,8 @@ public class BiometricsController extends BaseController /* implements Initializ
 
                     }
                     if (bioService.isMdmEnabled()) {
-
+                        LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+                                "mdm enabled : "+bioService.isMdmEnabled());
                         // Disable Auto-Logout
                         SessionContext.setAutoLogout(false);
 
@@ -1137,12 +1157,14 @@ public class BiometricsController extends BaseController /* implements Initializ
                             scanPopUpViewController.timerShow(event);
                         }
                         setPopViewControllerMessage(true, RegistrationUIConstants.STREAMING_INIT_MESSAGE);
-                        //TODO BY Gautam
+
+                        streamer.startStream(urlStream, scanPopUpViewController.getScanImage(), biometricImage);
+//TODO BY Gautam
                         if (!currentModality.equalsIgnoreCase("Face")) {
+                            LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+                                    "rCaptureTaskService start : after thread waiting period");
                             rCaptureTaskService();
                         }
-                        streamer.startStream(urlStream, scanPopUpViewController.getScanImage(), biometricImage);
-
                     } else {
                         rCaptureTaskService();
                     }
@@ -1193,12 +1215,23 @@ public class BiometricsController extends BaseController /* implements Initializ
 
     }
 
+    private boolean isFinger(String currentModality) {
+        return currentModality.toUpperCase().contains(RegistrationConstants.FINGER.toUpperCase());
+    }
+
     @FXML
     private void recapture(ActionEvent event) {
 
         LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
                 "Displaying Scan popup for capturing biometrics");
         boolean isAllMarked = false;
+
+//        if (currentModality.equalsIgnoreCase("Exception_Photo")) {
+//            if (getRegistrationDTOFromSession() != null && getRegistrationDTOFromSession().getDocuments() != null) {
+//                getRegistrationDTOFromSession().getDocuments().remove("proofOfException");
+//            }
+//            addImageInUIPane(RegistrationConstants.APPLICANT, RegistrationConstants.EXCEPTION_PHOTO, null, false);
+//        }
         if(currentModality.equalsIgnoreCase("Exception_Photo")){
             if (getRegistrationDTOFromSession() != null && getRegistrationDTOFromSession().getDocuments() != null) {
                 getRegistrationDTOFromSession().getDocuments().remove("proofOfException");
@@ -1545,22 +1578,27 @@ public class BiometricsController extends BaseController /* implements Initializ
         } else {
             exceptionBioAttributes = getSelectedExceptionsByBioType(currentSubType, currentModality);
         }
+        LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+                "MDMRequestDto >>>start " );
         // Check count
         int count = 1;
+        MDMRequestDto mdmRequestDto = null;
+        try {
+            mdmRequestDto = new MDMRequestDto(
+                    isFace(modality) || isExceptionPhoto(modality) ? RegistrationConstants.FACE_FULLFACE : modality,
+                    exceptionBioAttributes.toArray(new String[0]), "Registration",
+                    io.mosip.registration.context.ApplicationContext.getStringValueFromApplicationMap(
+                            RegistrationConstants.SERVER_ACTIVE_PROFILE),
+                    Integer.valueOf(getCaptureTimeOut(modality)), count,
+                    !modality.toUpperCase().equals(RegistrationConstants.FACE) ? getThresholdScoreInInt(getThresholdKeyByBioType(modality)) : ismdsFaceThreshold ? getThresholdScoreInInt(RegistrationConstants.FACE_THRESHOLD_MDS) : getThresholdScoreInInt(getThresholdKeyByBioType(modality)));
 
-        MDMRequestDto mdmRequestDto = new MDMRequestDto(
-                isFace(modality) || isExceptionPhoto(modality) ? RegistrationConstants.FACE_FULLFACE : modality,
-                exceptionBioAttributes.toArray(new String[0]), "Registration",
-                io.mosip.registration.context.ApplicationContext.getStringValueFromApplicationMap(
-                        RegistrationConstants.SERVER_ACTIVE_PROFILE),
-                 Integer.valueOf(getCaptureTimeOut(modality)), count,
-                !modality.toUpperCase().equals(RegistrationConstants.FACE)?getThresholdScoreInInt(getThresholdKeyByBioType(modality)):ismdsFaceThreshold?getThresholdScoreInInt(RegistrationConstants.FACE_THRESHOLD_MDS):getThresholdScoreInInt(getThresholdKeyByBioType(modality)));
-//        System.out.println(!modality.toUpperCase().equals(RegistrationConstants.FACE)?getThresholdScoreInInt(getThresholdKeyByBioType(modality)):ismdsFaceThreshold?getThresholdScoreInInt(RegistrationConstants.FACE_THRESHOLD_MDS):getThresholdScoreInInt(getThresholdKeyByBioType(modality)));
-        System.out.println("checkbox code-------!!!!!!!!"+modality+" current score given+"+ getThresholdScoreInInt(getThresholdKeyByBioType(modality)));
-        System.out.println("checkbox code-------!!!!!!!!"+modality+" mds score from config+"+ getThresholdScoreInInt(RegistrationConstants.FACE_THRESHOLD_MDS));
-        System.out.println("face req time out "+Integer.valueOf(getCaptureTimeOut(modality)));
-        System.out.println("modality "+modality);
-
+            LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+                    "MDMRequestDto >>>end ");
+        }catch (Exception e){
+            e.printStackTrace();
+            LOGGER.error(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+                    "MDMRequestDto : " + ExceptionUtils.getStackTrace(e));
+        }
         LOGGER.debug(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
                 "exceptionBioAttributes passed to mock/real MDM >>> " + exceptionBioAttributes);
 
@@ -1659,16 +1697,31 @@ public class BiometricsController extends BaseController /* implements Initializ
 
     private int getThresholdScoreInInt(String thresholdKey) {
         /* Get Configued threshold score for bio type */
-
+        if(thresholdKey.isEmpty() || thresholdKey.equalsIgnoreCase(RegistrationConstants.EXCEPTION_PHOTO)){
+            return 0;
+        }
         String thresholdScore = getValueFromApplicationContext(thresholdKey);
+        LOGGER.debug(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+                "thresholdScore : "+thresholdScore);
+        LOGGER.debug(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+                "thresholdKey : "+thresholdKey);
 
-        return thresholdScore != null ? Integer.valueOf(thresholdScore) : 0;
+
+        return thresholdScore != null && !thresholdScore.isEmpty() ? Integer.valueOf(thresholdScore) : 0;
     }
 
     private double getThresholdScoreInDouble(String thresholdKey) {
         /* Get Configued threshold score for bio type */
-
+        if(thresholdKey.isEmpty() || thresholdKey.equalsIgnoreCase(RegistrationConstants.EXCEPTION_PHOTO)){
+            return 0;
+        }
         String thresholdScore = getValueFromApplicationContext(thresholdKey);
+        LOGGER.debug(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+                "thresholdScore : "+thresholdScore);
+        LOGGER.debug(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
+                "thresholdKey : "+thresholdKey);
+
+//        String thresholdScore = getValueFromApplicationContext(thresholdKey);
 
         return thresholdScore != null ? Double.valueOf(thresholdScore) : 0;
     }
@@ -1676,7 +1729,7 @@ public class BiometricsController extends BaseController /* implements Initializ
     private String getCaptureTimeOut(String modality) {
 
         /* Get Configued capture timeOut */
-        if(modality.contains(RegistrationConstants.FACE)){
+        if(modality.contains(RegistrationConstants.FACE) || modality.contains(RegistrationConstants.EXCEPTION_PHOTO) ){
             System.out.println("get capture time modality"+modality);
             return  getValueFromApplicationContext(RegistrationConstants.CAPTURE_TIME_OUT_FACE);
 
@@ -1832,7 +1885,7 @@ public class BiometricsController extends BaseController /* implements Initializ
         String time = Instant.now().toString().substring(0, 16);
         captureTimeValue.setText(time);
         captureTimeValue.setStyle("-fx-font-size:9.0px");
-//		captureTimeValue.setStyle("-fx-text-fill: #005baa");
+//		captureTimeValue.setStyle("-fx-text-fill:#147f55");
 
         for (BiometricsDto biometricDTO : biometricDTOList) {
 
@@ -2574,26 +2627,34 @@ public class BiometricsController extends BaseController /* implements Initializ
 
     private boolean identifyInLocalGallery(List<BiometricsDto> biometrics, String modality) {
         BiometricType biometricType = BiometricType.fromValue(modality);
-        Map<String, List<BIR>> gallery = new HashMap<>();
+//        Map<String, List<BIR>> gallery = new HashMap<>();
+        //changing from identify to verify
+        List<BIR> gallery = new ArrayList<>();
         List<UserBiometric> userBiometrics = userDetailDAO.findAllActiveUsers(biometricType.value());
         if (userBiometrics.isEmpty())
             return false;
 
+//        userBiometrics.forEach(userBiometric -> {
+//            String userId = userBiometric.getUserBiometricId().getUsrId();
+//            gallery.computeIfAbsent(userId, k -> new ArrayList<BIR>())
+//                    .add(createBIR(userBiometric.getBioIsoImage(), biometricType, userBiometric.getUserBiometricId().getBioAttributeCode(), (double) userBiometric.getQualityScore()));
+//        });
         userBiometrics.forEach(userBiometric -> {
-            String userId = userBiometric.getUserBiometricId().getUsrId();
-            gallery.computeIfAbsent(userId, k -> new ArrayList<BIR>())
-                    .add(createBIR(userBiometric.getBioIsoImage(), biometricType, userBiometric.getUserBiometricId().getBioAttributeCode(), (double) userBiometric.getQualityScore()));
+//            String userId = userBiometric.getUserBiometricId().getUsrId();
+            gallery.add(createBIR(userBiometric.getBioIsoImage(), biometricType, userBiometric.getUserBiometricId().getBioAttributeCode(), (double) userBiometric.getQualityScore()));
         });
-
         List<BIR> sample = new ArrayList<>(biometrics.size());
         biometrics.forEach(biometricDto -> {
             sample.add(createBIR(biometricDto.getAttributeISO(), biometricType, biometricDto.getBioAttribute(), biometricDto.getQualityScore()));
         });
 
         try {
-            Map<String, Boolean> result = bioAPIFactory.getBioProvider(biometricType, BiometricFunction.MATCH)
-                    .identify(sample, gallery, biometricType, null);
-            return result.entrySet().stream().anyMatch(e -> e.getValue() == true);
+//            Map<String, Boolean> result = bioAPIFactory.getBioProvider(biometricType, BiometricFunction.MATCH)
+//                    .identify(sample, gallery, biometricType, null);
+
+            return bioAPIFactory.getBioProvider(biometricType, BiometricFunction.MATCH)
+                    .verify(sample, gallery, biometricType, null);
+//            return result.entrySet().stream().anyMatch(e -> e.getValue() == true);
         } catch (BiometricException e) {
             LOGGER.error(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
                     "Failed to dedupe >> " + ExceptionUtils.getStackTrace(e));
@@ -2723,41 +2784,92 @@ public class BiometricsController extends BaseController /* implements Initializ
         return vBox;
     }
 
-    private void addImageInUIPane(String subType, String modality, Image uiImage, boolean isCaptured) {
-        for (GridPane gridPane : leftHandImageBoxMap.values()) {
-            if (gridPane.getId().equals(subType)) {
+//    private void addImageInUIPane(String subType, String modality, Image uiImage, boolean isCaptured) {
+//        for (GridPane gridPane : leftHandImageBoxMap.values()) {
+//            if (gridPane.getId().equals(subType)) {
+//
+//                for (Node node : gridPane.getChildren()) {
+//
+//                    if (node.getId().equalsIgnoreCase(modality)) {
+//                        VBox vBox = (VBox) node;
+//                        HBox hBox = (HBox) vBox.getChildren().get(0);
+//                        // hBox.getChildren().clear();
+//                        ((ImageView) (hBox.getChildren().get(0))).setImage(uiImage != null ? uiImage
+//                                : new Image(this.getClass().getResourceAsStream(getImageIconPath(modality))));
+//
+//                        if (isCaptured) {
+//                            if (hBox.getChildren().size() == 1) {
+//                                ImageView imageView;
+//                                if (uiImage == null) {
+//                                    imageView = new ImageView(new Image(this.getClass()
+//                                            .getResourceAsStream(RegistrationConstants.EXCLAMATION_IMG_PATH)));
+//                                } else {
+//                                    imageView = new ImageView(new Image(this.getClass()
+//                                            .getResourceAsStream(RegistrationConstants.TICK_CIRICLE_IMG_PATH)));
+//                                }
+//
+//                                imageView.setFitWidth(40);
+//                                imageView.setFitHeight(40);
+//                                hBox.getChildren().add(imageView);
+//                            }
+//                        } else {
+//
+//                            if (hBox.getChildren().size() > 1) {
+//                                hBox.getChildren().remove(1);
+//                            }
+//                        }
+//
+//                    }
+//                }
+//
+//            }
+//        }
+//
+//    }
+private void addImageInUIPane(String subType, String modality, Image uiImage, boolean isCaptured) {
+    for (GridPane gridPane : leftHandImageBoxMap.values()) {
+        if (gridPane.getId().equals(subType)) {
 
-                for (Node node : gridPane.getChildren()) {
+            for (Node node : gridPane.getChildren()) {
 
-                    if (node.getId().equalsIgnoreCase(modality)) {
-                        VBox vBox = (VBox) node;
-                        HBox hBox = (HBox) vBox.getChildren().get(0);
-                        // hBox.getChildren().clear();
-                        ((ImageView) (hBox.getChildren().get(0))).setImage(uiImage != null ? uiImage
-                                : new Image(this.getClass().getResourceAsStream(getImageIconPath(modality))));
+                if (node.getId().equalsIgnoreCase(modality)) {
+                    VBox vBox = (VBox) node;
+                    HBox hBox = (HBox) vBox.getChildren().get(0);
+                    // hBox.getChildren().clear();
+                    ((ImageView) (hBox.getChildren().get(0))).setImage(uiImage != null ? uiImage : new Image(this.getClass().getResourceAsStream(getImageIconPath(modality))));
 
-                        if (isCaptured) {
-                            if (hBox.getChildren().size() == 1) {
-                                ImageView imageView;
-                                if (uiImage == null) {
-                                    imageView = new ImageView(new Image(this.getClass()
-                                            .getResourceAsStream(RegistrationConstants.EXCLAMATION_IMG_PATH)));
-                                } else {
-                                    imageView = new ImageView(new Image(this.getClass()
-                                            .getResourceAsStream(RegistrationConstants.TICK_CIRICLE_IMG_PATH)));
-                                }
-
-                                imageView.setFitWidth(40);
-                                imageView.setFitHeight(40);
-                                hBox.getChildren().add(imageView);
+                    ImageView imageViewUi = (ImageView) hBox.getChildren().get(0);
+                    imageViewUi.setFitHeight(80);
+                    imageViewUi.setFitWidth(93);
+//                        imageViewUi.setFitWidth(hBox.getWidth());  // Stretch to HBox width
+//                        imageViewUi.setFitHeight(hBox.getHeight()); // Optional: match height
+//                        imageViewUi.setPreserveRatio(false);
+//                        imageViewUi.setSmooth(true);
+                    if (isCaptured) {
+                        if (hBox.getChildren().size() == 1) {
+                            ImageView imageView;
+                            if (uiImage == null) {
+                                imageView = new ImageView(new Image(this.getClass().getResourceAsStream(RegistrationConstants.EXCLAMATION_IMG_PATH)));
+                            } else {
+                                imageView = new ImageView(new Image(this.getClass().getResourceAsStream(RegistrationConstants.TICK_CIRICLE_IMG_PATH)));
                             }
-                        } else {
 
+                            // Make the status icon smaller and aligned better
+                            imageView.setFitWidth(40); // Smaller size
+                            imageView.setFitHeight(40);
+//                                imageView.setPreserveRatio(true);
+                            imageView.setSmooth(true);
+
+                            // Optional: add margin to separate from the left icon
+                            HBox.setMargin(imageView, new Insets(5, 0, 0, 8)); // top, right, bottom, left
+
+                            hBox.getChildren().add(imageView);
+                        } else {
+                            // Remove and replace if already present
                             if (hBox.getChildren().size() > 1) {
                                 hBox.getChildren().remove(1);
                             }
                         }
-
                     }
                 }
 
@@ -2765,6 +2877,7 @@ public class BiometricsController extends BaseController /* implements Initializ
         }
 
     }
+}
 
     private GridPane getGridPane(Entry<String, String> subMapKey) {
 

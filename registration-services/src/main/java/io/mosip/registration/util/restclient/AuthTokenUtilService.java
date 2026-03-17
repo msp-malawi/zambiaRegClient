@@ -295,5 +295,7 @@ public class AuthTokenUtilService {
         requestFactory.setConnectTimeout(
                 Integer.parseInt((String) ApplicationContext.map().get(RegistrationConstants.HTTP_API_WRITE_TIMEOUT)));
         requestHTTPDTO.setSimpleClientHttpRequestFactory(requestFactory);
+        System.out.println("read time out : "+(String) ApplicationContext.map().get(RegistrationConstants.HTTP_API_READ_TIMEOUT));
+        System.out.println("write time out : "+(String) ApplicationContext.map().get(RegistrationConstants.HTTP_API_WRITE_TIMEOUT));
     }
 }

@@ -241,8 +241,11 @@ public class ScanPopUpViewController extends BaseController {
             previewOption.setVisible(false);
             Scene scene = null;
 
-            if (title.equalsIgnoreCase("face"))
+//            if (title.equalsIgnoreCase("face"))
+//                faceCaptureBtn.setVisible(true);
+            if (title.equalsIgnoreCase("face") || title.toLowerCase().contains("exception")) {
                 faceCaptureBtn.setVisible(true);
+            }
 
             if (!isDocumentScan) {
                 scene = new Scene(scanPopup);

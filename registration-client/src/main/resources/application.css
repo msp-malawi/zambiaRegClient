@@ -12,11 +12,11 @@
 
 #imageParent {
 	-fx-border-width: 1.0 1.0 1.0 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 }
 
 .scanPageLabel {
-	-fx-tex-fill: #005baa;
+	-fx-tex-fill:#147f55;
 	-fx-font-size: 1.2em;
 }
 
@@ -71,25 +71,25 @@
 
 .toolTip {
 	-fx-font: normal bold 10.0 Langdon;
-	-fx-base: #005baa;
+	-fx-base:#147f55;
 	-fx-text-fill: red;
 	-fx-background-color: white;
 }
 
 #toggleLabel1 {
 	-fx-background-radius: 21.0, 21.0, 21.0, 21.0;
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-border-radius: 21.0, 21.0, 21.0, 21.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-pref-height: 25.0px;
 	-fx-pref-width: 25.0px;
 }
 
 #toggleLabel2 {
 	-fx-background-radius: 21.0, 21.0, 21.0, 21.0;
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-border-radius: 21.0, 21.0, 21.0, 21.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-Opacity: 0.4;
 	-fx-pref-height: 20.0px;
 	-fx-pref-width: 55.0px;
@@ -236,8 +236,8 @@
 }
 
 	.selectedResidence {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 	-fx-font-size: 12.0px;
 	-fx-border-width: 1.0px;
@@ -249,8 +249,8 @@
 
 .residence {
 	-fx-background-color: #FFFFFF;
-	-fx-border-color: #005baa;
-	-fx-text-fill: #005baa;
+	-fx-border-color:#147f55;
+	-fx-text-fill:#147f55;
 	-fx-font-size: 10.0px;
 	-fx-border-width: 1.0px;
 	-fx-border-radius: 4.0 4.0 4.0 4.0;
@@ -372,7 +372,7 @@
 }
 
 .documentScanHeader {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 }
 
 .scanPopupHeaderTitle {
@@ -408,7 +408,7 @@
 }
 
 .hyperLinkStyle {
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-underline: false;
 	-fx-border-color: transparent;
 	-fx-font-size: 10.0px;
@@ -443,48 +443,48 @@
 	-fx-background-color: #ffffff;
 	-fx-background-radius: 6.0, 5.0;
 	-fx-background-insets: 0.0, 1.0;
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-size: 14.0px;
 	-fx-effect: dropshadow(three-pass-box, rgba(0.0, 0.0, 0.0, 0.6), 5.0,
 	0.0, 0.0, 1.0);
 }
 
 .loginSubmitStyle:hover {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-border-color: #FFFFFF;
 	-fx-text-fill: #FFFFFF;
 }
 .loginSubmitStyle2:hover {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-border-color: #FFFFFF;
 	-fx-text-fill: #FFFFFF;
 }
 
 .loginSubmitStyle:pressed {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-border-color: #FFFFFF;
 	-fx-text-fill: #FFFFFF;
 }
 .loginSubmitStyle2:pressed {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-border-color: #FFFFFF;
 	-fx-text-fill: #FFFFFF;
 }
 
 .loginSubmitStyle1:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .loginSubmitStyle1{
-	-fx-background-color:#cce0ff;
+	-fx-background-color:#d0e5dd;
 }
 
 
 .loginSubmitStyle1:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
@@ -511,26 +511,26 @@
 	-fx-pref-height: 30.0px;
 	-fx-pref-width: 120.0px;
 	-fx-background-color: #FFFFFF;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-font-family: Roboto;
 }
 
 .reRegCantInformToggle {
 	-fx-pref-height: 30.0px;
 	-fx-pref-width: 120.0px;
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 	-fx-font-family: Roboto;
 }
 
 .reRegCantInformToggle:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 }
 
 .reRegCantInformToggle:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 }
 
 .operatorAuthenticationAnchorPaneStyle {
@@ -568,14 +568,14 @@
 Working on new Css by taleev
 */
 #loginScreen {
-	-fx-background-image: url('/images/LoginBackGround.png');
+	/*-fx-background-image: url('/images/LoginBackGround.png');*/
 	-fx-background-size: cover, auto;
 	-fx-background-position: left top, center;
 }
 
 #header-section {
 	/*-fx-background-color: rgb(11.0, 106.0, 130.0, 0.3);*/
-	-fx-background-color : rgb(30, 79, 148);
+	-fx-background-color : #147f55;
 	-fx-pref-height: 30.0px;
 	-fx-pref-width: 1920.0px;
 }
@@ -593,7 +593,7 @@ Working on new Css by taleev
 .loginAnchorPaneStyle {
 	-fx-pref-height: 250.0px;
 	-fx-pref-width: 400.0px;
-	-fx-background-color: #cce0ff;
+	-fx-background-color: #d0e5dd;
 	-fx-border-width: 1.0 1.0 1.0 1.0;
 	-fx-border-color: #808080;
 }
@@ -601,7 +601,7 @@ Working on new Css by taleev
 .loginAnchorPaneExtendedStyle {
 	-fx-pref-height: 300.0px;
 	-fx-pref-width: 400.0px;
-	-fx-background-color: #cce0ff;
+	-fx-background-color: #d0e5dd;
 	-fx-border-width: 1.0 1.0 1.0 1.0;
 	-fx-border-color: #808080;
 }
@@ -610,7 +610,7 @@ Working on new Css by taleev
 	-fx-pref-height: 35.0px;
 	-fx-pref-width: 312.0px;
 	-fx-border-width: 0.0 0.0 2.0 0.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-effect: dropshadow(three-pass-box, rgba(0.0, 0.0, 0.0, 0.3), 5.0,
 	0.0, 0.0, 1.0);
 }
@@ -625,7 +625,7 @@ Working on new Css by taleev
 
 .searchBoxTextStyle:focused {
 	-fx-border-width: 0.2 0.2 2.0 0.2;
-	-fx-border-color: #C9C9C9 #C9C9C9 #22A8C9 #C9C9C9;
+	-fx-border-color: #C9C9C9 #C9C9C9 #d0e5dd #C9C9C9;
 	-fx-background-color: -fx-text-box-border, -fx-control-inner-background;
 }
 
@@ -636,12 +636,12 @@ Working on new Css by taleev
 .loginSubmitStyle {
 	-fx-pref-height: 35.0px;
 	-fx-pref-width: 312.0px;
-	-fx-background-color: #005baa
+	-fx-background-color:#147f55
 }
 .loginSubmitStyle2 {
 	-fx-pref-height: 35.0px;
 	-fx-pref-width: 100.0px;
-	-fx-background-color: #005baa
+	-fx-background-color:#147f55
 }
 
 .loginOtpValidStyle {
@@ -649,7 +649,7 @@ Working on new Css by taleev
 	-fx-pref-width: 312.0px;
 	-fx-alignment: center;
 	-fx-border-width: 2.0 2.0 2.0 2.0;
-	-fx-border-color: #005baa
+	-fx-border-color:#147f55
 }
 
 #RegistrationHeader {
@@ -701,7 +701,7 @@ Working on new Css by taleev
 
 .trackerHighlighter {
 	-fx-font-size: 1.2em;
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-weight: bold;
 	-fx-border-image-source: url(images/DemographicpageTracker.png);
 	-fx-border-image-insets: 10.0, 20.0;
@@ -711,21 +711,21 @@ Working on new Css by taleev
 
 .demoGraphicPaneContentButton {
 	-fx-border-width: 1.0 1.0 1.0 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-background-color: #FFFFFF;
 	-fx-border-radius: 3.0, 3.0, 3.0, 3.0;
 	-fx-font-size: 1.1em;
 }
 
 .demoGraphicPaneContentButton:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .demoGraphicPaneContentButton:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
@@ -735,21 +735,21 @@ Working on new Css by taleev
 
 .documentContentButton {
 	-fx-border-width: 1.0 1.0 1.0 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-background-color: #FFFFFF;
 	-fx-border-radius: 3.0, 3.0, 3.0, 3.0;
 	-fx-font-size: 1.2em;
 }
 
 .documentContentButton:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .documentContentButton:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
@@ -760,22 +760,22 @@ Working on new Css by taleev
 }
 
 .contiuneButton {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-border-width: 1.0 1.0 1.0 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 	-fx-border-radius: 3.0, 3.0, 3.0, 3.0;
 	-fx-font-size: 1.2em;
 }
 
 .contiuneButton:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 }
 
 .contiuneButton:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 }
 
 .contiuneButton:disabled {
@@ -787,21 +787,21 @@ Working on new Css by taleev
 .backButton {
 	-fx-background-color: #FFFFFF;
 	-fx-border-width: 1.0 1.0 1.0 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-border-radius: 3.0, 3.0, 3.0, 3.0;
 	-fx-font-size: 1.2em;
 	-fx-border-radius: 3.0, 3.0, 3.0, 3.0;
 }
 
 .backButton:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .backButton:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
@@ -937,7 +937,7 @@ Working on new Css by taleev
 .demographicCombobox:focused {
 	-fx-background-color: #ffffff;
 	-fx-border-width: 0.0 0.0 1.0 0.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-font-size: 14.0px;
 	-fx-pref-height: 10.0px;
 	-fx-pref-width: 250.0px;
@@ -945,13 +945,13 @@ Working on new Css by taleev
 
 .demographicCombobox .combo-box-popup>.list-view>.virtual-flow>.clipped-container>.sheet>.list-cell:filled:hover
 {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .demographicCombobox .combo-box-popup>.list-view>.virtual-flow>.clipped-container>.sheet>.list-cell:filled:selected
 {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
@@ -969,12 +969,12 @@ Working on new Css by taleev
 
 .docPreviewImgViewPane {
 	-fx-border-width: 1.5;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 }
 
 .documentCombobox .combo-box-popup>.list-view>.virtual-flow>.clipped-container>.sheet>.list-cell:filled:hover
 {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
@@ -987,7 +987,7 @@ Working on new Css by taleev
 .documentCombobox:focused {
 	-fx-background-color: #ffffff;
 	-fx-border-width: 0.0 0.0 1.0 0.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-font-size: 1.2em;
 }
 
@@ -1090,7 +1090,7 @@ Working on new Css by taleev
 }
 
 .photoAlert {
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-size: 15.0;
 }
 
@@ -1133,7 +1133,7 @@ Working on new Css by taleev
 }
 
 .paneHeader {
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-size: 22.0px;
 }
 
@@ -1169,28 +1169,28 @@ Working on new Css by taleev
 .scanButton {
 	-fx-background-color: #FFFFFF;
 	-fx-border-width: 1.0 1.0 1.0 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-border-radius: 3.0, 3.0, 3.0, 3.0;
 	-fx-pref-height: 2.0px;
 	-fx-pref-width: 120.0px;
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 }
 
 .scanButton:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .scanButton:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .registrationHeaderBorder {
 	-fx-border-width: 0.0 0.0 1.0 0.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-pref-height: 30.0px;
 	-fx-pref-width: 940.0px;
 }
@@ -1218,7 +1218,7 @@ Working on new Css by taleev
 #uploadPanesFirst {
 	-fx-background-color: #FFFFFF;
 	-fx-padding: 5.0 5.0 5.0 5.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-border-width: 0.0 0.0 1.0 0.0;
 	-fx-effect: dropshadow(three-pass-box, rgba(0.0, 0.0, 0.0, 0.6), 5.0,
 	0.0, 0.0, 1.0);
@@ -1259,7 +1259,7 @@ Working on new Css by taleev
 
 .table-row-cell:focused {
 	-fx-border-width: 0.0 0.0 1.0 0.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-pref-height: 45.0;
 	-fx-padding: 10 0 10 0;
 	-fx-pref-width: 35.0;
@@ -1279,7 +1279,7 @@ Working on new Css by taleev
 	-fx-text-fill: #666666;
 	-fx-background-color: #FFFFFF;
 	-fx-border-width: 0.0 0.0 1.0 0.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 }
 
 .table-view .column-header .label {
@@ -1302,7 +1302,7 @@ Working on new Css by taleev
 
 .heading {
 	-fx-font-size: 26.0px;
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-family: Roboto;
 }
 
@@ -1350,7 +1350,7 @@ Working on new Css by taleev
 
 #rejectionAnchorPane .combo-box-popup>.list-view>.virtual-flow>.clipped-container>.sheet>.list-cell:filled:hover
 {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
@@ -1358,7 +1358,7 @@ Working on new Css by taleev
 
 #rejectionAnchorPane .combo-box-popup>.list-view>.virtual-flow>.clipped-container>.sheet>.list-cell:filled:selected
 {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
@@ -1367,7 +1367,7 @@ Working on new Css by taleev
 }
 
 .headerFooter1{
-	-fx-background-color: #cce0ff;
+	-fx-background-color: #d0e5dd;
 }
 
 .headerFooter {
@@ -1382,7 +1382,7 @@ Working on new Css by taleev
 
 .headerPageTracker {
 	-fx-border-width: 0.0 0.0 2.0 0.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 }
 
 .bioTracker {
@@ -1420,7 +1420,7 @@ Working on new Css by taleev
 }
 
 .uploadPacketparentPane {
-	-fx-background-color: #cce0ff;
+	-fx-background-color: #d0e5dd;
 }
 
 .homeButton {
@@ -1429,7 +1429,7 @@ Working on new Css by taleev
 }
 
 .mainHeader {
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-size: 20.0px;
 }
 
@@ -1440,7 +1440,7 @@ Working on new Css by taleev
 }
 
 #saveToDevice, #formValidationButton, #uploadBtn {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 }
 /*Upload Packet page design ends */
 
@@ -1461,14 +1461,14 @@ Working on new Css by taleev
 
 .uinUpdateTextFiledStyle {
 	-fx-background-color: white;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-background-insets: 0.0, 0.0 0.0 1.0 0.0;
 	-fx-border-width: 0.0 0.0 1.0 0.0;
 }
 
 .uinUpdateTextFiledStyle:focused {
 	-fx-background-color: white;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-background-insets: 0.0, 0.0 0.0 1.0 0.0;
 	-fx-border-width: 0.0 0.0 2.0 0.0;
 }
@@ -1482,7 +1482,7 @@ Working on new Css by taleev
 	-fx-background-radius: 50.0;
 	-fx-border-radius: 50.0;
 	-fx-border-width: 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-padding: 1.0;
 	-fx-background-color: #FFFFFF;
 	-fx-background-insets: 0.0 0.0 0.0 0.0;
@@ -1491,19 +1491,19 @@ Working on new Css by taleev
 .updateUinCheckBox {
 	-fx-background-color: #FFFFFF;
 	-fx-border-width: 1.0 1.0 1.0 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-padding: 3.0 10.0 5.0 3.0;
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 }
 
 .updateUinCheckBoxCommon .check-box:selected>.box>.mark {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 }
 
 .updateUinCheckBoxSelected {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-border-width: 1.0 1.0 1.0 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-padding: 0.0 10.0 5.0 3.0;
 	-fx-text-fill: #FFFFFF;
 }
@@ -1525,19 +1525,19 @@ Working on new Css by taleev
 .approveButton {
 	-fx-border-width: 1.0 1.0 1.0 1.0;
 	-fx-border-radius: 3.0, 3.0, 3.0, 3.0;
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 	-fx-font-family: Roboto;
 }
 
 .approveButton:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 }
 
 .approveButton:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 }
 
 .approveButton:disabled {
@@ -1550,19 +1550,19 @@ Working on new Css by taleev
 	-fx-border-width: 1.0 1.0 1.0 1.0;
 	-fx-border-radius: 3.0, 3.0, 3.0, 3.0;
 	-fx-background-color: #FFFFFF;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-font-family: Roboto;
 }
 
 .rejectButton:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .rejectButton:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
@@ -1605,14 +1605,14 @@ Working on new Css by taleev
 }
 
 .RegbuttonStyle:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .RegbuttonStyle:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 /*Authentication page design ends */
@@ -1620,7 +1620,7 @@ Working on new Css by taleev
 /*Acknowledgement page design starts */
 .templateHeading {
 	-fx-font-size: 18.0px;
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-family: Roboto;
 }
 
@@ -1628,57 +1628,57 @@ Working on new Css by taleev
 	-fx-border-width: 1.0 1.0 1.0 1.0;
 	-fx-border-radius: 3.0, 3.0, 3.0, 3.0;
 	-fx-background-color: #FFFFFF;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-font-family: Roboto;
 }
 
 .ackBackButton:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .ackBackButton:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .ackPageButton {
 	-fx-border-width: 1.0 1.0 1.0 1.0;
 	-fx-border-radius: 3.0, 3.0, 3.0, 3.0;
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-text-fill: white;
 	-fx-font-family: Roboto;
 }
 
 .ackPageButton:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 }
 
 .ackPageButton:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 }
 
 .ackMenu {
 	-fx-border-width: 0.0 0.0 1.0 0.0;
 	-fx-border-color: #E8E7E7;
-	-fx-background-color:#cce0ff;
+	-fx-background-color:#d0e5dd;
 }
 /*Acknowledgement page design ends */
 
 /*Header page design starts here*/
 .headerParentBorder {
-	-fx-border-color: #cce0ff;
+	-fx-border-color: #d0e5dd;
 	-fx-border-width: 1.0 1.0 0.0 1.0;
 	-fx-text-fill: white;
-	-fx-background-color: #005baa
+	-fx-background-color:#147f55
 }
 
 .headerDetails {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 }
 
 .registrationOfficerIdPane {
@@ -1696,7 +1696,7 @@ Working on new Css by taleev
 }
 
 .menuBar {
-	-fx-background-color: #005baa
+	-fx-background-color:#147f55
 }
 
 .headerDetails .label {
@@ -1728,7 +1728,7 @@ Working on new Css by taleev
 }
 
 .menu-item:focused .label {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-padding: 0.0em 0.0em 0.0em 2.0em;
 	-fx-background-image: url(images/MenuItemsFocus.png);
 	-fx-background-repeat: no-repeat;
@@ -1739,7 +1739,7 @@ Working on new Css by taleev
 
 .menu-item:focused {
 	-fx-background: -fx-accent;
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 }
 
 .menu-item {
@@ -1788,8 +1788,8 @@ Working on new Css by taleev
 	-fx-font-size: 16.0px;
 	-fx-background-radius: 4.0, 4.0, 4.0, 4.0;
 	-fx-border-radius: 4.0, 4.0, 4.0, 4.0;
-	-fx-border-color: #005baa;
-	-fx-background-color: #005baa;
+	-fx-border-color:#147f55;
+	-fx-background-color:#147f55;
 	-fx-text-fill: white;
 	-fx-font-family: Roboto;
 }
@@ -1797,24 +1797,24 @@ Working on new Css by taleev
 .uinUpdateStyle {
 	-fx-background-radius: 4.0, 4.0, 4.0, 4.0;
 	-fx-border-radius: 4.0, 4.0, 4.0, 4.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-background-color: #FFFFFF;
 }
 
 .uinUpdateStyle:hover, .uinUpdateStyle:hover .label {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .uinUpdateStyle:pressed, .uinUpdateStyle:pressed .label {
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .uinUpdateBtnStyle {
 	-fx-font-size: 16.0px;
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-family: Roboto;
 	-fx-background-color: #FFFFFF;
 	-fx-border-radius: 0.0, 0.0, 0.0, 0.0;
@@ -1822,7 +1822,7 @@ Working on new Css by taleev
 
 .operationalPaneDetailsSync {
 	-fx-border-width: 1.0 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-background-color: #FFFFFF;
 	-fx-border-radius: 4.0 4.0 0.0 0.0;
 	-fx-background-radius: 4.0 4.0 0.0 0.0;
@@ -1830,72 +1830,72 @@ Working on new Css by taleev
 
 .operationalPaneDetailsSync:hover, .operationalPaneDetailsSync:hover .label
 {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .operationalPaneDetailsSync:pressed, .operationalPaneDetailsSync:pressed .label
 {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .operationalTitle {
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-family: Roboto;
 	-fx-font-size: 16.0px;
 }
 
 .operationalDetails {
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-family: Roboto;
 	-fx-font-size: 10.0px;
 }
 
 .operationalPaneDetailsPreReg {
 	-fx-border-width: 0.0 1.0 1.0 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-background-color: #FFFFFF;
 }
 
 .operationalPaneDetailsPreReg:hover, .operationalPaneDetailsPreReg:hover .label
 {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .operationalPaneDetailsPreReg:pressed, .operationalPaneDetailsPreReg:pressed .label
 {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .operationalPaneDetails {
 	-fx-border-width: 1.0 1.0 1.0 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-background-color: #FFFFFF;
 }
 
 .operationalPaneDetails:hover, .operationalPaneDetails:hover .label {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .operationalPaneDetails:pressed, .operationalPaneDetails:pressed .label
 {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .operationalPaneDetailsBioUpdate {
 	-fx-border-width: 0.0 1.0 1.0 1.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-background-color: #FFFFFF;
 	-fx-border-radius: 0.0 0.0 4.0 4.0;
 	-fx-background-radius: 0.0 0.0 4.0 4.0;
@@ -1903,8 +1903,8 @@ Working on new Css by taleev
 
 .operationalPaneDetailsBioUpdate:hover, .operationalPaneDetailsBioUpdate:hover .label
 {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
@@ -1967,24 +1967,24 @@ Working on new Css by taleev
 .onboardUserPaneStyle {
 	-fx-background-radius: 4.0, 4.0, 4.0, 4.0;
 	-fx-border-radius: 4.0, 4.0, 4.0, 4.0;
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-background-color: #FFFFFF;
 }
 
 .onboardUserPaneStyle:hover, .onboardUserPaneStyle:hover .label {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .onboardUserPaneStyle:pressed, .onboardUserPaneStyle:pressed .label {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .useronBoardLink {
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-family: Roboto;
 }
 
@@ -2005,7 +2005,7 @@ Working on new Css by taleev
 }
 
 .tooltipStyle {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-text-fill: white;
 }
 /*Onoard User page Design Ends here*/
@@ -2032,7 +2032,7 @@ Working on new Css by taleev
 }
 
 .onboardPageBioTitle {
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-family: Roboto;
 	-fx-font-size: 16.0px;
 }
@@ -2062,20 +2062,20 @@ Working on new Css by taleev
 
 .onboardScanBtn {
 	-fx-background-color: #FFFFFF;
-	-fx-text-fill: #005baa;
-	-fx-border-color: #005baa;
+	-fx-text-fill:#147f55;
+	-fx-border-color:#147f55;
 	-fx-font-size: 12.0px;
 }
 
 .onboardScanBtn:hover {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
 .onboardScanBtn:pressed {
-	-fx-background-color: #005baa;
-	-fx-border-color: #005baa;
+	-fx-background-color:#147f55;
+	-fx-border-color:#147f55;
 	-fx-text-fill: #FFFFFF;
 }
 
@@ -2118,7 +2118,7 @@ Working on new Css by taleev
 }
 
 #onboardPageTitle {
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-family: Roboto;
 	-fx-font-size: 18.0px;
 }
@@ -2217,14 +2217,14 @@ Working on new Css by taleev
 .completedPage {
 	-fx-font-family: Roboto;
 	-fx-font-size: 12.0px;
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-weight: lighter;
 }
 
 .currentPage {
 	-fx-font-family: Roboto;
 	-fx-font-size: 14.0px;
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-weight: bold;
 }
 
@@ -2238,7 +2238,7 @@ Working on new Css by taleev
 .subPageCompleted {
 	-fx-font-family: Roboto;
 	-fx-font-size: 10.0px;
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-weight: lighter;
 }
 
@@ -2252,7 +2252,7 @@ Working on new Css by taleev
 .subPageCurrent {
 	-fx-font-family: Roboto;
 	-fx-font-size: 12.0px;
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-weight: lighter;
 }
 /*Tracker Style ends */
@@ -2263,7 +2263,7 @@ Working on new Css by taleev
 }
 
 .dialog-pane .button {
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 	-fx-text-fill: white;
 	-fx-wrap-text: true;
 	-fx-cursor: hand;
@@ -2286,15 +2286,15 @@ Working on new Css by taleev
 	-fx-font-size: 14.0px;
 	-fx-background-radius: 4.0, 4.0, 4.0, 4.0;
 	-fx-border-radius: 4.0, 4.0, 4.0, 4.0;
-	-fx-border-color: #005baa;
-	-fx-background-color: #005baa;
+	-fx-border-color:#147f55;
+	-fx-background-color:#147f55;
 	-fx-text-fill: white;
 	-fx-font-family: Roboto;
 	-fx-cursor: hand;
 }
 
 .schedulerStage {
-	-fx-border-color: #005baa;
+	-fx-border-color:#147f55;
 	-fx-background-color: white;
 }
 
@@ -2302,7 +2302,7 @@ Working on new Css by taleev
 	-fx-font-size: 14.0px;
 	-fx-border-width: 0.0 0.0 1.0 0.0;
 	-fx-border-color: black;
-	-fx-background-color: #005baa;
+	-fx-background-color:#147f55;
 }
 
 .schedulerTitleMsg {
@@ -2317,7 +2317,7 @@ Working on new Css by taleev
 
 .authenticationErrorMsgTitle {
 	-fx-font-size: 16.0px;
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 }
 
 .authenticationPageTitle {
@@ -2351,7 +2351,7 @@ Working on new Css by taleev
 }
 
 .dialog-pane:header .header-panel .label {
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-size: 28.0px;
 	-fx-padding: 20.0 0.0 0.0 10.0
 }
@@ -2363,7 +2363,7 @@ Working on new Css by taleev
 }
 
 .alertHeader {
-	-fx-text-fill: #005baa;
+	-fx-text-fill:#147f55;
 	-fx-font-size: 28.0px;
 }
 

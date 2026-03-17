@@ -480,6 +480,7 @@ public class RegistrationController extends BaseController {
 				RegistrationConstants.APPLICATION_ID, "Validated the fields");
 
 		return gotoNext;
+//		return true;
 	}
 
 	/**

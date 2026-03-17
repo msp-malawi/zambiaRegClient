@@ -11,6 +11,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+//import org.springframework.retry.annotation.EnableRetry;
+//import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
@@ -20,11 +22,13 @@ import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_
 
 /**
  * Class for initializing the application
- * 
+ *
  * @author Sravya Surampalli
  * @since 1.0.0
  *
  */
+//@EnableAsync
+//@EnableRetry
 @Component
 public class Initialization extends Application {
 
@@ -105,7 +109,8 @@ public class Initialization extends Application {
 					"Application Initilization Error"
 							+ new SimpleDateFormat(RegistrationConstants.HH_MM_SS).format(System.currentTimeMillis())
 							+ ExceptionUtils.getStackTrace(exception));
-		} finally {
+		}
+		finally {
 			System.exit(0);
 		}
 	}
@@ -127,6 +132,7 @@ public class Initialization extends Application {
 	}
 
 	public static void setPrimaryStage(Stage primaryStage) {
+
 		applicationPrimaryStage = primaryStage;
 	}
 }
