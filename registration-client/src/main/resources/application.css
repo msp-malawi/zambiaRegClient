@@ -2384,10 +2384,7 @@ Working on new Css by taleev
 /* 🌈 BACKGROUND (soft gradient) */
 .root {
 	/*-fx-background-color: linear-gradient(to bottom, #2e8b70 0%, #cfe5dc 50%, #2e8b70 100%);*/
-
-
-
-	-fx-background-color: linear-gradient(to bottom, #cfe5dc 0%, #cfe5dc 50%, #cfe5dc 100%);
+	/*-fx-background-color: linear-gradient(to bottom, #cfe5dc 0%, #cfe5dc 50%, #cfe5dc 100%);*/
 }
 
 /* 🔝 HEADER */

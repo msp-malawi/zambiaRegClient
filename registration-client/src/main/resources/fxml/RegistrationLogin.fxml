@@ -9,28 +9,41 @@
 			styleClass="loginBorderPaneStyle" xmlns="http://javafx.com/javafx/17.0.2-ea"
 			fx:controller="io.mosip.registration.controller.auth.LoginController">
 	<top>
-		<HBox fx:id="header" alignment="CENTER" spacing="15" styleClass="header">
-
-			<ImageView fitHeight="60" fitWidth="60">
-				<image>
-					<Image url="@/images/LOGO1.png"/>
-				</image>
-			</ImageView>
-
-			<VBox alignment="CENTER">
-				<Label text="Republic of Zambia" styleClass="header-title"/>
-				<Label text="National Identity System" styleClass="header-sub"/>
-			</VBox>
+		<HBox prefHeight="17.0" prefWidth="523.0" id="header-section" alignment="CENTER" >
+			<children>
 
 
+				<ImageView>
+					<image>
+						<Image url="@/images/Loginlogo.png"/>
+					</image>
+				</ImageView>
 
-			<ImageView fitHeight="35" fitWidth="55">
-				<image>
-					<Image url="@/images/LOGO2.png"/>
-				</image>
-			</ImageView>
 
+			</children>
 		</HBox>
+<!--		<HBox fx:id="header" alignment="CENTER" spacing="15" styleClass="header">-->
+
+<!--			<ImageView fitHeight="60" fitWidth="60">-->
+<!--				<image>-->
+<!--					<Image url="@/images/LOGO1.png"/>-->
+<!--				</image>-->
+<!--			</ImageView>-->
+
+<!--			<VBox alignment="CENTER">-->
+<!--				<Label text="Republic of Zambia" styleClass="header-title"/>-->
+<!--				<Label text="National Identity System" styleClass="header-sub"/>-->
+<!--			</VBox>-->
+
+
+
+<!--			<ImageView fitHeight="35" fitWidth="55">-->
+<!--				<image>-->
+<!--					<Image url="@/images/LOGO2.png"/>-->
+<!--				</image>-->
+<!--			</ImageView>-->
+
+<!--		</HBox>-->
 	</top>
 	<center>
 		<!--        <ProgressIndicator fx:id="progressIndicator" layoutX="-8.0" layoutY="271.0" progress="0.0" visible="false"/>-->

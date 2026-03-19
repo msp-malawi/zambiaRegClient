@@ -608,12 +608,18 @@ public class PacketHandlerServiceImpl extends BaseService implements PacketHandl
 					source.toUpperCase(), registrationDTO.getRegistrationCategory().toUpperCase());
 
 		}
+		metaInfoMap.put("biometrics", getJsonString(subTypeMap));
+			metaInfoMap.put("exceptionBiometrics", getJsonString(exceptionSubTypeMap));
+			System.out.println("registrationDTO.getSignatureException() = " + registrationDTO.getSignatureException());
+
 
 		// biometricsMap.put("biometrics", subTypeMap);
 		// exceptionBiometricsMap.put("exceptionBiometrics", exceptionSubTypeMap);
-
 		metaInfoMap.put("biometrics", getJsonString(subTypeMap));
 		metaInfoMap.put("exceptionBiometrics", getJsonString(exceptionSubTypeMap));
+
+		System.out.println("registrationDTO.getSignatureException() = " + registrationDTO.getSignatureException());
+		metaInfoMap.put("signatureException", String.valueOf(registrationDTO.getSignatureException()));
 
 	}
 
@@ -656,10 +662,15 @@ public class PacketHandlerServiceImpl extends BaseService implements PacketHandl
 			auditMap.put("moduleName", audit.getModuleName());
 			auditMap.put("moduleId", audit.getModuleId());
 			auditMap.put("description", audit.getDescription());
-
+//
 			auditMap.put("actionTimeStamp", String.valueOf(audit.getActionTimeStamp().format(formatter)));
+//			metaInfoMap.put("biometrics", getJsonString(subTypeMap));
+//			metaInfoMap.put("exceptionBiometrics", getJsonString(exceptionSubTypeMap));
+//			System.out.println("registrationDTO.getSignatureException() = " + registrationDTO.getSignatureException());
+//			metaInfoMap.put("signatureException", String.valueOf(registrationDTO.getSignatureException()));
 
 			auditList.add(auditMap);
+
 		}
 
 		packetWriter.addAudits(registrationDTO.getRegistrationId(), auditList, source.toUpperCase(),

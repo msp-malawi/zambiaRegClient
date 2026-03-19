@@ -24,10 +24,12 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
+import io.mosip.registration.device.scanner.impl.DocumentScannerService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import io.mosip.commons.packet.constants.Biometric;
@@ -70,6 +72,10 @@ public class TemplateGenerator extends BaseService {
 
     @Autowired
     private IdentitySchemaServiceImpl identitySchemaServiceImpl;
+
+    @Autowired
+    @Qualifier("documentScannerServiceImpl")
+    DocumentScannerService documentScannerService;
 
     private String consentText;
 
@@ -181,8 +187,9 @@ public class TemplateGenerator extends BaseService {
                 .filter(d -> d.getModalityName().toLowerCase().contains("iris")).collect(Collectors.toList());
         List<BiometricsDto> capturedFace = capturedList.stream()
                 .filter(d -> d.getModalityName().toLowerCase().contains("face")).collect(Collectors.toList());
-
-        bio_data.put("FingerCount", capturedFingers.size());
+        List<BiometricsDto> countOfCapturedFingers = capturedFingers.stream().filter(b-> b.getAttributeISO() != null).collect(Collectors.toList());
+        bio_data.put("FingerCount", countOfCapturedFingers.size());
+//        bio_data.put("FingerCount", capturedFingers.size());
         bio_data.put("IrisCount", capturedIris.size());
         bio_data.put("FaceCount", capturedFace.size());
         bio_data.put("subType", field.getSubType());
@@ -291,6 +298,42 @@ public class TemplateGenerator extends BaseService {
                 templateValues.put(RegistrationConstants.TEMPLATE_EXCEPTION_IMAGE_SOURCE, RegistrationConstants.TEMPLATE_JPG_IMAGE_ENCODING +
                         StringUtils.newStringUtf8(Base64.encodeBase64(registration.getDocuments().get(field.getId()).getDocument(), false)));
             }
+
+            if ("POS".equalsIgnoreCase(field.getSubType())) {
+                System.out.println("POS.equalsIgnoreCase");
+                byte[] documentBytes = registration.getDocuments().get(field.getId()).getDocument();
+                if (documentBytes != null && documentBytes.length > 0) {
+                    try {
+                        System.out.println("pos documentBytes not null");
+
+                        String mimeType = registration.getDocuments().get(field.getId()).getFormat();
+                        if ("application/pdf".equalsIgnoreCase(mimeType)) {
+                            List<BufferedImage> images = documentScannerService.pdfToImages(documentBytes);
+                            if (images != null && !images.isEmpty()) {
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                ImageIO.write(images.get(0), "png", baos); // first page as PNG
+                                String base64Image = RegistrationConstants.TEMPLATE_PNG_IMAGE_ENCODING +
+                                        StringUtils.newStringUtf8(Base64.encodeBase64(baos.toByteArray(), false));
+                                System.out.println("if base64Image  :"+base64Image);
+                                templateValues.put(RegistrationConstants.TEMPLATE_SIGNATURE_IMAGE_SOURCE, base64Image);
+                            }
+                        } else {
+                            // Directly encode if it's already an image
+                            String base64Image = RegistrationConstants.TEMPLATE_PNG_IMAGE_ENCODING +
+                                    StringUtils.newStringUtf8(Base64.encodeBase64(documentBytes, false));
+                            System.out.println("base64Image :"+base64Image);
+                            templateValues.put(RegistrationConstants.TEMPLATE_SIGNATURE_IMAGE_SOURCE, base64Image);
+                        }
+
+//                        templateValues.put("SignatureCount",1);
+
+                    } catch (Exception e) {
+                        LOGGER.error(LOG_TEMPLATE_GENERATOR, APPLICATION_NAME, APPLICATION_ID,
+                                e.getMessage() + ExceptionUtils.getStackTrace(e));
+                    }
+                }
+            }
+
         }
         return data;
     }

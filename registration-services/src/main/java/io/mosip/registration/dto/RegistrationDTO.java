@@ -71,6 +71,8 @@ public class RegistrationDTO {
 
 	/** The acknowledge receipt. */
 	private byte[] acknowledgeReceipt;
+	private Boolean signatureException=false;
+
 
 	/** The acknowledge receipt name. */
 	private String acknowledgeReceiptName;
@@ -360,4 +362,6 @@ public class RegistrationDTO {
 			this.isChild = this.age < minAge;
 		}
 	}
+
+
 }

@@ -20,7 +20,7 @@ ARG tpm_enabled
 
 ARG db_bootpwd
 
-ENV client_version_env=1.4.8-SNAPSHOT
+ENV client_version_env=1.0.0-SNAPSHOT
 
 ENV crypto_key_env=bBQX230Wskq6XpoZ1c+Ep1D+znxfT89NxLQ7P4KFkc4
 

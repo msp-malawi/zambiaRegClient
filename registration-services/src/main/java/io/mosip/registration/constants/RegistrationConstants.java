@@ -16,7 +16,8 @@ import java.util.Set;
  *
  */
 public class RegistrationConstants {
-	/**
+
+    /**
 	 * private constructor
 	 */
 	private RegistrationConstants() {
@@ -164,6 +165,7 @@ public class RegistrationConstants {
 	public static final String UPDATE_BIOMETRICS_IMG_PATH = "/images/activeBiometricDetail.png";
 	public static final String UPDATE_BIOMETRICS_FOCUSED = "/images/UpdateBiometricsFocus.png";
 	//pdf file
+	public static final String TEMPLATE_SIGNATURE_IMAGE_SOURCE = "SignatureImageSource";
 
 	public static final String PDF_FILE_PATH ="/PSAUserManual.pdf";
 

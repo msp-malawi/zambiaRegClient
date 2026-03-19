@@ -20,10 +20,12 @@ import io.mosip.registration.context.ApplicationContext;
 import io.mosip.registration.context.SessionContext;
 import io.mosip.registration.controller.BaseController;
 import io.mosip.registration.controller.FXUtils;
+import io.mosip.registration.controller.Initialization;
 import io.mosip.registration.controller.reg.DocumentScanController;
 import io.mosip.registration.controller.reg.RegistrationController;
 import io.mosip.registration.controller.reg.UserOnboardParentController;
 import io.mosip.registration.dao.UserDetailDAO;
+import io.mosip.registration.dto.RegistrationDTO;
 import io.mosip.registration.dto.mastersync.BiometricAttributeDto;
 import io.mosip.registration.dto.packetmanager.BiometricsDto;
 import io.mosip.registration.dto.packetmanager.DocumentDto;
@@ -35,22 +37,28 @@ import io.mosip.registration.mdm.dto.MdmBioDevice;
 import io.mosip.registration.mdm.service.impl.MosipDeviceSpecificationFactory;
 import io.mosip.registration.service.bio.BioService;
 import io.mosip.registration.service.operator.UserOnboardService;
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -67,8 +75,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collector;
 
-import static io.mosip.registration.constants.LoggerConstants.LOG_REG_BIOMETRIC_CONTROLLER;
-import static io.mosip.registration.constants.LoggerConstants.LOG_REG_FINGERPRINT_CAPTURE_CONTROLLER;
+import static io.mosip.registration.constants.LoggerConstants.*;
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_ID;
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
 
@@ -86,7 +93,8 @@ public class BiometricsController extends BaseController /* implements Initializ
      * Instance of {@link Logger}
      */
     private static final Logger LOGGER = AppConfig.getLogger(BiometricsController.class);
-
+    @FXML
+    public Button signatureButton;
     @FXML
     private GridPane biometricBox;
 
@@ -374,6 +382,8 @@ public class BiometricsController extends BaseController /* implements Initializ
         fxUtils = FXUtils.getInstance();
         leftHandImageBoxMap = new HashMap<>();
         exceptionMap = new HashMap<>();
+        handleChildStatusAndSignatureVisibility();
+
 
         Image backInWhite = new Image(getClass().getResourceAsStream(RegistrationConstants.BACK_FOCUSED));
         Image backImage = new Image(getClass().getResourceAsStream(RegistrationConstants.BACK));
@@ -2254,6 +2264,45 @@ public class BiometricsController extends BaseController /* implements Initializ
                 "Cleared the captured biometric data");
 
     }
+    private void handleChildStatusAndSignatureVisibility() {
+        System.out.println("handleChildStatusAndSignatureVisibility");
+
+        RegistrationDTO registrationDTO = getRegistrationDTOFromSession();
+        if (registrationDTO == null) {
+            System.out.println("Registration DTO is null in biometric controller initialization");
+            return;
+        }
+
+
+        boolean isChild = registrationDTO.isChild();
+
+
+        Platform.runLater(() -> {
+            PauseTransition pause = new PauseTransition(javafx.util.Duration.millis(200)); // ✅ ensure correct import
+            pause.setOnFinished(e -> {
+                if (signatureButton != null) {
+
+                    signatureButton.setVisible(!isChild);
+                    signatureButton.setManaged(!isChild);
+                    System.out.println("✅ Signature button visibility set to: " + !isChild);
+
+                } else {
+                    signatureButton.setVisible(false);
+                    signatureButton.setManaged(false);
+                    System.out.println("🚫 Signature button hidden (not applicant)");
+                }
+
+
+//                if (signatureButton != null  && getMapOfbiometricSubtypes().get(currentSubType)) {
+//                    signatureButton.setVisible(!isChild);
+//                    signatureButton.setManaged(!isChild);
+//                    System.out.println("Signature button visibility set to: " + !isChild);
+//                }
+            });
+            pause.play();
+        });
+    }
+
 
     public void addBioStreamImage(String subType, String modality, int attempt, byte[] streamImage) throws IOException {
         if (streamImage == null && !bioService.isMdmEnabled()) {
@@ -2337,6 +2386,36 @@ public class BiometricsController extends BaseController /* implements Initializ
         String expression = String.join(operator, bioAttributes);
         boolean result = MVEL.evalToBoolean(expression, capturedDetails);
 
+
+        RegistrationDTO registrationDTO = getRegistrationDTOFromSession();
+        boolean signatureExists = registrationDTO != null && registrationDTO.getDocuments() != null && registrationDTO.getDocuments().containsKey("signature");
+
+        if (result && considerExceptionAsCaptured && hasApplicantBiometricException()) {
+            result = registrationDTO.getDocuments().containsKey("proofOfException");
+        }
+
+        boolean isChild = registrationDTO.isChild();
+        System.out.println("bio controller initialize : " + isChild);
+        boolean isExceptionSignature = false;
+        try {
+            Object signExceptionObj = SessionContext.map().get("signException");
+            isExceptionSignature = Boolean.TRUE.equals(signExceptionObj);
+            registrationDTO.setSignatureException(true);
+
+            if (isExceptionSignature) {
+
+                getRegistrationDTOFromSession().getDocuments().remove("signature");
+
+                signatureButton.setDisable(true);
+                System.out.println("✅ Canvas cleared due to exception signature.");
+            }
+            else {
+                System.out.println("ℹ️ No exception signature — canvas not cleared.");
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Error checking exception signature: " + e.getMessage());
+        }
+
         if (result && considerExceptionAsCaptured) {
 
             if (hasApplicantBiometricException()) {
@@ -2346,6 +2425,17 @@ public class BiometricsController extends BaseController /* implements Initializ
             }
 
         }
+
+        System.out.println("isExceptionSignature: " + isExceptionSignature);
+        System.out.println("isChild: " + isChild);
+        System.out.println("signatureExists: " + signatureExists);
+        System.out.println("result: " + result);
+
+        boolean enableContinue = (result && (isExceptionSignature || signatureExists)) || (result && (isChild));
+
+        System.out.println("Continue button enabled: " + enableContinue);
+
+        continueBtn.setDisable(!enableContinue);
         LOGGER.debug("REGISTRATION - BIOMETRICS - refreshContinueButton", RegistrationConstants.APPLICATION_ID,
                 RegistrationConstants.APPLICATION_NAME, "capturedDetails >> " + capturedDetails);
         LOGGER.debug("REGISTRATION - BIOMETRICS - refreshContinueButton", RegistrationConstants.APPLICATION_ID,
@@ -2355,7 +2445,7 @@ public class BiometricsController extends BaseController /* implements Initializ
             auditFactory.audit(AuditEvent.REG_BIO_CAPTURE_NEXT, Components.REG_BIOMETRICS, SessionContext.userId(),
                     AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
         }
-        continueBtn.setDisable(result ? false : true);
+//        continueBtn.setDisable(result ? false : true);
     }
 
     private boolean hasApplicantBiometricException() {
@@ -3463,6 +3553,24 @@ private void addImageInUIPane(String subType, String modality, Image uiImage, bo
         LOGGER.error(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID, "Capturing with local camera");
 
         documentScanController.startStream(this);
+    }
+
+    public void openSign(ActionEvent actionEvent) throws IOException {
+        System.out.println("signpad clicked");
+
+        LOGGER.info(LOG_REG_SIGN_CAPTURE, APPLICATION_NAME, APPLICATION_ID, "Displaying Signature Popup");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SignaturePad.fxml"));
+        loader.setControllerFactory(Initialization.getApplicationContext()::getBean);
+        GridPane root = loader.load(); // Load the content for the new page, assuming it's AnchorPane
+
+        Stage popupStage = new Stage();
+
+        Scene scene = new Scene(root);
+        popupStage.setScene(scene);
+        popupStage.initStyle(StageStyle.UNDECORATED);
+        popupStage.initModality(Modality.WINDOW_MODAL);
+        popupStage.initOwner(fXComponents.getStage());
+        popupStage.showAndWait();
     }
 
 }

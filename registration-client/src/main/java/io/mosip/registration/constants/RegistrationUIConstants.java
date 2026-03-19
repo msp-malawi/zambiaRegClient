@@ -86,6 +86,7 @@ public class RegistrationUIConstants {
 	public static final String REMAP_NOT_APPLICABLE = bundle.getString("REMAP_NOT_APPLICABLE");
 	public static final String USERMAP_NOT_APPLICABLE = bundle.getString("USERMAP_NOT_APPLICABLE");
 	public static final String REMAP_PROCESS_STILL_PENDING = bundle.getString("REMAP_PROCESS_STILL_PENDING");
+//	public static final String TEMPLATE_SIGNATURE_IMAGE_SOURCE = "SignatureImageSource";
 
 	// DEVICE
 	public static final String DEVICE_FP_NOT_FOUND = bundle.getString("DEVICE_FP_NOT_FOUND");
