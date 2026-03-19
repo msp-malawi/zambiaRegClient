@@ -9,21 +9,29 @@
 			styleClass="loginBorderPaneStyle" xmlns="http://javafx.com/javafx/17.0.2-ea"
 			fx:controller="io.mosip.registration.controller.auth.LoginController">
 	<top>
-		<HBox  id="header-section" alignment="CENTER" >
-			<children>
+		<HBox fx:id="header" alignment="CENTER" spacing="15" styleClass="header">
+
+			<ImageView fitHeight="60" fitWidth="60">
+				<image>
+					<Image url="@/images/LOGO1.png"/>
+				</image>
+			</ImageView>
+
+			<VBox alignment="CENTER">
+				<Label text="Republic of Zambia" styleClass="header-title"/>
+				<Label text="National Identity System" styleClass="header-sub"/>
+			</VBox>
 
 
-				<ImageView>
-					<image>
-						<Image url="@/images/Loginlogo.png"/>
-					</image>
-				</ImageView>
 
+			<ImageView fitHeight="35" fitWidth="55">
+				<image>
+					<Image url="@/images/LOGO2.png"/>
+				</image>
+			</ImageView>
 
-			</children>
 		</HBox>
 	</top>
-
 	<center>
 		<!--        <ProgressIndicator fx:id="progressIndicator" layoutX="-8.0" layoutY="271.0" progress="0.0" visible="false"/>-->
 		<!--        <ProgressIndicator fx:id="passwordProgressIndicator" layoutX="-8.0" layoutY="271.0" progress="0.0"-->
@@ -38,7 +46,7 @@
 		<!--            </BorderPane.margin>-->
 		<!--        </Pane>-->
 
-		<VBox spacing="10" alignment="CENTER">
+		<VBox fx:id="card" spacing="10" alignment="CENTER">
 			<!-- Progress Indicators (Loader) -->
 			<!--        <HBox alignment="CENTER">-->
 			<!--            <ProgressIndicator fx:id="progressIndicator" progress="0.0" visible="false"/>-->
@@ -217,13 +225,12 @@
 
 	<bottom>
 		<HBox id="footer-section" alignment="CENTER" spacing="10"
-			  style="-fx-background-color: #2d5410; -fx-padding: 10;">
+			  style="-fx-background-color: #147f55; -fx-padding: 10;">
 			<ImageView fitHeight="25.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
 				<image>
 					<Image url="@/images/msp-logo.png"/>
 				</image>
 			</ImageView>
-
 			<Label style="-fx-text-fill: white;" text="%mosip.io"/>
 			<Label style="-fx-text-fill: white;" text="  "/>
 			<Label style="-fx-text-fill: white;" text="%regClientVersion">

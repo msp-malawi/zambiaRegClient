@@ -595,15 +595,20 @@ Working on new Css by taleev
 	-fx-pref-width: 400.0px;
 	-fx-background-color: #d0e5dd;
 	-fx-border-width: 1.0 1.0 1.0 1.0;
-	-fx-border-color: #808080;
+	-fx-border-color: rgba(20,127,85,0.5);
+	-fx-effect: dropshadow(gaussian, rgba(20,127,85,0.5), 8, 0.3, 0, 2);
 }
 
 .loginAnchorPaneExtendedStyle {
-	-fx-pref-height: 300.0px;
+	-fx-pref-height: 250.0px;
 	-fx-pref-width: 400.0px;
+	/*-fx-pref-height: 172.0px;*/
+	/*-fx-pref-width: 228.0px;*/
 	-fx-background-color: #d0e5dd;
 	-fx-border-width: 1.0 1.0 1.0 1.0;
-	-fx-border-color: #808080;
+	-fx-border-color: rgba(20,127,85,0.5);
+	-fx-effect: dropshadow(gaussian, rgba(20,127,85,0.5), 8, 0.3, 0, 2);
+
 }
 
 .loginTextStyle {
@@ -2374,4 +2379,112 @@ Working on new Css by taleev
 
 #alertImage {
 	-fx-background-size: 90.0px 90.0px;
+}
+
+/* 🌈 BACKGROUND (soft gradient) */
+.root {
+	/*-fx-background-color: linear-gradient(to bottom, #2e8b70 0%, #cfe5dc 50%, #2e8b70 100%);*/
+
+
+
+	-fx-background-color: linear-gradient(to bottom, #cfe5dc 0%, #cfe5dc 50%, #cfe5dc 100%);
+}
+
+/* 🔝 HEADER */
+.header {
+	-fx-background-color: linear-gradient(to right, #1f7a5c, #4fa88c);
+	-fx-padding: 20;
+}
+
+/* HEADER TEXT */
+.header-title {
+	-fx-text-fill: white;
+	-fx-font-size: 26px;
+	-fx-font-weight: bold;
+}
+
+.header-sub {
+	-fx-text-fill: white;
+	-fx-font-size: 14px;
+	-fx-font-weight: bold;
+
+}
+
+/* 🪟 LOGIN CARD (GLASS LOOK) */
+.card {
+	-fx-background-color: rgba(255,255,255,0.75);
+	-fx-padding: 30;
+	-fx-background-radius: 15;
+
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 25, 0.3, 0, 10);
+}
+
+/* TITLE */
+.title {
+	-fx-font-size: 28px;
+	-fx-text-fill: #444;
+}
+
+/* INPUT */
+.input {
+	-fx-pref-width: 280;
+	-fx-pref-height: 40;
+
+	-fx-background-radius: 8;
+	-fx-border-radius: 8;
+
+	-fx-background-color: white;
+	-fx-padding: 8;
+}
+
+/* INPUT FOCUS */
+.input:focused {
+	-fx-border-color: #4fa88c;
+	-fx-border-width: 2;
+}
+
+/* 👁 BUTTON */
+.eye-btn {
+	-fx-background-color: transparent;
+	-fx-cursor: hand;
+}
+
+/* 🚀 SUBMIT BUTTON */
+.btn {
+	-fx-pref-width: 280;
+	-fx-pref-height: 45;
+
+	-fx-background-radius: 10;
+	-fx-background-color: linear-gradient(to right, #1f7a5c, #4fa88c);
+
+	-fx-text-fill: white;
+	-fx-font-size: 14px;
+
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0.2, 0, 4);
+}
+
+/* HOVER */
+.btn:hover {
+	-fx-scale-x: 1.05;
+	-fx-scale-y: 1.05;
+}
+
+/* FOOTER */
+.footer {
+	-fx-background-color: linear-gradient(to right, #1f7a5c, #4fa88c);
+	-fx-padding: 10;
+}
+
+/* FOOTER TEXT */
+.footer-text {
+	-fx-text-fill: white;
+	-fx-font-size: 13px;
+}
+
+/* MSP BADGE */
+.footer-badge {
+	-fx-background-color: #f4c430;
+	-fx-text-fill: #1f7a5c;
+	-fx-padding: 4 10;
+	-fx-background-radius: 20;
 }

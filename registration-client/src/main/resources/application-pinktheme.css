@@ -566,8 +566,10 @@ Working on new Css by taleev
 }
 
 .loginAnchorPaneExtendedStyle{
-	-fx-pref-height: 300.0px;
+	-fx-pref-height: 250.0px;
 	-fx-pref-width: 400.0px;
+	/*-fx-pref-height: 172.0px;*/
+	/*-fx-pref-width: 228.0px;*/
 	-fx-background-color: #FFFFFF;
 	-fx-border-width: 1.0 1.0 1.0 1.0;
 	-fx-border-color: #808080;
@@ -2201,4 +2203,72 @@ Working on new Css by taleev
 }
 #alertImage{
 	-fx-background-size: 90.0px 90.0px;
+}
+/* 🌈 BACKGROUND (soft gradient) */
+/* 🌿 BACKGROUND */
+.center-bg {
+	-fx-background-color: linear-gradient(to bottom, #6bbfa3, #cfe5e0);
+}
+
+/* 🌿 HEADER */
+.header-container {
+	-fx-background-color: linear-gradient(to right, #1f7a63, #6bbfa3);
+	-fx-padding: 15;
+}
+
+.header-title {
+	-fx-text-fill: white;
+	-fx-font-size: 22px;
+	-fx-font-weight: bold;
+}
+
+.header-sub {
+	-fx-text-fill: #d7f5ea;
+	-fx-font-size: 14px;
+}
+
+/* 🌿 LOGIN CARD (GLASS EFFECT) */
+.login-card {
+	-fx-background-color: rgba(255, 255, 255, 0.85);
+	-fx-background-radius: 15;
+	-fx-padding: 30;
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 20, 0.2, 0, 5);
+}
+
+/* 🌿 LOGIN TITLE */
+.login-title {
+	-fx-font-size: 20px;
+	-fx-text-fill: #333;
+}
+
+/* 🌿 INPUT FIELD */
+.input {
+	-fx-pref-width: 250;
+	-fx-pref-height: 35;
+	-fx-background-radius: 5;
+	-fx-border-color: #4aa38c;
+	-fx-border-radius: 5;
+}
+
+/* 🌿 BUTTON */
+.btn {
+	-fx-background-color: linear-gradient(to right, #1f7a63, #3aa17e);
+	-fx-text-fill: white;
+	-fx-background-radius: 8;
+	-fx-pref-width: 200;
+	-fx-pref-height: 35;
+}
+
+.btn:hover {
+	-fx-background-color: #2e8b74;
+}
+
+/* 🌿 FOOTER */
+.footer {
+	-fx-background-color: linear-gradient(to right, #1f7a63, #6bbfa3);
+	-fx-padding: 10;
+}
+
+.footer-text {
+	-fx-text-fill: white;
 }

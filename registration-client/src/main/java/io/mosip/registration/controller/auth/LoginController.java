@@ -27,6 +27,9 @@ import io.mosip.registration.util.common.OTPManager;
 import io.mosip.registration.util.common.PageFlow;
 import io.mosip.registration.util.healthcheck.RegistrationAppHealthCheckUtil;
 import io.mosip.registration.util.restclient.AuthTokenUtilService;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -41,11 +44,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -191,6 +193,12 @@ public class LoginController extends BaseController implements Initializable {
 	@FXML
 	private Label versionValueLabel;
 
+	@FXML
+	private VBox card;
+
+	@FXML
+	private HBox header;
+
 	@Autowired
 	private MosipDeviceSpecificationFactory deviceSpecificationFactory;
 
@@ -216,7 +224,24 @@ public class LoginController extends BaseController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		bindTogglePassword();
+		// Card animation
+		card.setOpacity(0);
 
+		FadeTransition fade = new FadeTransition(Duration.seconds(0.6), card);
+		fade.setFromValue(0);
+		fade.setToValue(1);
+
+		TranslateTransition slide = new TranslateTransition(Duration.seconds(0.6), card);
+		slide.setFromY(40);
+		slide.setToY(0);
+
+		new ParallelTransition(fade, slide).play();
+
+		// Header animation
+		TranslateTransition headerSlide = new TranslateTransition(Duration.seconds(0.5), header);
+		headerSlide.setFromY(-80);
+		headerSlide.setToY(0);
+		headerSlide.play();
 		versionValueLabel.setText(softwareUpdateHandler.getCurrentVersion());
 
 		new Thread(() -> {

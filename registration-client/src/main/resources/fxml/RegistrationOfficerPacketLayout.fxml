@@ -589,7 +589,7 @@
                   <Insets right="40.0" />
                </GridPane.margin>
             </GridPane>
-            <HBox prefHeight="56.0" prefWidth="264.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <HBox visible="false" prefHeight="56.0" prefWidth="264.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <children>
                   <HBox prefHeight="56.0" prefWidth="123.0">
                      <children>
