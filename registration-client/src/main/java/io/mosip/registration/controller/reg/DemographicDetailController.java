@@ -1163,10 +1163,7 @@ public class DemographicDetailController extends BaseController {
                 if (value == null) {
                     System.out.println("populate values  null for demograpics id: "+schemaField.getId());
                     continue;
-                }else{
-                    System.out.println("demo map : "+(List<SimpleDto>) value);
                 }
-
                 switch (schemaField.getType()) {
                     case RegistrationConstants.SIMPLE_TYPE:
                         switch (schemaField.getControlType()) {
