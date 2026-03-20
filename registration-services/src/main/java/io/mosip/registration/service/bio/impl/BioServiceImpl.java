@@ -64,6 +64,9 @@ import io.mosip.registration.service.bio.BioService;
 public class BioServiceImpl extends BaseService implements BioService {
 	@Autowired
 	ISO iso;
+
+	@Autowired
+	MantraFingerCapture mfingerCapture;
 	@Autowired
 	FaceStreamer faceStreamer;
 	@Autowired
@@ -201,42 +204,64 @@ public class BioServiceImpl extends BaseService implements BioService {
 		if (isFace(modality) || isExceptionPhoto(modality)) {
 			biometricsDtos = faceCapture(modality, mdmRequestDto);
 		} else {
-			MdmBioDevice bioDevice = deviceSpecificationFactory.getDeviceInfoByModality(modality);
-
-			MosipDeviceSpecificationProvider provider =
-					deviceSpecificationFactory.getMdsProvider(bioDevice.getSpecVersion());
-
-			biometricsDtos = provider.rCapture(bioDevice, mdmRequestDto);
+//			MdmBioDevice bioDevice = deviceSpecificationFactory.getDeviceInfoByModality(modality);
+//
+//			MosipDeviceSpecificationProvider provider =
+//					deviceSpecificationFactory.getMdsProvider(bioDevice.getSpecVersion());
+//
+//			biometricsDtos = provider.rCapture(bioDevice, mdmRequestDto);
+			biometricsDtos = mfingerCapture.rCapture(mdmRequestDto);
 		}
 
 		try {
-			for (BiometricsDto dto : biometricsDtos) {
+// withMDS
+//			for (BiometricsDto dto : biometricsDtos) {
+//
+//				if (dto != null && isQualityScoreMaxInclusive(String.valueOf(dto.getQualityScore()))) {
+//
+//					BiometricType biometricType = BiometricType.fromValue(
+//							Biometric.getSingleTypeByAttribute(dto.getBioAttribute()).name());
+//
+//					BIR bir = buildBir(dto);
+//
+//					Map<BiometricType, Float> scoreMap =
+//							bioAPIFactory.getBioProvider(biometricType, BiometricFunction.QUALITY_CHECK)
+//									.getModalityQuality(new BIR[]{bir}, null);
+//
+//					dto.setIdemiaQualityScore(scoreMap.get(biometricType));
+//
+//					result.add(dto);
+//				}
+//				else if (isFace(modality) || isExceptionPhoto(modality)) {
+////						if(mdmRequestDto.getRequestedScore() == -1){
+////							biometricsDto.setQualityScore(rawScore);
+////							biometricsDto.setIdemiaQualityScore(rawScore);
+////						}else {
+//					dto.setQualityScore(faceStreamer.getQualityScore());
+//					dto.setIdemiaQualityScore(faceStreamer.getQualityScore());
+////						}
+//				}
+//			}
 
-				if (dto != null && isQualityScoreMaxInclusive(String.valueOf(dto.getQualityScore()))) {
+			//without MDS
+			for (BiometricsDto biometricsDto : biometricsDtos) {
+				if (biometricsDto != null && isQualityScoreMaxInclusive(String.valueOf(biometricsDto.getQualityScore()))) {
+					System.out.println("faceStreamer.qualityScore " + faceStreamer.getQualityScore());
+					System.out.println("biometricsDto.getQualityScore() " + biometricsDto.getQualityScore());
 
-					BiometricType biometricType = BiometricType.fromValue(
-							Biometric.getSingleTypeByAttribute(dto.getBioAttribute()).name());
+					if (isFace(modality) || isExceptionPhoto(modality)) {
 
-					BIR bir = buildBir(dto);
+						biometricsDto.setQualityScore(faceStreamer.getQualityScore());
+						biometricsDto.setIdemiaQualityScore(faceStreamer.getQualityScore());
+					} else {
+						biometricsDto.setIdemiaQualityScore(biometricsDto.getQualityScore());
+					}
 
-					Map<BiometricType, Float> scoreMap =
-							bioAPIFactory.getBioProvider(biometricType, BiometricFunction.QUALITY_CHECK)
-									.getModalityQuality(new BIR[]{bir}, null);
-
-					dto.setIdemiaQualityScore(scoreMap.get(biometricType));
-
-					result.add(dto);
-				}
-				else if (isFace(modality) || isExceptionPhoto(modality)) {
-//						if(mdmRequestDto.getRequestedScore() == -1){
-//							biometricsDto.setQualityScore(rawScore);
-//							biometricsDto.setIdemiaQualityScore(rawScore);
-//						}else {
-					dto.setQualityScore(faceStreamer.getQualityScore());
-					dto.setIdemiaQualityScore(faceStreamer.getQualityScore());
-//						}
+					result.add(biometricsDto);
 				}
 			}
+
+
 		} catch (Exception e) {
 			throw new RegBaseCheckedException(
 					RegistrationExceptionConstants.REG_BIOMETRIC_QUALITY_CHECK_ERROR.getErrorCode(),
