@@ -340,8 +340,179 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 	 * @return the pre registration
 	 */
 	@SuppressWarnings("unchecked")
+//	private void getPreRegistration(ResponseDTO responseDTO, String preRegistrationId, String syncJobId,
+//			Timestamp lastUpdatedTimeStamp) {
+//
+//		LOGGER.info("REGISTRATION - PRE_REGISTRATION_DATA_SYNC - PRE_REGISTRATION_DATA_SYNC_SERVICE_IMPL",
+//				RegistrationConstants.APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
+//				"Fetching Pre-Registration started");
+//
+//		/* Check in Database whether required record already exists or not */
+//		PreRegistrationList preRegistration = preRegistrationDAO.get(preRegistrationId);
+//
+//		/* Check Network Connectivity */
+//		boolean isOnline = RegistrationAppHealthCheckUtil.isNetworkAvailable();
+//
+//		/* check if the packet is not available in db and the machine is offline */
+//		if (isPacketNotAvailable(preRegistration, isOnline)) {
+//			setErrorResponse(responseDTO, RegistrationConstants.PRE_REG_PACKET_NETWORK_ERROR, null);
+//			return;
+//		}
+//
+//		boolean isUpdated = false;
+//		byte[] decryptedPacket = null;
+//		boolean isFetchFromUi = false;
+//
+//		isUpdated = isUpdated(lastUpdatedTimeStamp, preRegistration, isUpdated);
+//
+//
+//		if (syncJobId == null) {
+//			isFetchFromUi = true;
+//			syncJobId = RegistrationConstants.JOB_TRIGGER_POINT_USER;
+//
+//		}
+//
+//		boolean isJob = (!RegistrationConstants.JOB_TRIGGER_POINT_USER.equals(syncJobId));
+//
+//		/*
+//		 * Get Packet From REST call when the packet is updated in the server or always
+//		 * if its a manual trigger
+//		 */
+//		if (isFetchToBeTriggered(isOnline, isUpdated, isJob)) {
+//
+//			/* prepare request params to pass through URI */
+//			Map<String, String> requestParamMap = new HashMap<>();
+//
+//
+//			String triggerPoint = getTriggerPoint(isJob);
+//
+//			try {
+////				/* REST call to get packet */
+////				LinkedHashMap<String, Object> mainResponseDTO = (LinkedHashMap<String, Object>) serviceDelegateUtil
+////						.get(RegistrationConstants.GET_PRE_REGISTRATION, requestParamMap, true, syncJobId);
+//
+//				/* REST call to get packet */
+//				LinkedHashMap<String, Object> mainResponseDTO = new LinkedHashMap<>();
+//				if(preRegistrationId.length()==14){
+//					requestParamMap.put(RegistrationConstants.PRE_REGISTRATION_ID, preRegistrationId);
+//					mainResponseDTO = (LinkedHashMap<String, Object>) serviceDelegateUtil
+//							.get(RegistrationConstants.GET_PRE_REGISTRATION, requestParamMap, true, syncJobId);
+//
+//				}if(preRegistrationId.length()==15){
+//					if(preRegistrationId.substring(0, 1).equalsIgnoreCase("O")){
+//						preRegistrationId = preRegistrationId.replaceFirst("O", "");
+//						System.out.println(""+preRegistrationId);
+//					}
+//
+//					requestParamMap.put(RegistrationConstants.PRE_REGISTRATION_ID, preRegistrationId);
+//
+//					mainResponseDTO = (LinkedHashMap<String, Object>) serviceDelegateUtil
+//							.getPrereg(RegistrationConstants.GET_PRE_REGISTRATION_AWS, requestParamMap, true, syncJobId);
+//
+//				}
+//
+//
+//				if (null != mainResponseDTO
+//						&& null != mainResponseDTO.get(RegistrationConstants.RESPONSE)) {
+//
+//					PreRegArchiveDTO preRegArchiveDTO = new ObjectMapper().readValue(
+//							new ObjectMapper().writeValueAsString(
+//									mainResponseDTO.get(RegistrationConstants.RESPONSE)),
+//							PreRegArchiveDTO.class);
+//
+//					decryptedPacket = preRegArchiveDTO.getZipBytes();
+//
+//					/* Get PreRegistrationDTO by taking packet Information */
+//					PreRegistrationDTO preRegistrationDTO = preRegZipHandlingService
+//							.encryptAndSavePreRegPacket(preRegistrationId, decryptedPacket);
+//
+//					// Transaction
+//					SyncTransaction syncTransaction = syncManager.createSyncTransaction(
+//							RegistrationConstants.RETRIEVED_PRE_REG_ID, RegistrationConstants.RETRIEVED_PRE_REG_ID,
+//							triggerPoint, syncJobId);
+//
+//					// save in Pre-Reg List
+//					PreRegistrationList preRegistrationList = preparePreRegistration(syncTransaction,
+//							preRegistrationDTO, lastUpdatedTimeStamp);
+//
+//					preRegistrationList.setAppointmentDate(
+//							DateUtils.parseUTCToDate(preRegArchiveDTO.getAppointmentDate(), "yyyy-MM-dd"));
+//
+//					if (preRegistration == null) {
+//						preRegistrationDAO.save(preRegistrationList);
+//					} else {
+//						preRegistrationList.setId(preRegistration.getId());
+//						preRegistrationList.setUpdBy(getUserIdFromSession());
+//						preRegistrationList.setUpdDtimes(new Timestamp(System.currentTimeMillis()));
+//						preRegistrationDAO.update(preRegistrationList);
+//					}
+//					/* set success response */
+//					setSuccessResponse(responseDTO, RegistrationConstants.PRE_REG_SUCCESS_MESSAGE, null);
+//
+//				} else if (preRegistration == null) {
+//					/*
+//					 * set error message if the packet is not available both in db as well as the
+//					 * REST service
+//					 */
+//					setErrorResponse(responseDTO, RegistrationConstants.PRE_REG_TO_GET_PACKET_ERROR, null);
+//					return;
+//				}
+//
+//			} catch (HttpClientErrorException | RegBaseCheckedException | java.io.IOException
+//					| HttpServerErrorException exception) {
+//
+//				LOGGER.error("REGISTRATION - PRE_REGISTRATION_DATA_SYNC - PRE_REGISTRATION_DATA_SYNC_SERVICE_IMPL",
+//						RegistrationConstants.APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
+//						exception.getMessage() + ExceptionUtils.getStackTrace(exception));
+//
+//				/* set Error response */
+//				setErrorResponse(responseDTO, RegistrationConstants.PRE_REG_TO_GET_PACKET_ERROR, null);
+//				return;
+//			}
+//		}
+//
+//		/* Only for Manual Trigger */
+//		if (isFetchFromUi) {
+//			try {
+//				if (isPacketFromLocal(preRegistration, decryptedPacket)) {
+//					/*
+//					 * if the packet is already available,read encrypted packet from disk and
+//					 * decrypt
+//					 */
+//					decryptedPacket = preRegZipHandlingService.decryptPreRegPacket(
+//							preRegistration.getPacketSymmetricKey(),
+//							FileUtils.readFileToByteArray(FileUtils.getFile(preRegistration.getPacketPath())));
+//				}
+//
+//				/* set decrypted packet into Response */
+//				setPacketToResponse(responseDTO, decryptedPacket, preRegistrationId);
+//
+//			} catch (IOException exception) {
+//				LOGGER.error("REGISTRATION - PRE_REGISTRATION_DATA_SYNC - Manual Trigger",
+//						RegistrationConstants.APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
+//						exception.getMessage() + ExceptionUtils.getStackTrace(exception));
+//				setErrorResponse(responseDTO, RegistrationConstants.PRE_REG_TO_GET_PACKET_ERROR, null);
+//				return;
+//			} catch (RegBaseUncheckedException exception) {
+//				LOGGER.error("REGISTRATION - PRE_REGISTRATION_DATA_SYNC - Manual Trigger",
+//						RegistrationConstants.APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
+//						exception.getMessage() + ExceptionUtils.getStackTrace(exception));
+//				setErrorResponse(responseDTO, RegistrationConstants.PRE_REG_TO_GET_PACKET_ERROR, null);
+//				return;
+//			}
+//
+//		}
+//
+//		LOGGER.info("REGISTRATION - PRE_REGISTRATION_DATA_SYNC - PRE_REGISTRATION_DATA_SYNC_SERVICE_IMPL",
+//				RegistrationConstants.APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
+//				"Get Pre-Registration ended");
+//
+//	}
+
+
+
 	private void getPreRegistration(ResponseDTO responseDTO, String preRegistrationId, String syncJobId,
-			Timestamp lastUpdatedTimeStamp) {
+									Timestamp lastUpdatedTimeStamp) {
 
 		LOGGER.info("REGISTRATION - PRE_REGISTRATION_DATA_SYNC - PRE_REGISTRATION_DATA_SYNC_SERVICE_IMPL",
 				RegistrationConstants.APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
@@ -349,12 +520,13 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 
 		/* Check in Database whether required record already exists or not */
 		PreRegistrationList preRegistration = preRegistrationDAO.get(preRegistrationId);
-
+		System.out.println(" preRegistration---> ");
+		System.out.println("preRegistration ---> "+ preRegistration);
 		/* Check Network Connectivity */
 		boolean isOnline = RegistrationAppHealthCheckUtil.isNetworkAvailable();
 
 		/* check if the packet is not available in db and the machine is offline */
-		if (isPacketNotAvailable(preRegistration, isOnline)) {
+		if ( isPacketNotAvailable(preRegistration, isOnline)) {
 			setErrorResponse(responseDTO, RegistrationConstants.PRE_REG_PACKET_NETWORK_ERROR, null);
 			return;
 		}
@@ -393,7 +565,8 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 
 				/* REST call to get packet */
 				LinkedHashMap<String, Object> mainResponseDTO = new LinkedHashMap<>();
-				if(preRegistrationId.length()==14){
+				System.out.println("pre-reg-id-length :"+preRegistrationId.length());
+				if(preRegistrationId.length()==14 || preRegistrationId.length() ==17){
 					requestParamMap.put(RegistrationConstants.PRE_REGISTRATION_ID, preRegistrationId);
 					mainResponseDTO = (LinkedHashMap<String, Object>) serviceDelegateUtil
 							.get(RegistrationConstants.GET_PRE_REGISTRATION, requestParamMap, true, syncJobId);
@@ -401,7 +574,7 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 				}if(preRegistrationId.length()==15){
 					if(preRegistrationId.substring(0, 1).equalsIgnoreCase("O")){
 						preRegistrationId = preRegistrationId.replaceFirst("O", "");
-						System.out.println(""+preRegistrationId);
+						System.out.println("/ : "+preRegistrationId);
 					}
 
 					requestParamMap.put(RegistrationConstants.PRE_REGISTRATION_ID, preRegistrationId);
@@ -420,7 +593,9 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 									mainResponseDTO.get(RegistrationConstants.RESPONSE)),
 							PreRegArchiveDTO.class);
 
+
 					decryptedPacket = preRegArchiveDTO.getZipBytes();
+//					System.out.println("decryptedPacket :"+decryptedPacket);
 
 					/* Get PreRegistrationDTO by taking packet Information */
 					PreRegistrationDTO preRegistrationDTO = preRegZipHandlingService
@@ -434,10 +609,12 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 					// save in Pre-Reg List
 					PreRegistrationList preRegistrationList = preparePreRegistration(syncTransaction,
 							preRegistrationDTO, lastUpdatedTimeStamp);
-
-					preRegistrationList.setAppointmentDate(
-							DateUtils.parseUTCToDate(preRegArchiveDTO.getAppointmentDate(), "yyyy-MM-dd"));
-
+					try {
+						preRegistrationList.setAppointmentDate(
+								DateUtils.parseUTCToDate(preRegArchiveDTO.getAppointmentDate(), "yyyy-MM-dd"));
+					}catch (Exception e){
+						e.printStackTrace();
+					}
 					if (preRegistration == null) {
 						preRegistrationDAO.save(preRegistrationList);
 					} else {
@@ -459,7 +636,7 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 				}
 
 			} catch (HttpClientErrorException | RegBaseCheckedException | java.io.IOException
-					| HttpServerErrorException exception) {
+					 | HttpServerErrorException exception) {
 
 				LOGGER.error("REGISTRATION - PRE_REGISTRATION_DATA_SYNC - PRE_REGISTRATION_DATA_SYNC_SERVICE_IMPL",
 						RegistrationConstants.APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
@@ -472,6 +649,7 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 		}
 
 		/* Only for Manual Trigger */
+		System.out.println("isFetchFromUi checking:"+isFetchFromUi);
 		if (isFetchFromUi) {
 			try {
 				if (isPacketFromLocal(preRegistration, decryptedPacket)) {
@@ -483,7 +661,7 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 							preRegistration.getPacketSymmetricKey(),
 							FileUtils.readFileToByteArray(FileUtils.getFile(preRegistration.getPacketPath())));
 				}
-
+				System.out.println("isFetchFromUi called");
 				/* set decrypted packet into Response */
 				setPacketToResponse(responseDTO, decryptedPacket, preRegistrationId);
 
@@ -508,7 +686,6 @@ public class PreRegistrationDataSyncServiceImpl extends BaseService implements P
 				"Get Pre-Registration ended");
 
 	}
-
 	private boolean isUpdated(Timestamp lastUpdatedTimeStamp, PreRegistrationList preRegistration, boolean isUpdated) {
 		if (isPacketUpdatedInServer(preRegistration)) {
 

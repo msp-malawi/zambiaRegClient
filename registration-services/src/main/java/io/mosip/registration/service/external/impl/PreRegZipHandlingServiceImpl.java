@@ -27,6 +27,7 @@ import java.util.zip.ZipInputStream;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.mosip.kernel.keygenerator.bouncycastle.util.KeyGeneratorUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -230,61 +231,138 @@ public class PreRegZipHandlingServiceImpl implements PreRegZipHandlingService {
 	 *             - holds the cheked exceptions
 	 */
 	@SuppressWarnings("unchecked")
+//	private void parseDemographicJson(BufferedReader bufferedReader, ZipEntry zipEntry) throws RegBaseCheckedException {
+//
+//		try {
+//
+//			String value;
+//			StringBuilder jsonString = new StringBuilder();
+//			while ((value = bufferedReader.readLine()) != null) {
+//				jsonString.append(value);
+//			}
+//
+//			if (!StringUtils.isEmpty(jsonString) && validateDemographicInfoObject()) {
+//				JSONObject jsonObject = (JSONObject) new JSONObject(jsonString.toString()).get("identity");
+//
+//				LOGGER.debug("REGISTRATION - PRE_REG_ZIP_HANDLING_SERVICE_IMPL", RegistrationConstants.APPLICATION_NAME,
+//						RegistrationConstants.APPLICATION_ID, jsonString.toString());
+//
+//				if(!jsonObject.has("IDSchemaVersion"))
+//					throw new RegBaseCheckedException("IDSchemaVersion not found", "IDSchemaVersion not found");
+//
+////				List<UiSchemaDTO> fieldList = identitySchemaService.getUISchema(jsonObject.getDouble("IDSchemaVersion"));
+//				List<UiSchemaDTO> fieldList = identitySchemaService.getUISchema(0.1);
+//				getRegistrationDtoContent().setIdSchemaVersion(jsonObject.getDouble("IDSchemaVersion"));
+//
+//				for(UiSchemaDTO field : fieldList) {
+//					if(field.getId().equalsIgnoreCase("IDSchemaVersion"))
+//						continue;
+//
+//					switch (field.getType()) {
+//					case "documentType":
+//						DocumentDto documentDto = new DocumentDto();
+//						if(jsonObject.has(field.getId()) && jsonObject.get(field.getId()) != null) {
+//							JSONObject fieldValue = jsonObject.getJSONObject(field.getId());
+//							documentDto.setCategory(field.getSubType());
+//							documentDto.setOwner("Applicant");
+//							documentDto.setFormat(fieldValue.getString("format"));
+//							documentDto.setType(fieldValue.getString("type"));
+//							documentDto.setValue(fieldValue.getString("value"));
+//							getRegistrationDtoContent().addDocument(field.getId(), documentDto);
+//						}
+//						break;
+//
+//					case "biometricsType":
+//						break;
+//
+//					default:
+//						Object fieldValue = getValueFromJson(field.getId(), field.getType(), jsonObject);
+//						if(fieldValue != null) {
+//							if(field.getControlType().equalsIgnoreCase("ageDate"))
+//								getRegistrationDtoContent().setDateField(field.getId(), (String)fieldValue);
+//							else
+//								getRegistrationDtoContent().getDemographics().put(field.getId(), fieldValue);
+//						}
+//						break;
+//					}
+//
+//					/*if(field.getType() != "documentType" && field.getType() != "biometricsType") {
+//						Object fieldValue = getValueFromJson(field.getId(), field.getType(), jsonObject);
+//						if(fieldValue != null) {
+//							if(field.getControlType().equalsIgnoreCase("ageDate"))
+//								getRegistrationDtoContent().setDateField(field.getId(), (String)fieldValue);
+//							else
+//								getRegistrationDtoContent().getDemographics().put(field.getId(), fieldValue);
+//						}
+//					}*/
+//				}
+//			}
+//		} catch (JSONException | IOException e) {
+//			LOGGER.error("REGISTRATION - PRE_REG_ZIP_HANDLING_SERVICE_IMPL", RegistrationConstants.APPLICATION_NAME,
+//					RegistrationConstants.APPLICATION_ID, ExceptionUtils.getStackTrace(e));
+//			throw new RegBaseCheckedException(REG_IO_EXCEPTION.getErrorCode(), e.getMessage());
+//		}
+//	}
 	private void parseDemographicJson(BufferedReader bufferedReader, ZipEntry zipEntry) throws RegBaseCheckedException {
-
+		System.out.println("parseDemographicJson methode called");
 		try {
-			
+
 			String value;
 			StringBuilder jsonString = new StringBuilder();
 			while ((value = bufferedReader.readLine()) != null) {
 				jsonString.append(value);
 			}
-			
+
 			if (!StringUtils.isEmpty(jsonString) && validateDemographicInfoObject()) {
 				JSONObject jsonObject = (JSONObject) new JSONObject(jsonString.toString()).get("identity");
-				
+				System.out.println("Identity Json Value :"+jsonString.toString());
+				LOGGER.info("REGISTRATION - PRE_REG_ZIP_HANDLING_SERVICE_IMPL", RegistrationConstants.APPLICATION_NAME,
+						RegistrationConstants.APPLICATION_ID, jsonString.toString());
 				LOGGER.debug("REGISTRATION - PRE_REG_ZIP_HANDLING_SERVICE_IMPL", RegistrationConstants.APPLICATION_NAME,
 						RegistrationConstants.APPLICATION_ID, jsonString.toString());
-				
-				if(!jsonObject.has("IDSchemaVersion"))
-					throw new RegBaseCheckedException("IDSchemaVersion not found", "IDSchemaVersion not found");
-				
-//				List<UiSchemaDTO> fieldList = identitySchemaService.getUISchema(jsonObject.getDouble("IDSchemaVersion"));
-				List<UiSchemaDTO> fieldList = identitySchemaService.getUISchema(0.1);
-				getRegistrationDtoContent().setIdSchemaVersion(jsonObject.getDouble("IDSchemaVersion"));
-							
-				for(UiSchemaDTO field : fieldList) {
-					if(field.getId().equalsIgnoreCase("IDSchemaVersion"))
-						continue;
-					
-					switch (field.getType()) {
-					case "documentType":
-						DocumentDto documentDto = new DocumentDto();
-						if(jsonObject.has(field.getId()) && jsonObject.get(field.getId()) != null) {
-							JSONObject fieldValue = jsonObject.getJSONObject(field.getId());							
-							documentDto.setCategory(field.getSubType());
-							documentDto.setOwner("Applicant");
-							documentDto.setFormat(fieldValue.getString("format"));
-							documentDto.setType(fieldValue.getString("type"));
-							documentDto.setValue(fieldValue.getString("value"));
-							getRegistrationDtoContent().addDocument(field.getId(), documentDto);
-						}
-						break;
-						
-					case "biometricsType":						
-						break;
 
-					default:
-						Object fieldValue = getValueFromJson(field.getId(), field.getType(), jsonObject);
-						if(fieldValue != null) {
-							if(field.getControlType().equalsIgnoreCase("ageDate"))
-								getRegistrationDtoContent().setDateField(field.getId(), (String)fieldValue);
-							else
-								getRegistrationDtoContent().getDemographics().put(field.getId(), fieldValue);
-						}
-						break;
+				if (!jsonObject.has("IDSchemaVersion"))
+					throw new RegBaseCheckedException("IDSchemaVersion not found", "IDSchemaVersion not found");
+
+//				List<UiSchemaDTO> fieldList = identitySchemaService.
+//
+//				getUISchema(jsonObject.getDouble("IDSchemaVersion"));
+				List<UiSchemaDTO> fieldList = identitySchemaService.getUISchema(0.1);
+				getRegistrationDtoContent().setIdSchemaVersion(jsonObject.
+						getDouble("IDSchemaVersion"));
+
+				for (UiSchemaDTO field : fieldList) {
+					if (field.getId().equalsIgnoreCase("IDSchemaVersion"))
+						continue;
+
+					switch (field.getType()) {
+						case "documentType":
+							DocumentDto documentDto = new DocumentDto();
+							if (jsonObject.has(field.getId()) && jsonObject.get(field.getId()) != null) {
+								JSONObject fieldValue = jsonObject.getJSONObject(field.getId());
+								documentDto.setCategory(field.getSubType());
+								documentDto.setOwner("Applicant");
+								documentDto.setFormat(fieldValue.getString("format"));
+								documentDto.setType(fieldValue.getString("type"));
+								documentDto.setValue(fieldValue.getString("value"));
+								getRegistrationDtoContent().addDocument(field.getId(), documentDto);
+							}
+							break;
+
+						case "biometricsType":
+							break;
+
+						default:
+							Object fieldValue = getValueFromJson(field.getId(), field.getType(), jsonObject);
+							if (fieldValue != null) {
+								if (field.getControlType().equalsIgnoreCase("ageDate"))
+									getRegistrationDtoContent().setDateField(field.getId(), (String) fieldValue);
+								else
+									getRegistrationDtoContent().getDemographics().put(field.getId(), fieldValue);
+							}
+							break;
 					}
-					
+
 					/*if(field.getType() != "documentType" && field.getType() != "biometricsType") {
 						Object fieldValue = getValueFromJson(field.getId(), field.getType(), jsonObject);
 						if(fieldValue != null) {
@@ -295,15 +373,27 @@ public class PreRegZipHandlingServiceImpl implements PreRegZipHandlingService {
 						}
 					}*/
 				}
+
+//                RegistrationDTO regDto = (RegistrationDTO) SessionContext.map().get(RegistrationConstants.REGISTRATION_DATA);
+				System.out.println("prereg dto from map");
+				Map<String,Object> demoMap = getRegistrationDtoContent().getDemographics();
+
+				try {
+					System.out.println("prereg reg  dto demo map : " + new ObjectMapper().writeValueAsString(demoMap));
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+
 			}
 		} catch (JSONException | IOException e) {
+			e.printStackTrace();
 			LOGGER.error("REGISTRATION - PRE_REG_ZIP_HANDLING_SERVICE_IMPL", RegistrationConstants.APPLICATION_NAME,
 					RegistrationConstants.APPLICATION_ID, ExceptionUtils.getStackTrace(e));
 			throw new RegBaseCheckedException(REG_IO_EXCEPTION.getErrorCode(), e.getMessage());
 		}
 	}
-	
-	
+
+
 	private Object getValueFromJson(String key, String fieldType, JSONObject jsonObject) throws IOException, JSONException {
 		if(!jsonObject.has(key))
 			return null;
