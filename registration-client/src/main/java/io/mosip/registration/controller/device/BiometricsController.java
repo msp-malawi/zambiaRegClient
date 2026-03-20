@@ -1352,55 +1352,6 @@ public class BiometricsController extends BaseController /* implements Initializ
                 }
             });
 
-    }
-
-
-    private boolean isFinger(String currentModality) {
-        return currentModality.toUpperCase().contains(RegistrationConstants.FINGER.toUpperCase());
-    }
-
-    @FXML
-    private void recapture(ActionEvent event) {
-        LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID, "Displaying Scan popup for capturing biometrics");
-        boolean isAllMarked = false;
-        System.out.println("modality finge  :" + currentModality);
-        System.out.println("creeent slb" + currentSubType);
-        if (currentModality.equalsIgnoreCase("Exception_Photo")) {
-            if (getRegistrationDTOFromSession() != null && getRegistrationDTOFromSession().getDocuments() != null) {
-                getRegistrationDTOFromSession().getDocuments().remove("proofOfException");
-            }
-            addImageInUIPane(RegistrationConstants.APPLICANT, RegistrationConstants.EXCEPTION_PHOTO, null, false);
-        } else if (currentModality.equalsIgnoreCase("face")) {
-            getRegistrationDTOFromSession().removeBiometric(currentSubType, "face");
-//             cropButton.setVisible(true);
-        } else if (currentModality.equalsIgnoreCase("FINGERPRINT_SLAB_RIGHT")) {
-            List<String> leftFinger = List.of("leftLittle", "leftRing", "leftMiddle", "leftIndex");
-            RegistrationDTO dto = getRegistrationDTOFromSession();
-            for (String s : leftFinger) {
-                dto.removeBiometric(currentSubType, s);
-            }
-        } else if (currentModality.equalsIgnoreCase("FINGERPRINT_SLAB_LEFT")) {
-            List<String> leftFinger = List.of("leftLittle", "leftRing", "leftMiddle", "leftIndex");
-            RegistrationDTO dto = getRegistrationDTOFromSession();
-            for (String s : leftFinger) {
-                dto.removeBiometric(currentSubType, s);
-            }
-
-        } else if (currentModality.equalsIgnoreCase("FINGERPRINT_SLAB_THUMBS")) {
-            List<String> thumbs = List.of("leftThumb", "rightThumb");
-            RegistrationDTO dto = getRegistrationDTOFromSession();
-            for (String s : thumbs) {
-                dto.removeBiometric(currentSubType, s);
-            }
-
-        }
-
-        displayBiometric(currentModality);
-        addImageInUIPane(currentSubType, currentModality, null, isAllMarked);
-        setScanButtonVisibility(isAllMarked, scanBtn);
-        recaptureBtn.setVisible(false);
-        refreshContinueButton();
-
 
         } catch (Exception ex) {
             resetScanState();
@@ -1410,6 +1361,8 @@ public class BiometricsController extends BaseController /* implements Initializ
             resetScanState();
         }
     }
+
+
 //    private void recapture(ActionEvent event) {
 //
 //        LOGGER.info(LOG_REG_BIOMETRIC_CONTROLLER, APPLICATION_NAME, APPLICATION_ID,
@@ -1440,6 +1393,11 @@ public class BiometricsController extends BaseController /* implements Initializ
 
     private boolean isFace(String currentModality) {
         return currentModality.toUpperCase().contains(RegistrationConstants.FACE.toUpperCase());
+    }
+
+
+    private boolean isFinger(String currentModality) {
+        return currentModality.toUpperCase().contains(RegistrationConstants.FINGER.toUpperCase());
     }
 
     private List<String> getSelectedExceptionsByBioType(String subType, String modality)
