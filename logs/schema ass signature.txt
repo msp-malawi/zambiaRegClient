@@ -1,0 +1,2148 @@
+[
+  {
+    "id": "IDSchemaVersion",
+    "description": "ID Schema Version",
+    "label": {
+      "primary": "IDSchemaVersion"
+    },
+    "type": "number",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": null,
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "none",
+    "inputRequired": false,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "IdSchemaVersion",
+    "contactType": null,
+    "group": null,
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "UIN",
+    "description": "UIN",
+    "label": {
+      "primary": "UIN"
+    },
+    "type": "string",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "none",
+    "inputRequired": false,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "UIN",
+    "contactType": null,
+    "group": null,
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "registrationType",
+    "description": "Registration Type",
+    "label": {
+      "primary": "Registration Type"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "dynamic",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "none",
+    "contactType": null,
+    "group": "Registration Type",
+    "alignmentGroup": "miscellaneous3",
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "firstName",
+    "description": "First Name",
+    "label": {
+      "primary": "First Name"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "(?=(?:^\\w|Ñ|Ü|ü|ñ))([A-Z0-9a-zñÑ² -.‘_ Üü]+)(?<=[^ ])$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "identity.?isNew || (identity.isUpdate && (identity.updatableFieldGroups contains 'FullName'))"
+      }
+    ],
+    "subType": "name",
+    "contactType": null,
+    "group": "FullName",
+    "alignmentGroup": "applicantName",
+    "visible": null,
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "middleName",
+    "description": "Middle Name",
+    "label": {
+      "primary": "Middle Name"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "(?=(?:^\\w|Ñ|Ü|ü|ñ|~))([A-Z0-9a-zñÑ -.‘_ Üü~]+)(?<=[^ ])$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "name",
+    "contactType": null,
+    "group": "FullName",
+    "alignmentGroup": "applicantName",
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "lastName",
+    "description": "Last Name",
+    "label": {
+      "primary": "Last Name"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "(?=(?:^\\w|Ñ|Ü|ü|ñ))([A-Z0-9a-zñÑ -.‘_ Üü]+)(?<=[^ ])$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "name",
+    "contactType": null,
+    "group": "FullName",
+    "alignmentGroup": "applicantName",
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "suffix",
+    "description": "Suffix",
+    "label": {
+      "primary": "Suffix"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=[a-zA-Z~].{0,3}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "name",
+    "contactType": null,
+    "group": "FullName",
+    "alignmentGroup": "applicantName",
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "dateOfBirth",
+    "description": "dateOfBirth",
+    "label": {
+      "primary": "DOB"
+    },
+    "type": "string",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "ageDate",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(1869|18[7-9][0-9]|19[0-9][0-9]|20[0-9][0-9])/([0][1-9]|1[0-2])/([0][1-9]|[1-2][0-9]|3[01])$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "identity.?isNew || (identity.isUpdate && (identity.updatableFieldGroups contains 'GuardianDetails' || identity.updatableFieldGroups contains 'DateOfBirth'))"
+      }
+    ],
+    "subType": "dateOfBirth",
+    "contactType": null,
+    "group": "DateOfBirth",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "pobCountry",
+    "description": "Country",
+    "label": {
+      "primary": "Birth Country"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,50}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "Country",
+    "contactType": "Postal",
+    "group": "placeofbirthLoc",
+    "alignmentGroup": "applicantBirthplace",
+    "visible": null,
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "pobProvince",
+    "description": "Birth Province",
+    "label": {
+      "primary": "Birth Province"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,50}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "(identity.?isNew || identity.isUpdate || identity.isLost) && ( identity['pobCountry'] != null && identity['pobCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "Province",
+    "contactType": "Postal",
+    "group": "placeofbirthLoc",
+    "alignmentGroup": "applicantBirthplaces",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "(identity.?isNew || identity.isUpdate || identity.isLost) && ( identity['pobCountry'] != null && identity['pobCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": null,
+    "required": true    
+  },
+  {
+    "id": "pobCity",
+    "description": "Birth City",
+    "label": {
+      "primary": "Birth City"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,50}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "(identity.?isNew || identity.isUpdate || identity.isLost) && ( identity['pobCountry'] != null && identity['pobCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "City",
+    "contactType": "Postal",
+    "group": "placeofbirthLoc",
+    "alignmentGroup": "applicantBirthplaces",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "(identity.?isNew || identity.isUpdate || identity.isLost) && ( identity['pobCountry'] != null && identity['pobCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+   "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "pobProvinceOthers",
+    "description": "Others Birth Province",
+    "label": {
+      "primary": "Others Birth Province"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+     {
+        "type": "regex",
+        "validator": "^(?! )[A-Z0-9a-zñÑÜü’'._-]+(?: [A-Z0-9a-zñÑÜü’'._-]+)*(?<! )$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [{
+        "engine": "MVEL",
+        "expr": "(identity.?isNew || identity.isUpdate || identity.isLost) && ( identity['pobProvince'] != null && identity['pobProvince'].get(0).value.equalsIgnoreCase('Others'))"
+      }],
+    "subType": "Province",
+    "contactType": "Postal",
+    "group": "placeofbirthLoc",
+    "alignmentGroup": "applicantBirthplacesothers",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "(identity.?isNew || identity.isUpdate || identity.isLost) && ( identity['pobProvince'] != null && identity['pobProvince'].get(0).value.equalsIgnoreCase('Others'))"
+    },
+    "changeAction": null,
+    "required": true    
+  },
+  {
+    "id": "pobCityOthers",
+    "description": "Others Birth City",
+    "label": {
+      "primary": "Others Birth City"
+    },
+    "type": "simpleType",
+    "minimum": 0, 
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?! )[A-Z0-9a-zñÑÜü’'._-]+(?: [A-Z0-9a-zñÑÜü’'._-]+)*(?<! )$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "(identity.?isNew || identity.isUpdate || identity.isLost) && ( identity['pobProvince'] != null && identity['pobProvince'].get(0).value.equalsIgnoreCase('Others')) && ( identity['pobCity'] != null && identity['pobCity'].get(0).value.equalsIgnoreCase('Others'))"
+      }
+    ],
+    "subType": "City",
+    "contactType": "Postal",
+    "group": "placeofbirthLoc",
+    "alignmentGroup": "applicantBirthplacesothers",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "(identity.?isNew || identity.isUpdate || identity.isLost) && ( identity['pobCity'] != null && identity['pobCity'].get(0).value.equalsIgnoreCase('Others')) && ( identity['pobProvince'] != null && identity['pobProvince'].get(0).value.equalsIgnoreCase('Others'))"
+    },
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "gender",
+    "description": "gender",
+    "label": {
+      "primary": "Gender"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "button",
+    "fieldType": "dynamic",
+    "format": "",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "Gender",
+    "contactType": null,
+    "group": "Gender",
+    "alignmentGroup": "miscellaneous2",
+    "visible": null,
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "residenceStatus",
+    "description": "residenceStatus",
+    "label": {
+      "primary": "Residence Status"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "button",
+    "fieldType": "dynamic",
+    "format": "none",
+    "fieldCategory": "kyc",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "residenceStatus",
+    "contactType": null,
+    "group": "ResidenceStatus",
+    "alignmentGroup": "miscellaneous2",
+    "visible": null,
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "bloodType",
+    "description": "Blood type",
+    "label": {
+      "primary": "Blood Group"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "dynamic",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "identity.?isNew || identity.isLost || (identity.isUpdate && (identity.updatableFieldGroups contains 'BloodType'))"
+      }
+    ],
+    "subType": "none", 
+    "contactType": null,
+    "group": "BloodType",
+    "alignmentGroup": "demotest",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "identity.?isNew || identity.isLost || (identity.isUpdate && (identity.updatableFieldGroups contains 'BloodType'))"
+    },
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "maritalStatus",
+    "description": "Marital status",
+    "label": {
+      "primary": "Marital Status"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "dynamic",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "none",
+    "contactType": null,
+    "group": "Marital Status",
+    "alignmentGroup": "test",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "identity.?isNew || identity.isLost || (identity.isUpdate && (identity.updatableFieldGroups contains 'Marital Status'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "permanentCountry",
+    "description": "Country",
+    "label": {
+      "primary": "Permanent Country"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,50}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "Country",
+    "contactType": "Postal",
+    "group": "PermanentAddress",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": "copyto:permanentCountry,presentCountry,addressCopy",
+    "required": true
+  },
+  {
+    "id": "permanentAddressLine1",
+    "description": "Permanent AddressLine1",
+    "label": {
+      "primary": "Address Line"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,255}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "addressLine1",
+    "contactType": "Postal",
+    "group": "PermanentAddress",
+    "alignmentGroup": "permanent1",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['permanentCountry'] != null )"
+    },
+    "changeAction": "copyto:permanentAddressLine1,presentAddressLine1,addressCopy",
+    "required": true
+  },
+  {
+    "id": "permanentAddressLine2",
+    "description": "Permanent AddressLine2",
+    "label": {
+      "primary": "Permanent State / County / Province"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,255}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['permanentCountry'] != null && !identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "addressLine2",
+    "contactType": "Postal",
+    "group": "PermanentAddress",
+    "alignmentGroup": "permanent",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['permanentCountry'] != null && !identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": "copyto:permanentAddressLine2,presentAddressLine2,addressCopy",
+    "required": false
+  },
+  {
+    "id": "permanentAddressLine3",
+    "description": "Permanent AddressLine3",
+    "label": {
+      "primary": "Permanent City / Town"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,255}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['permanentCountry'] != null && !identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "addressLine3",
+    "contactType": "Postal",
+    "group": "PermanentAddress",
+    "alignmentGroup": "permanent",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['permanentCountry'] != null && !identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": "copyto:permanentAddressLine3,presentAddressLine3,addressCopy",
+    "required": false
+  },
+  {
+    "id": "permanentAddressLine4",
+    "description": "Permanent AddressLine4",
+    "label": {
+      "primary": "Permanent Village / District"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,255}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['permanentCountry'] != null && !identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "addressLine4",
+    "contactType": "Postal",
+    "group": "PermanentAddress",
+    "alignmentGroup": "permanent",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['permanentCountry'] != null && !identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": "copyto:permanentAddressLine4,presentAddressLine4,addressCopy",
+    "required": false
+  },
+  {
+    "id": "permanentAddressLine5",
+    "description": "Permanent AddressLine5",
+    "label": {
+      "primary": "Permanent Postal Code"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,255}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "addressLine5",
+    "contactType": "Postal",
+    "group": "PermanentAddress",
+    "alignmentGroup": "permanent",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['permanentCountry'] != null && !identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": "copyto:permanentAddressLine5,presentAddressLine5,addressCopy",
+    "required": false
+  },
+  {
+    "id": "permanentProvince",
+    "description": "Permanent Province",
+    "label": {
+      "primary": "Permanent Province"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,50}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['permanentCountry'] != null && identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "Province",
+    "contactType": "Postal",
+    "group": "PermanentAddress",
+    "alignmentGroup": "applicantAddressPermanent",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['permanentCountry'] != null && identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": "copyto:permanentProvince,presentProvince,addressCopy",
+    "required": false
+  },
+  {
+    "id": "permanentCity",
+    "description": "Permanent City",
+    "label": {
+      "primary": "Permanent City / Municipality"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,50}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['permanentCountry'] != null && identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "City",
+    "contactType": "Postal",
+    "group": "PermanentAddress",
+    "alignmentGroup": "applicantAddressPermanent",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['permanentCountry'] != null && identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": "copyto:permanentCity,presentCity,addressCopy",
+    "required": false
+  },
+  {
+    "id": "permanentBarangay",
+    "description": "Permanent Barangay",
+    "label": {
+      "primary": "Permanent Barangay"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['permanentCountry'] != null && identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "Barangay",
+    "contactType": "Postal",
+    "group": "PermanentAddress",
+    "alignmentGroup": "applicantAddressPermanent",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['permanentCountry'] != null && identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": "copyto:permanentBarangay,presentBarangay,addressCopy",
+    "required": false
+  },
+  {
+    "id": "permanentZipcode",
+    "description": "Permanent Zipcode",
+    "label": {
+      "primary": "Permanent ZIP Code"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['permanentCountry'] != null && identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "Postal Code",
+    "contactType": "Postal",
+    "group": "PermanentAddress",
+    "alignmentGroup": "applicantAddressPermanent",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['permanentCountry'] != null && identity['permanentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": "copyto:permanentZipcode,presentZipcode,addressCopy",
+    "required": false
+  },
+  {
+    "id": "addressCopy",
+    "description": "addressCopy flag",
+    "label": {
+      "primary": "Tick mark this box to copy permanent address to present address"
+    },
+    "type": "string",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "checkbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,50}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "addressCopy",
+    "contactType": null,
+    "group": "PermanentAddress",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": "copy&disable:permanentCountry=presentCountry,permanentAddressLine1=presentAddressLine1,permanentAddressLine2=presentAddressLine2,permanentAddressLine3=presentAddressLine3,permanentAddressLine4=presentAddressLine4,permanentAddressLine5=presentAddressLine5,permanentCity=presentCity,permanentProvince=presentProvince,permanentBarangay=presentBarangay,permanentZipcode=presentZipcode",
+    "required": true
+  },
+  {
+    "id": "presentCountry",
+    "description": "Country",
+    "label": {
+      "primary": "Present Country"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,50}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "Country",
+    "contactType": "Postal",
+    "group": "PresentAddress",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "presentAddressLine1",
+    "description": "Present AddressLine1",
+    "label": {
+      "primary": "Present Address Line"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,255}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "addressLine1",
+    "contactType": "Postal",
+    "group": "PresentAddress",
+    "alignmentGroup": "present1",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['presentCountry'] != null )"
+    },
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "presentAddressLine2",
+    "description": "Present AddressLine2",
+    "label": {
+      "primary": "Present State / County / Province"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,255}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['presentCountry'] != null && !identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "addressLine2",
+    "contactType": "Postal",
+    "group": "PresentAddress",
+    "alignmentGroup": "present",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['presentCountry'] != null && !identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "presentAddressLine3",
+    "description": "Present AddressLine3",
+    "label": {
+      "primary": "Present City / Town"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,255}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['presentCountry'] != null && !identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "addressLine3",
+    "contactType": "Postal",
+    "group": "PresentAddress",
+    "alignmentGroup": "present",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['presentCountry'] != null && !identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "presentAddressLine4",
+    "description": "Present AddressLine4",
+    "label": {
+      "primary": "Present Village / District"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,255}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['presentCountry'] != null && !identity['presentCountry'].get(0).value.equalsIgnoreCase('Philippines'))"
+      }
+    ],
+    "subType": "addressLine4",
+    "contactType": "Postal",
+    "group": "PresentAddress",
+    "alignmentGroup": "present",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['presentCountry'] != null && !identity['presentCountry'].get(0).value.equalsIgnoreCase('Philippines') )"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "presentAddressLine5",
+    "description": "Present AddressLine5",
+    "label": {
+      "primary": "Present Postal Code"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,255}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "addressLine5",
+    "contactType": "Postal",
+    "group": "PresentAddress",
+    "alignmentGroup": "present",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['presentCountry'] != null && !identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia') )"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "presentProvince",
+    "description": "Present Province",
+    "label": {
+      "primary": "Present Province"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,50}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['presentCountry'] != null && identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "Province",
+    "contactType": "Postal",
+    "group": "PresentAddress",
+    "alignmentGroup": "applicantAddressPresent",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['presentCountry'] != null && identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "presentCity",
+    "description": "Present City",
+    "label": {
+      "primary": "Present City / Municipality"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{0,50}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['presentCountry'] != null && identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "City",
+    "contactType": "Postal",
+    "group": "PresentAddress",
+    "alignmentGroup": "applicantAddressPresent",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['presentCountry'] != null && identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "presentBarangay",
+    "description": "Present Barangay",
+    "label": {
+      "primary": "Present Barangay"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['presentCountry'] != null && identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "Barangay",
+    "contactType": "Postal",
+    "group": "PresentAddress",
+    "alignmentGroup": "applicantAddressPresent",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['presentCountry'] != null && identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "presentZipcode",
+    "description": "Present Zipcode",
+    "label": {
+      "primary": "Present ZIP Code"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['presentCountry'] != null && identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+      }
+    ],
+    "subType": "Postal Code",
+    "contactType": "Postal",
+    "group": "PresentAddress",
+    "alignmentGroup": "applicantAddressPresent",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['presentCountry'] != null && identity['presentCountry'].get(0).value.equalsIgnoreCase('Zambia'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "mobileno",
+    "description": "phone",
+    "label": {
+      "primary": "Mobile Number(Optional)"
+    },
+    "type": "string",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(63817|63905|63906|63915|63916|63917|63926|63927|63935|63936|63937|63945|63955|63956|63965|63966|63967|63975|63976|63977|63995|63996|63997|639175|639176|639178|639253|639255|639256|639257|639258|63813|63907|63908|63909|63910|63811|63912|63913|63914|63918|63919|63920|63921|63928|63929|63930|63938|63939|63940|63946|63947|63948|63949|63950|63951|63961|63963|63968|63969|63970|63981|63989|63992|63998|63999|63895|63896|63897|63898|63991|63993|63994|63922|63923|63924|63925|63931|63932|63933|63934|63941|63942|63943|63944)\\d{7}|(|639175|639176|639178|639253|639255|639256|639257|639258|)\\d{6}$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "(identity.isUpdate && (identity.updatableFieldGroups contains 'Phone'))"
+      }
+    ],
+    "subType": "none",
+    "contactType": "Phone",
+    "group": "Phone",
+    "alignmentGroup": "contactdetails",
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "email",
+    "description": "email",
+    "label": {
+      "primary": "Email ID(Optional)"
+    },
+    "type": "string",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^[A-Za-z0-9_\\-]+(\\.[A-Za-z0-9_]+)*@[A-Za-z0-9_-]+(\\.[A-Za-z0-9_]+)*(\\.[a-zA-Z]{2,})$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "(identity.isUpdate && (identity.updatableFieldGroups contains 'Email'))"
+      }
+    ],
+    "subType": "none",
+    "contactType": "email",
+    "group": "Email",
+    "alignmentGroup": "contactdetails",
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "exceptionBiometricsStatus",
+    "description": "exception status",
+    "label": {
+      "primary": "Applicant has biometric exceptions?"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "dynamic",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "none",
+    "contactType": null,
+    "group": "ExceptionStatus",
+    "alignmentGroup": "exceptionStatus",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "identity.?isNew || identity.isLost"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "exceptionBiometricDetails",
+    "description": "exception details",
+    "label": {
+      "primary": "Reason / Details"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "(identity.?isNew || identity.?isLost )&& ( identity['exceptionBiometricsStatus'] != null && identity['exceptionBiometricsStatus'].get(0).value.equalsIgnoreCase('Yes'))"
+      }
+    ],
+    "subType": "none",
+    "contactType": null,
+    "group": "ExceptionDetial",
+    "alignmentGroup": "exceptionStatus2",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "(identity.?isNew || identity.?isLost ) && ( identity['exceptionBiometricsStatus'] != null && identity['exceptionBiometricsStatus'].get(0).value.equalsIgnoreCase('Yes'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "modeOfClaim",
+    "description": "Mode of Claim",
+    "label": {
+      "primary": "Mode of Claim"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "dropdown",
+    "fieldType": "dynamic",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "none",
+    "contactType": null,
+    "group": "Mode of Calim",
+    "alignmentGroup": "miscellaneous1",
+    "visible": null,
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "guardianFirstName",
+    "description": "GuardianFirstName",
+    "label": {
+      "primary": "Guardian FirstName"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "evidence",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "(?=(?:^\\w|Ñ|Ü|ü|ñ))([A-Z0-9a-zñÑ -.‘_ Üü]+)(?<=[^ ])$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity.size() > 0 && (( identity.?isNew && identity.?isChild ) || ( identity.?isUpdate && identity.?isChild )))"
+      }
+    ],
+    "subType": "guardianName",
+    "contactType": null,
+    "group": "GuardianDetails",
+    "alignmentGroup": "GuardianDetails",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity.size() > 0 && (( identity.?isNew && identity.?isChild ) || ( identity.?isUpdate && identity.?isChild )))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "guardianMiddleName",
+    "description": "GuardianMiddleName",
+    "label": {
+      "primary": "Guardian MiddleName"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "evidence",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "(?=(?:^\\w|Ñ|Ü|ü|ñ))([A-Z0-9a-zñÑ -.‘_ Üü]+)(?<=[^ ])$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "guardianName",
+    "contactType": null,
+    "group": "GuardianDetails",
+    "alignmentGroup": "GuardianDetails",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity.size() > 0 && (( identity.?isNew && identity.?isChild ) || ( identity.?isUpdate && identity.?isChild )))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "guardianLastName",
+    "description": "GuardianLastName",
+    "label": {
+      "primary": "Guardian LastName"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "evidence",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "(?=(?:^\\w|Ñ|Ü|ü|ñ))([A-Z0-9a-zñÑ -.‘_ Üü]+)(?<=[^ ])$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "guardianName",
+    "contactType": null,
+    "group": "GuardianDetails",
+    "alignmentGroup": "GuardianDetails",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity.size() > 0 && (( identity.?isNew && identity.?isChild ) || ( identity.?isUpdate && identity.?isChild )))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "guardianSuffix",
+    "description": "GuardianSuffix",
+    "label": {
+      "primary": "Guardian Suffix"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "evidence",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{1,3}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "guardianName",
+    "contactType": null,
+    "group": "GuardianDetails",
+    "alignmentGroup": "GuardianDetails",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity.size() > 0 && (( identity.?isNew && identity.?isChild ) || ( identity.?isUpdate && identity.?isChild )))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "parentOrGuardianVID",
+    "description": "parentOrGuardianVID",
+    "label": {
+      "primary": "Parent or Guardian PCN"
+    },
+    "type": "string",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "evidence",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?!.*(\\d)\\1{1,})(?!.012|123|234|345|456|567|678|789)(?!.(\\d{2})\\1{1,})[2-9][0-9]{15}$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity.size() > 0 && (( identity.?isNew && identity.?isChild ) || ( identity.isUpdate && identity.?isChild )))"
+      }
+    ],
+    "subType": "none",
+    "contactType": null,
+    "group": "GuardianDetails",
+    "alignmentGroup": "GuardianDetails",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity.size() > 0 && (( identity.?isNew && identity.?isChild ) || ( identity.isUpdate && identity.?isChild )))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "introducerFirstName",
+    "description": "Introducer FirstName",
+    "label": {
+      "primary": "Introducer FirstName"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "evidence",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "(?=(?:^\\w|Ñ|Ü|ü|ñ))([A-Z0-9a-zñÑ -.‘_ Üü]+)(?<=[^ ])$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['registrationType'] != null && identity['registrationType'].get(0).value.equalsIgnoreCase('Introducer-based'))"
+      }
+    ],
+    "subType": "IntroducerDetails",
+    "contactType": null,
+    "group": "IntroducerDetails",
+    "alignmentGroup": "IntroducerDetails",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['registrationType'] != null && identity['registrationType'].get(0).value.equalsIgnoreCase('Introducer-based'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "introducerMiddleName",
+    "description": "Introducer MiddleName",
+    "label": {
+      "primary": "Introducer MiddleName"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "evidence",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "(?=(?:^\\w|Ñ|Ü|ü|ñ))([A-Z0-9a-zñÑ -.‘_ Üü]+)(?<=[^ ])$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "IntroducerDetails",
+    "contactType": null,
+    "group": "IntroducerDetails",
+    "alignmentGroup": "IntroducerDetails",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['registrationType'] != null && identity['registrationType'].get(0).value.equalsIgnoreCase('Introducer-based'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "introducerLastName",
+    "description": "Introducer LastName",
+    "label": {
+      "primary": "Introducer LastName"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "evidence",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "(?=(?:^\\w|Ñ|Ü|ü|ñ))([A-Z0-9a-zñÑ -.‘_ Üü]+)(?<=[^ ])$",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "IntroducerDetails",
+    "contactType": null,
+    "group": "IntroducerDetails",
+    "alignmentGroup": "IntroducerDetails",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['registrationType'] != null && identity['registrationType'].get(0).value.equalsIgnoreCase('Introducer-based'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "introducerSuffix",
+    "description": "Introducer Suffix",
+    "label": {
+      "primary": "Introducer Suffix"
+    },
+    "type": "simpleType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "evidence",
+    "inputRequired": true,
+    "validators": [
+      {
+        "type": "regex",
+        "validator": "^(?=.{1,3}$).*",
+        "arguments": []
+      }
+    ],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "IntroducerDetails",
+    "contactType": null,
+    "group": "IntroducerDetails",
+    "alignmentGroup": "IntroducerDetails",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['registrationType'] != null && identity['registrationType'].get(0).value.equalsIgnoreCase('Introducer-based'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "introducerCredentialID",
+    "description": "Introducer CredentialID",
+    "label": {
+      "primary": "Introducer CredentialID"
+    },
+    "type": "string",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "textbox",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "evidence",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity['registrationType'] != null && identity['registrationType'].get(0).value.equalsIgnoreCase('Introducer-based'))"
+      }
+    ],
+    "subType": "PSN",
+    "contactType": null,
+    "group": "IntroducerDetails",
+    "alignmentGroup": "IntroducerDetails",
+    "visible": {
+      "engine": "MVEL",
+      "expr": "( identity['registrationType'] != null && identity['registrationType'].get(0).value.equalsIgnoreCase('Introducer-based'))"
+    },
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "proofOfConsent",
+    "description": "proofOfConsent",
+    "label": {
+      "primary": "Consent Proof"
+    },
+    "type": "documentType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "fileupload",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "COU",
+    "contactType": null,
+    "group": "Documents",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "proofOfAddress",
+    "description": "Proof Of Identity 1",
+    "label": {
+      "primary": "Proof Of Identity 1"
+    },
+    "type": "documentType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "fileupload",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "identity.?isNew || ( identity.isUpdate && (identity.updatableFields contains 'permanentAddressLine1' || identity.updatableFields contains 'permanentAddressLine2' || identity.updatableFields contains 'permanentAddressLine3'))"
+      }
+    ],
+    "subType": "POI",
+    "contactType": null,
+    "group": "Documents",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "signature",
+    "description": "Signature document",
+    "label": {
+      "primary": "Signature document"
+    },
+    "type": "documentType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "fileupload",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": false,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "SIGNATURE",
+    "contactType": null,
+    "group": "Documents",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "proofOfIdentity",
+    "description": "Proof Of Identity 2",
+    "label": {
+      "primary": "Proof Of Identity 2"
+    },
+    "type": "documentType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "fileupload",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "POI",
+    "contactType": null,
+    "group": "Documents",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  	{
+		"id": "signature",
+		"description": "applicant signature",
+		"label": {
+			"primary": "signature"
+		},
+		"type": "documentType",
+		"minimum": 0,
+		"maximum": 0,
+		"controlType": "fileupload",
+		"fieldType": "default",
+		"format": "none",
+		"fieldCategory": "pvt",
+		"inputRequired": true,
+		"validators": [],
+		"bioAttributes": null,
+		"requiredOn": [],
+		"subType": "POS",
+		"contactType": null,
+		"group": "Documents",
+		"alignmentGroup": null,
+		"visible": null,
+		"changeAction": null,
+		"required": false
+	},
+  {
+    "id": "proofOfRelationship",
+    "description": "proofOfRelationship",
+    "label": {
+      "primary": "Relationship Proof"
+    },
+    "type": "documentType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "fileupload",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "( identity.?isNew && identity.?isChild ) || ( identity.isUpdate && (identity.updatableFieldGroups contains 'GuardianDetails' || identity.?isChild))"
+      }
+    ],
+    "subType": "POR",
+    "contactType": null,
+    "group": "Documents",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "proofOfDateOfBirth",
+    "description": "proofOfDateOfBirth",
+    "label": {
+      "primary": "DOB Proof"
+    },
+    "type": "documentType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "fileupload",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "identity.isUpdate && identity.updatableFields contains 'dateOfBirth'"
+      }
+    ],
+    "subType": "POB",
+    "contactType": null,
+    "group": "Documents",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "proofOfException",
+    "description": "proofOfException",
+    "label": {
+      "primary": "Exception Proof"
+    },
+    "type": "documentType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "fileupload",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "evidence",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": null,
+    "requiredOn": [],
+    "subType": "POE",
+    "contactType": null,
+    "group": "Documents",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "individualBiometrics",
+    "description": "",
+    "label": {
+      "primary": "Applicant Biometrics"
+    },
+    "type": "biometricsType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "biometrics",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": [
+      "leftEye",
+      "rightEye",
+      "rightIndex",
+      "rightLittle",
+      "rightRing",
+      "rightMiddle",
+      "leftIndex",
+      "leftLittle",
+      "leftRing",
+      "leftMiddle",
+      "leftThumb",
+      "rightThumb",
+      "face"
+    ],
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "(identity.?isNew || identity.isLost || ( identity.isUpdate && identity.updatableFieldGroups contains 'Biometrics'))"
+      }
+    ],
+    "subType": "applicant",
+    "contactType": null,
+    "group": "DemoBiometrics",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": true
+  },
+  {
+    "id": "individualAuthBiometrics",
+    "description": "Used to hold biometrics only for authentication",
+    "label": {
+      "primary": "Authentication Biometrics"
+    },
+    "type": "biometricsType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "biometrics",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": [
+      "leftEye",
+      "rightEye",
+      "rightIndex",
+      "rightLittle",
+      "rightRing",
+      "rightMiddle",
+      "leftIndex",
+      "leftLittle",
+      "leftRing",
+      "leftMiddle",
+      "leftThumb",
+      "rightThumb",
+      "face"
+    ],
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "!identity.?isChild && identity.isUpdate && !(identity.updatableFieldGroups contains 'Biometrics' || identity.updatableFieldGroups contains 'GuardianDetails')"
+      }
+    ],
+    "subType": "applicant-auth",
+    "contactType": null,
+    "group": null,
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  },
+  {
+    "id": "parentOrGuardianBiometrics",
+    "description": "",
+    "label": {
+      "primary": "Guardian Biometrics"
+    },
+    "type": "biometricsType",
+    "minimum": 0,
+    "maximum": 0,
+    "controlType": "biometrics",
+    "fieldType": "default",
+    "format": "none",
+    "fieldCategory": "pvt",
+    "inputRequired": true,
+    "validators": [],
+    "bioAttributes": [
+      "leftEye",
+      "rightEye",
+      "rightIndex",
+      "rightLittle",
+      "rightRing",
+      "rightMiddle",
+      "leftIndex",
+      "leftLittle",
+      "leftRing",
+      "leftMiddle",
+      "leftThumb",
+      "rightThumb",
+      "face"
+    ],
+    "requiredOn": [
+      {
+        "engine": "MVEL",
+        "expr": "(identity.?isChild && identity.?isNew) || (identity.isUpdate && identity.updatableFieldGroups contains 'GuardianDetails')"
+      }
+    ],
+    "subType": "introducer",
+    "contactType": null,
+    "group": "Biometrics",
+    "alignmentGroup": null,
+    "visible": null,
+    "changeAction": null,
+    "required": false
+  }
+]
