@@ -2833,7 +2833,7 @@ public void rCaptureTaskService() {
 
     /**
      * Is UserOnboarding, should capture all biometrics as configured During
-     * registration, by default for NEW applicant, all bioattributes are mandatory
+     * registration, by defauisBiometricsCapturedlt for NEW applicant, all bioattributes are mandatory
      * (exceptions are considered as capture) On updateUIN, and if update biometrics
      * is opted then all bioattributes are mandatory (exceptions are considered as
      * capture) else any biometrics can be provided for authentication (exceptions
@@ -2968,7 +2968,7 @@ public void rCaptureTaskService() {
                                 break;
                             }
                         } else {
-                            if (biometricDTO.getIdemiaQualityScore() >= 60 && (qualityScore / (bioAttributes.size() - exceptionBioCount)) >= thresholdScore) {
+                            if (biometricDTO.getIdemiaQualityScore() >= 50 && (qualityScore / (bioAttributes.size() - exceptionBioCount)) >= thresholdScore) {
                                 isCaptured = true;
                             } else {
                                 isCaptured = false;

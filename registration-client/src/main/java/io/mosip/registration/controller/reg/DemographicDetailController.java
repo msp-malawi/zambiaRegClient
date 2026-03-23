@@ -1164,6 +1164,7 @@ public class DemographicDetailController extends BaseController {
                     System.out.println("populate values  null for demograpics id: "+schemaField.getId());
                     continue;
                 }
+
                 switch (schemaField.getType()) {
                     case RegistrationConstants.SIMPLE_TYPE:
                         switch (schemaField.getControlType()) {
