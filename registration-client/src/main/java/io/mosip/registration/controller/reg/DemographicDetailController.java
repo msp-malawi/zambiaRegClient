@@ -1378,6 +1378,7 @@ public class DemographicDetailController extends BaseController {
      */
     @FXML
     private void next() {
+        System.out.println(" = 1" );
         if (preRegistrationId.getText().isEmpty()) {
             preRegistrationId.clear();
         }

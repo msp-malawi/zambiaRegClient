@@ -219,7 +219,7 @@ public class SignaturePadController extends BaseController {
         System.out.println("png  :" + Base64.getEncoder().encodeToString(signImageBytes));
 
         // Get or create document DTO
-        DocumentDto documentDto = getRegistrationDTOFromSession().getDocuments().get("signature");
+        DocumentDto documentDto = getRegistrationDTOFromSession().getDocuments().get("signatureSign");
         if (documentDto == null) {
             documentDto = new DocumentDto();
             documentDto.setType("DOCSIGN01");
@@ -232,7 +232,7 @@ public class SignaturePadController extends BaseController {
         Random r = new Random();
         documentDto.setRefNumber("SIGN" + r.nextLong());
         documentDto.setDocument(signImageBytes);
-        getRegistrationDTOFromSession().addDocument("signature", documentDto);
+        getRegistrationDTOFromSession().addDocument("signatureSign", documentDto);
         signatureImageView.setImage(fxImage);
 
 //        getRegistrationDTOFromSession().setSignatureLines(drawnLines);

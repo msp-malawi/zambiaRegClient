@@ -1061,7 +1061,7 @@ public class BiometricsController extends BaseController /* implements Initializ
      *
      * @param event the event for scanning biometrics
      */
-    @FXML
+
 //    private void scan(ActionEvent event) {
 //        scanInProgress = true;
 //        scanBtn.setDisable(true);
@@ -1230,6 +1230,7 @@ public class BiometricsController extends BaseController /* implements Initializ
 //        });
 //
 //    }
+    @FXML
     private void scan(ActionEvent event) {
         System.out.println("Scan button in java");
 
@@ -1371,7 +1372,6 @@ public class BiometricsController extends BaseController /* implements Initializ
             resetScanState();
         }
     }
-
 
 //    private void recapture(ActionEvent event) {
 //
@@ -2411,7 +2411,7 @@ public void rCaptureTaskService() {
                 label1.setTextFill(Color.web("red"));
             }
         } else {
-            if (biometricsDto.getIdemiaQualityScore() >= 60) {
+            if (biometricsDto.getIdemiaQualityScore() >= 50) {
                 label.setTextFill(Color.web("green"));
                 label1.setTextFill(Color.web("blue"));
             } else {
@@ -2743,7 +2743,7 @@ public void rCaptureTaskService() {
 
 
         RegistrationDTO registrationDTO = getRegistrationDTOFromSession();
-        boolean signatureExists = registrationDTO != null && registrationDTO.getDocuments() != null && registrationDTO.getDocuments().containsKey("signature");
+        boolean signatureExists = registrationDTO != null && registrationDTO.getDocuments() != null && registrationDTO.getDocuments().containsKey("signatureSign");
 
         if (result && considerExceptionAsCaptured && hasApplicantBiometricException()) {
             result = registrationDTO.getDocuments().containsKey("proofOfException");
@@ -2759,7 +2759,7 @@ public void rCaptureTaskService() {
 
             if (isExceptionSignature) {
 
-                getRegistrationDTOFromSession().getDocuments().remove("signature");
+                getRegistrationDTOFromSession().getDocuments().remove("signatureSign");
 
                 signatureButton.setDisable(true);
                 System.out.println("✅ Canvas cleared due to exception signature.");
@@ -2961,14 +2961,14 @@ public void rCaptureTaskService() {
                     BiometricsDto biometricDTO = getBiometrics(subType, bioAttribute);
                     if (biometricDTO != null) {
                         if (biometricDTO.getModalityName().equalsIgnoreCase(RegistrationConstants.IRIS_DOUBLE)) {
-                            if (biometricDTO.getIdemiaQualityScore() >= 50 && (qualityScore / (bioAttributes.size() - exceptionBioCount)) >= thresholdScore) {
+                            if (biometricDTO.getIdemiaQualityScore() >= 50 || (qualityScore / (bioAttributes.size() - exceptionBioCount)) >= thresholdScore) {
                                 isCaptured = true;
                             } else {
                                 isCaptured = false;
                                 break;
                             }
                         } else {
-                            if (biometricDTO.getIdemiaQualityScore() >= 50 && (qualityScore / (bioAttributes.size() - exceptionBioCount)) >= thresholdScore) {
+                            if (biometricDTO.getIdemiaQualityScore() >= 50 || (qualityScore / (bioAttributes.size() - exceptionBioCount)) >= thresholdScore) {
                                 isCaptured = true;
                             } else {
                                 isCaptured = false;
