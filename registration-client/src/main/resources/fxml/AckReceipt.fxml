@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.web.WebView?>
-<GridPane id="anchor-pane-acknowledgement" fx:id="rootPane" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.mosip.registration.controller.reg.AckReceiptController">
+<GridPane id="anchor-pane-acknowledgement" fx:id="rootPane" prefHeight="600.0" prefWidth="1000.0" styleClass="ackRoot" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.mosip.registration.controller.reg.AckReceiptController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" percentWidth="100.0" />
   </columnConstraints>
@@ -20,10 +20,10 @@
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" percentHeight="5.5" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" percentHeight="7.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" percentHeight="74.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <GridPane fx:id="headerPage" styleClass="headerFooter">
@@ -47,7 +47,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <HBox alignment="CENTER_LEFT" spacing="3.0" GridPane.valignment="CENTER">
+                  <HBox alignment="CENTER_LEFT" spacing="6.0" styleClass="ackBreadcrumb" GridPane.valignment="CENTER">
                      <children>
                         <Text onMouseClicked="#goToHomeAckTemplate" text="%home" />
                         <Text fx:id="registrationNavLabel" text="%/newregistration" />
@@ -58,7 +58,7 @@
                      </GridPane.margin>
                   </HBox>
                   <Label styleClass="templateHeading" text="%registration" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="2">
+                  <HBox alignment="CENTER_RIGHT" spacing="10.0" styleClass="ackActionBar" GridPane.columnIndex="2">
                      <children>
                         <Button graphicTextGap="10.0" mnemonicParsing="false" styleClass="ackBackButton" text="%downloadPDF" visible="false" managed="false">
                            <graphic>
@@ -88,7 +88,7 @@
                   </HBox>
                </children>
             </GridPane>
-            <GridPane GridPane.rowIndex="2">
+            <GridPane styleClass="ackContentArea" GridPane.rowIndex="2">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="326.0" minWidth="0.0" percentWidth="10.0" prefWidth="89.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="832.0" minWidth="10.0" percentWidth="90.0" prefWidth="802.0" />
@@ -98,7 +98,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <GridPane id="anchor-pane-acknowledgement" GridPane.columnIndex="1">
+                  <GridPane id="anchor-pane-acknowledgement" styleClass="ackReceiptCard" GridPane.columnIndex="1">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>

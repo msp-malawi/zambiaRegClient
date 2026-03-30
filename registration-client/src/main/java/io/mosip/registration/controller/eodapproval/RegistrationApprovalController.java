@@ -32,8 +32,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
 import javafx.stage.DirectoryChooser;
@@ -102,9 +104,6 @@ public class RegistrationApprovalController extends BaseController implements In
 	/** status comment column in the table. */
 	@FXML
 	private TableColumn<RegistrationApprovalVO, String> statusComment;
-	
-	@FXML
-	private TableColumn<RegistrationApprovalVO, String> operatorId;
 
 	/** Acknowledgement form column in the table. */
 
@@ -131,16 +130,16 @@ public class RegistrationApprovalController extends BaseController implements In
 	@FXML
 	private ToggleButton authenticateBtn;
 	/** The image view. */
-	@FXML
-	private WebView webView;
+//	@FXML
+//	private WebView webView;
 
 	/** The approve registration root sub pane. */
 	@FXML
-	private GridPane approveRegistrationRootSubPane;
+	private BorderPane approveRegistrationRootSubPane;
 
 	/** The image anchor pane. */
-	@FXML
-	private GridPane imageAnchorPane;
+//	@FXML
+//	private StackPane imageAnchorPane;
 
 	/** The map list. */
 	private List<Map<String, String>> approvalmapList = null;
@@ -190,7 +189,7 @@ public class RegistrationApprovalController extends BaseController implements In
 	public void initialize(URL location, ResourceBundle resources) {
 		Image rejectInWhite = new Image(getClass().getResourceAsStream(RegistrationConstants.WRONG_IMAGE_PATH));
 		Image rejectImage = new Image(getClass().getResourceAsStream(RegistrationConstants.REJECT_IMAGE_PATH));
-		
+
 		rejectionBtn.hoverProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue) {
 				rejectionImageView.setImage(rejectInWhite);
@@ -198,12 +197,11 @@ public class RegistrationApprovalController extends BaseController implements In
 				rejectionImageView.setImage(rejectImage);
 			}
 		});
-		
+
 		reloadTableView();
 		tableCellColorChangeListener();
 		id.setResizable(false);
 		statusComment.setResizable(false);
-		operatorId.setResizable(false);
 		disableColumnsReorder(table);
 		table.getColumns().forEach(column -> column.setReorderable(false));
 	}
@@ -236,7 +234,7 @@ public class RegistrationApprovalController extends BaseController implements In
 		authenticateBtn.setDisable(true);
 		approvalBtn.setVisible(false);
 		rejectionBtn.setVisible(false);
-		imageAnchorPane.setVisible(false);
+//		imageAnchorPane.setVisible(false);
 
 		slno.setCellValueFactory(
 				new PropertyValueFactory<RegistrationApprovalVO, String>(RegistrationConstants.EOD_PROCESS_SLNO));
@@ -248,8 +246,6 @@ public class RegistrationApprovalController extends BaseController implements In
 				RegistrationConstants.EOD_PROCESS_STATUSCOMMENT));
 		acknowledgementFormPath.setCellValueFactory(new PropertyValueFactory<RegistrationApprovalVO, String>(
 				RegistrationConstants.EOD_PROCESS_ACKNOWLEDGEMENTFORMPATH));
-		operatorId.setCellValueFactory(new PropertyValueFactory<RegistrationApprovalVO, String>(
-				RegistrationConstants.OPERATOR_ID));
 
 		populateTable();
 
@@ -286,11 +282,11 @@ public class RegistrationApprovalController extends BaseController implements In
 				authenticateBtn.setDisable(false);
 			}
 
-			webView.getEngine().loadContent(RegistrationConstants.EMPTY);
+//			webView.getEngine().loadContent(RegistrationConstants.EMPTY);
 
 			approvalBtn.setVisible(true);
 			rejectionBtn.setVisible(true);
-			imageAnchorPane.setVisible(true);
+//			imageAnchorPane.setVisible(false);
 
 			try (FileInputStream file = new FileInputStream(
 					new File(table.getSelectionModel().getSelectedItem().getAcknowledgementFormPath()))) {
@@ -302,7 +298,7 @@ public class RegistrationApprovalController extends BaseController implements In
 					acknowledgementContent.append(line);
 				}
 				System.out.println(acknowledgementContent.toString());
-				webView.getEngine().loadContent(acknowledgementContent.toString());
+//				webView.getEngine().loadContent(acknowledgementContent.toString());
 			} catch (IOException ioException) {
 				LOGGER.error("REGISTRATION_APPROVAL_CONTROLLER - REGSITRATION_ACKNOWLEDGEMNT_PAGE_LOADING_FAILED",
 						APPLICATION_NAME, APPLICATION_ID,
@@ -396,7 +392,7 @@ public class RegistrationApprovalController extends BaseController implements In
 			approvalBtn.setDisable(false);
 			rejectionBtn.setDisable(false);
 		}else {
-			webView.getEngine().loadContent(RegistrationConstants.EMPTY);
+//			webView.getEngine().loadContent(RegistrationConstants.EMPTY);
 			approvalBtn.setDisable(true);
 			rejectionBtn.setDisable(true);
 		}

@@ -38,10 +38,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -52,7 +52,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -77,7 +76,8 @@ public class LoginController extends BaseController implements Initializable {
 	 * Instance of {@link Logger}
 	 */
 	private static final Logger LOGGER = AppConfig.getLogger(LoginController.class);
-    public ImageView toggleEye;
+    @FXML
+	public ImageView toggleEye;
 
     @FXML
 	private BorderPane loginScreen;
@@ -497,9 +497,13 @@ public class LoginController extends BaseController implements Initializable {
 
 							if (loginMode == null) {
 								userIdPane.setVisible(false);
+								credentialsPane.setVisible(false);
 								errorPane.setVisible(true);
+							} else if (RegistrationConstants.PWORD.equalsIgnoreCase(loginMode)) {
+								showPasswordMode();
 							} else {
 								userIdPane.setVisible(false);
+								credentialsPane.setVisible(false);
 								loadLoginScreen(loginMode);
 							}
 						}
@@ -517,8 +521,7 @@ public class LoginController extends BaseController implements Initializable {
 	}
 
 	private void initialSetUpOrNewUserLaunch() {
-		userIdPane.setVisible(false);
-		loadLoginScreen(LoginMode.PASSWORD.toString());
+		showPasswordMode();
 	}
 
 	/**
@@ -528,7 +531,7 @@ public class LoginController extends BaseController implements Initializable {
 	 * @param event event for validating credentials
 	 */
 	public void validateCredentials(ActionEvent event) {
-
+		validateUserId(event);
 		auditFactory.audit(AuditEvent.LOGIN_WITH_PASSWORD, Components.LOGIN, userId.getText(),
 				AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
 
@@ -865,30 +868,56 @@ public class LoginController extends BaseController implements Initializable {
 	 * @param loginMode login screen to be loaded
 	 */
 	public void loadLoginScreen(String loginMode) {
-
+		hideAllLoginPanes();
 		switch (loginMode.toUpperCase()) {
 		case RegistrationConstants.OTP:
-			otpPane.setVisible(true);
+			showPane(otpPane);
 			break;
 		case RegistrationConstants.PWORD:
-			credentialsPane.setVisible(true);
+			showPasswordMode();
 			break;
 		case RegistrationConstants.FINGERPRINT_UPPERCASE:
-			fingerprintPane.setVisible(true);
+			showPane(fingerprintPane);
 			break;
 		case RegistrationConstants.IRIS:
-			irisPane.setVisible(true);
+			showPane(irisPane);
 			break;
 		case RegistrationConstants.FACE:
-			facePane.setVisible(true);
+			showPane(facePane);
 			break;
 		default:
-			credentialsPane.setVisible(true);
+			showPasswordMode();
 		}
 
 		if (!loginList.isEmpty()) {
 			loginList.remove(RegistrationConstants.PARAM_ZERO);
 		}
+	}
+
+	private void showPasswordMode() {
+		hideAllLoginPanes();
+		showPane(userIdPane);
+		showPane(credentialsPane);
+	}
+
+	private void hideAllLoginPanes() {
+		hidePane(userIdPane);
+		hidePane(credentialsPane);
+		hidePane(otpPane);
+		hidePane(fingerprintPane);
+		hidePane(irisPane);
+		hidePane(facePane);
+		hidePane(errorPane);
+	}
+
+	private void showPane(Pane pane) {
+		pane.setVisible(true);
+		pane.setManaged(true);
+	}
+
+	private void hidePane(Pane pane) {
+		pane.setVisible(false);
+		pane.setManaged(false);
 	}
 
 	/**

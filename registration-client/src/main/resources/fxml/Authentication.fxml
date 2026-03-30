@@ -83,8 +83,38 @@
 											<children>
 												<VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
 													<children>
-														<TextField fx:id="username" promptText="%username" styleClass="authenticationStyle" />
-														<PasswordField fx:id="password" promptText="%password" styleClass="authenticationStyle" />
+														<TextField fx:id="username" promptText="%withusername" styleClass="loginTextStyle" />
+														<StackPane>
+															<children>
+																<PasswordField fx:id="password"
+																			   promptText="%withpword"
+																			   focusTraversable="true"
+																			   styleClass="loginTextStyle"
+																			   maxWidth="Infinity"
+																			   StackPane.alignment="CENTER_LEFT"/>
+
+																<TextField fx:id="visiblePasswordField"
+																		   promptText="%withpword"
+																		   text="Admin@123"
+																		   visible="false"
+																		   managed="false"
+																		   focusTraversable="true"
+																		   styleClass="loginTextStyle"
+																		   maxWidth="Infinity"
+																		   StackPane.alignment="CENTER_LEFT"/>
+																<ImageView fx:id="toggleEye"
+																		   fitHeight="18" fitWidth="18"
+																		   pickOnBounds="true"
+																		   preserveRatio="true"
+																		   StackPane.alignment="CENTER_RIGHT"
+																		   translateX="-10"
+																		   styleClass="loginToggleEye">
+																	<image>
+																		<Image url="@../images/passwordEyeClose.png"/>
+																	</image>
+																</ImageView>
+															</children>
+														</StackPane>
 														<GridPane>
 															<children>
 																<Button mnemonicParsing="false" onAction="#validatePwd" styleClass="contiuneButton" text="%submit" GridPane.rowIndex="1" />

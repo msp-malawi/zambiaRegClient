@@ -31,10 +31,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -45,10 +42,7 @@ import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_ID;
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
@@ -67,6 +61,13 @@ public class AuthenticationController extends BaseController implements Initiali
 	 * Instance of {@link Logger}
 	 */
 	private static final Logger LOGGER = AppConfig.getLogger(AuthenticationController.class);
+	@FXML
+	public TextField visiblePasswordField;
+
+	private  boolean isPasswordVisible;
+
+	@FXML
+	public ImageView toggleEye;
 
 	@FXML
 	private AnchorPane temporaryLogin;
@@ -99,7 +100,7 @@ public class AuthenticationController extends BaseController implements Initiali
 	@FXML
 	private TextField username;
 	@FXML
-	private TextField password;
+	private PasswordField password;
 	@FXML
 	private TextField otpUserId;
 	@FXML
@@ -184,6 +185,29 @@ public class AuthenticationController extends BaseController implements Initiali
 	private Button faceScanButton;
 	@FXML
 	private Button fingerPrintScanButton;
+
+	private void bindTogglePassword() {
+		if (visiblePasswordField == null || password == null || toggleEye == null) {
+			System.out.println("visiblePasswordField = " + visiblePasswordField);
+			System.out.println("password = " + password);
+			System.out.println("toggleEye = " + toggleEye);
+			return;
+		}
+		visiblePasswordField.textProperty().bindBidirectional(password.textProperty());
+
+		toggleEye.setOnMouseClicked(event -> {
+			isPasswordVisible = !isPasswordVisible;
+
+			visiblePasswordField.setVisible(isPasswordVisible);
+			visiblePasswordField.setManaged(isPasswordVisible);
+
+			password.setVisible(!isPasswordVisible);
+			password.setManaged(!isPasswordVisible);
+
+			toggleEye.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(
+					isPasswordVisible ? "/images/passwordEye.png" : "/images/passwordEyeClose.png"))));
+		});
+	}
 
 	/**
 	 * to generate OTP in case of OTP based authentication
@@ -1212,6 +1236,7 @@ public class AuthenticationController extends BaseController implements Initiali
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		setImageOnHover();
+		bindTogglePassword();
 
 		irisImageView.setImage(
 				new Image(getClass().getResource(RegistrationConstants.RIGHT_IRIS_IMG_PATH).toExternalForm()));

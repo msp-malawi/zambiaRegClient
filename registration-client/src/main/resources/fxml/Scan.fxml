@@ -4,6 +4,7 @@
 <?import javafx.scene.Group?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="616.0" styleClass="scanPage" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.mosip.registration.controller.device.ScanPopUpViewController">
     <columnConstraints>
@@ -107,9 +108,9 @@
                                 <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <GridPane alignment="CENTER_RIGHT" hgap="20.0" vgap="20.0" GridPane.rowIndex="2">
+                                <VBox alignment="TOP_RIGHT" fillWidth="true" spacing="12.0" GridPane.rowIndex="2">
                                     <children>
-                                        <Button fx:id="streamBtn" graphicTextGap="10.0" mnemonicParsing="false" onAction="#stream" styleClass="scanButton" text="%stream">
+                                        <Button fx:id="streamBtn" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#stream" styleClass="scanButton" text="%stream">
                                             <graphic>
                                                 <ImageView fitHeight="14.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                                     <image>
@@ -118,7 +119,7 @@
                                                 </ImageView>
                                             </graphic>
                                         </Button>
-                                        <Button fx:id="captureBtn" graphicTextGap="10.0" mnemonicParsing="false" onAction="#scan" styleClass="scanButton" text="%capture" GridPane.rowIndex="1">
+                                        <Button fx:id="captureBtn" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#scan" styleClass="scanButton" text="%capture">
                                             <graphic>
                                                 <ImageView fitHeight="24.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                                                     <image>
@@ -127,10 +128,9 @@
                                                 </ImageView>
                                             </graphic>
                                         </Button>
-                                        <Button fx:id="faceCaptureBtn" visible="false"  mnemonicParsing="false" onAction="#faceCapture" prefHeight="39.0" prefWidth="167.0" styleClass="scanButton" text="%capture" GridPane.rowIndex="4" />
-<!--                                        <Text fx:id="countDown" wrappingWidth="80" GridPane.rowIndex="5"></Text>-->
-                                        <Label fx:id="timerLabel"    GridPane.rowIndex="5"/>
-                                        <Button fx:id="saveBtn" graphicTextGap="10.0" mnemonicParsing="false" onAction="#save" styleClass="scanButton" text="%save" GridPane.rowIndex="2">
+                                        <Button fx:id="faceCaptureBtn" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#faceCapture" prefHeight="39.0" styleClass="scanButton" text="%capture" visible="false" />
+                                        <Label fx:id="timerLabel" maxWidth="1.7976931348623157E308" />
+                                        <Button fx:id="saveBtn" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#save" styleClass="scanButton" text="%save">
                                             <graphic>
                                                 <ImageView fitHeight="19.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true">
                                                     <image>
@@ -139,7 +139,7 @@
                                                 </ImageView>
                                             </graphic>
                                         </Button>
-                                        <Button fx:id="cropButton" graphicTextGap="10.0" mnemonicParsing="false" onAction="#crop" styleClass="scanButton" text="%crop" GridPane.rowIndex="3">
+                                        <Button fx:id="cropButton" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#crop" styleClass="scanButton" text="%crop">
                                             <graphic>
                                                 <ImageView fx:id="backImageView1" fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                                                     <image>
@@ -148,16 +148,16 @@
                                                 </ImageView>
                                             </graphic>
                                         </Button>
-                                        <Button fx:id="cancelBtn" graphicTextGap="10.0" mnemonicParsing="false" onAction="#cancel" styleClass="scanButton" text="%cancel" GridPane.rowIndex="4">
+                                        <Button fx:id="cancelBtn" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cancel" styleClass="scanButton" text="%cancel">
                                             <graphic>
                                                 <ImageView fitHeight="22.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                                     <image>
-                                                        <Image url="@../images/reject.png" />
+                                                        <Image url="@../images/Close.png" />
                                                     </image>
                                                 </ImageView>
                                             </graphic>
                                         </Button>
-                                        <Button fx:id="previewBtn" graphicTextGap="10.0" mnemonicParsing="false" onAction="#preview" styleClass="scanButton" text="%view" GridPane.rowIndex="5">
+                                        <Button fx:id="previewBtn" graphicTextGap="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#preview" styleClass="scanButton" text="%view">
                                             <graphic>
                                                 <ImageView fitHeight="26.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                     <image>
@@ -166,22 +166,12 @@
                                                 </ImageView>
                                             </graphic>
                                         </Button>
-                                        <Text fx:id="scanningMsg" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="alertContext" GridPane.rowIndex="6" />
+                                        <Text fx:id="scanningMsg" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="alertContext" />
                                     </children>
-                                    <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" percentWidth="100.0" />
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
-                                        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
-                                        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
-                                        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
-                                        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
-                                        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
-                                        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
-                                        <RowConstraints percentHeight="30.0" vgrow="SOMETIMES" />
-                                    </rowConstraints>
-                                </GridPane>
+                                    <padding>
+                                        <Insets top="10.0" right="10.0" bottom="10.0" left="10.0" />
+                                    </padding>
+                                </VBox>
                             </children>
                         </GridPane>
                     </children>

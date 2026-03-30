@@ -1137,6 +1137,11 @@ Working on new Css by taleev
 	-fx-pref-width: 120.0px;
 	-fx-text-fill: #FF4081;	
 }
+.scanButtonRounded{
+	-fx-background-radius: 12.0;
+	-fx-border-radius: 12.0;
+	-fx-padding: 8.0 14.0 8.0 14.0;
+}
 .scanButton:hover {
 	-fx-background-color:#E63A74;
 	-fx-border-color: #E63A74;
@@ -1679,7 +1684,7 @@ Working on new Css by taleev
 /* Home page design starts here */
 
 .homeContent{
-  -fx-background-image: url(images/pexels-photo.png);
+  /*-fx-background-image: url(images/pexels-photo.png);*/
   -fx-background-repeat: no-repeat;
   -fx-background-size: auto;
   -fx-border-color: #F4F4F4;
@@ -1808,6 +1813,7 @@ Working on new Css by taleev
 	-fx-text-fill: #666666;
 	-fx-font-family: Roboto;
 	-fx-font-weight: bold;
+	-fx-alignment: center;
 }
 .newsUpdateTime{
 	-fx-font-size: 10.0px;	

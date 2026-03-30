@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 <GridPane fx:id="operatorAuthenticationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.mosip.registration.controller.auth.AuthenticationController">
 	<columnConstraints>
 		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -91,7 +92,7 @@
 			</rowConstraints>
 			<children>
 
-			<!-- ErrorPane starts here -->				
+			<!-- ErrorPane starts here -->
 			<GridPane fx:id="errorPane" disable="false" styleClass="subMainComponent" visible="true" GridPane.columnIndex="1">
 					<children>
 						<GridPane GridPane.rowIndex="1">
@@ -189,14 +190,14 @@
 						<RowConstraints minHeight="10.0" percentHeight="85.0" prefHeight="30.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 				</GridPane>
-			
+
 				<GridPane fx:id="pwdBasedLogin" disable="false" styleClass="subMainComponent" visible="false" GridPane.columnIndex="1">
 					<children>
 						<GridPane GridPane.rowIndex="1">
 							<children>
 								<GridPane GridPane.columnIndex="1" GridPane.columnSpan="5">
 									<children>
-										<Label fx:id="pwdLabel" styleClass="paneHeader" text="%pwdAuthentication" />
+										<Label  alignment="CENTER" fx:id="pwdLabel" styleClass="paneHeader" text="%pwdAuthentication" />
 									</children>
 									<columnConstraints>
 										<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -267,8 +268,50 @@
                                       <rowConstraints>
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
-                                       <children>
-                                          <PasswordField fx:id="password" prefHeight="${pwdPasswordPane.height-20}" prefWidth="${pwdPasswordPane.width}" promptText="%password" styleClass="operatorAuthenticationStyleTextTypeOne" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+<!--										   styleClass="operatorAuthenticationStyleTextTypeOne"-->
+										   <children>
+
+											   <StackPane GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+
+												   <!-- Password Field -->
+												   <PasswordField fx:id="password"
+																  prefHeight="${pwdPasswordPane.height-20}"
+																  prefWidth="${pwdPasswordPane.width}"
+																  promptText="%password"
+																  styleClass="operatorAuthenticationStyleTextTypeOne"
+																  StackPane.alignment="CENTER_LEFT"
+																  maxWidth="Infinity"/>
+
+												   <!-- Visible Password -->
+												   <TextField fx:id="visiblePasswordField"
+															  promptText="%withpword"
+															  text="Admin@123"
+															  visible="false"
+															  managed="false"
+															  styleClass="loginTextStyle"
+															  StackPane.alignment="CENTER_LEFT"
+															  maxWidth="Infinity"/>
+
+												   <!-- Eye Icon -->
+												   <ImageView fx:id="toggleEye"
+															  fitHeight="18" fitWidth="18"
+															  pickOnBounds="true"
+															  preserveRatio="true"
+															  StackPane.alignment="CENTER_RIGHT"
+															  styleClass="loginToggleEye">
+
+													   <image>
+														   <Image url="@../images/passwordEyeClose.png"/>
+													   </image>
+
+													   <StackPane.margin>
+														   <Insets right="12.0"/>
+													   </StackPane.margin>
+
+												   </ImageView>
+
+											   </StackPane>
+
                                        </children>
                                     </GridPane>
                                  </children>
@@ -574,7 +617,7 @@
 						</GridPane>
 					</children>
 				</GridPane>
-				
+
 				<!-- Iris Starts Here -->
 				<GridPane fx:id="irisBasedLogin" disable="false" styleClass="subMainComponent" visible="false" GridPane.columnIndex="1">
 					<columnConstraints>
@@ -688,7 +731,7 @@
 															</children>
 														</GridPane>
 														<Button fx:id="irisScanButton" mnemonicParsing="false" styleClass="contiuneButton" onAction="#scan" prefHeight="6.0" prefWidth="84.0" text="%scan" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-											
+
 													</children>
 												</GridPane>
 											</children>
@@ -749,7 +792,7 @@
 						</GridPane>
 					</children>
 				</GridPane>
-				
+
 				<!-- face capture pane starts here -->
 				<GridPane fx:id="faceBasedLogin" disable="false" styleClass="subMainComponent" GridPane.columnIndex="1">
 					<columnConstraints>

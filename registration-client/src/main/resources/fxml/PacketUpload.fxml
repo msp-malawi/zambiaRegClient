@@ -5,7 +5,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<GridPane fx:id="uploadPacketRoot" prefHeight="600.0" prefWidth="800.0" styleClass="uploadPacketparentPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.mosip.registration.controller.reg.PacketUploadController">
+<GridPane fx:id="uploadPacketRoot" prefHeight="600.0" prefWidth="800.0" styleClass="uploadPacketparentPane uploadPacketRoot" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.mosip.registration.controller.reg.PacketUploadController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
   </columnConstraints>
@@ -31,7 +31,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <GridPane fx:id="tableContainer">
+                  <GridPane fx:id="tableContainer" styleClass="uploadPacketCard">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="30.0" />
                     </columnConstraints>
@@ -45,17 +45,17 @@
                         <Insets bottom="50.0" left="21.0" right="50.0" />
                      </GridPane.margin>
                      <children>
-                        <TableView fx:id="table" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                        <TableView fx:id="table" styleClass="uploadPacketTable" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                            <columns>
-                              <TableColumn fx:id="checkBoxColumn" prefWidth="${tableContainer.width*2/100}">
+                              <TableColumn fx:id="checkBoxColumn" prefWidth="${tableContainer.width*5/100}">
                                  <graphic>
                                     <CheckBox fx:id="selectAllCheckBox" mnemonicParsing="false" onAction="#selectAllCheckBox" styleClass="uploadCheckBox">
                                        </CheckBox>
                                  </graphic>
                               </TableColumn>
-                               <TableColumn fx:id="slno" editable="false" prefWidth="${tableContainer.width*5/100}" resizable="false" sortable="false" styleClass="tableId" text="%slno" />
-                              <TableColumn fx:id="fileNameColumn" editable="false" prefWidth="${tableContainer.width*20/100}" styleClass="tableId" text="%files" />
-                              <TableColumn fx:id="regDate" editable="false" prefWidth="1000.0" styleClass="tableId" text="%registrationDate" />
+                               <TableColumn fx:id="slno" editable="true" prefWidth="${tableContainer.width*5/100}" resizable="false" sortable="false" styleClass="tableId" text="%slno" />
+                              <TableColumn fx:id="fileNameColumn" editable="true" prefWidth="${tableContainer.width*30/100}" styleClass="tableId" text="%files" />
+                              <TableColumn fx:id="regDate" editable="true" prefWidth="1000.0" styleClass="tableId" text="%registrationDate" />
                            </columns>
                         </TableView>
                         <GridPane GridPane.rowIndex="1">
@@ -71,10 +71,10 @@
                               <ProgressIndicator fx:id="progressIndicator" progress="0.0" visible="false" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                        <HBox prefHeight="100.0" prefWidth="200.0" styleClass="uploadPacketSearchBar" GridPane.rowIndex="1">
                            <children>
-                              <TextField fx:id="filterField" prefHeight="30.0" prefWidth="354.0" promptText="%searchPacketID" styleClass="searchBoxTextStyle" />
-                              <ImageView fx:id="exportCSVIcon" fitHeight="33.0" fitWidth="38.0" onMouseClicked="#exportData" pickOnBounds="true" preserveRatio="true">
+                              <TextField fx:id="filterField" prefHeight="30.0" prefWidth="354.0" promptText="%searchPacketID" styleClass="searchBoxTextStyle uploadPacketSearch" />
+                              <ImageView fx:id="exportCSVIcon" fitHeight="33.0" fitWidth="38.0" onMouseClicked="#exportData" pickOnBounds="true" preserveRatio="true" styleClass="uploadPacketExportIcon">
                                  <image>
                                     <Image url="@../images/export-icon.jpg" />
                                  </image>

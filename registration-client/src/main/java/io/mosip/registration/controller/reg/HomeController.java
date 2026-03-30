@@ -6,13 +6,17 @@ import io.mosip.registration.config.AppConfig;
 import io.mosip.registration.constants.*;
 import io.mosip.registration.context.SessionContext;
 import io.mosip.registration.controller.BaseController;
+import io.mosip.registration.entity.Registration;
+import io.mosip.registration.repositories.RegistrationRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.GridPane;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_ID;
@@ -36,6 +40,33 @@ public class HomeController extends BaseController implements Initializable {
 	private GridPane mainBox;
 	@FXML
 	public GridPane homeContent;
+
+
+	@Autowired
+	RegistrationRepository registrationRepository;
+
+
+
+//	public List<Registration> fetchPacketsToUpload(List<String> clientStatus, String serverStatus) {
+//		LOGGER.debug("REGISTRATION - BY_STATUS - TokenService", APPLICATION_NAME, APPLICATION_ID, "Retrieving Registrations based on client and server status codes");
+//
+//
+//		List<Registration> result = registrationRepository.findByClientStatusCodeInOrServerStatusCodeOrderByUpdDtimesDesc(clientStatus, serverStatus);
+//		System.out.println("Fetched {} registrations"+ result.size());
+//		removeSynchedAndReregisterPackets(result);
+//		return result;
+//	}
+	public int waitToUpload() {
+		List<Registration> registrations = registrationRepository.findByClientStatusCodeInOrServerStatusCodeOrderByUpdDtimesDesc(RegistrationConstants.PACKET_STATUS_UPLOAD, RegistrationConstants.SERVER_STATUS_RESEND);
+//
+//		if (registrations.size()>0){
+//			Registration registration = registrations.get(0);
+//			System.out.println("registration = " + registration);
+//			System.out.println("registrations.get(0).getRefRegId() = " + registrations.get(0).getRefRegId());
+//
+//		}
+		return registrations.size();
+	}
 
 	/**
 	 * Building Home screen on Login success

@@ -1,0 +1,71 @@
+.loginCard {
+    -fx-padding: 20;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-background-color: white;
+    -fx-max-width: 400;
+}
+
+.login-input {
+    -fx-pref-height: 40;
+    -fx-font-size: 14;
+}
+
+.login-button {
+    -fx-pref-height: 40;
+    -fx-font-size: 14;
+    -fx-background-radius: 5;
+}
+
+.login-link {
+    -fx-text-fill: #147f55;
+    -fx-font-weight: bold;
+}
+
+.card-title {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-margin: 10 0 20 0;
+}
+
+.password-container {
+    -fx-relative-position: true;
+    -fx-pref-height: 40;
+}
+
+.eye-icon {
+    -fx-cursor: hand;
+    -fx-translate-x: -30;
+}
+
+.error-card {
+    -fx-padding: 20;
+    -fx-background-color: #ffebee;
+    -fx-border-color: #f44336;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.error-message {
+    -fx-text-fill: #f44336;
+    -fx-font-weight: bold;
+}
+
+.header {
+    -fx-padding: 20;
+    -fx-background-color: white;
+    -fx-border-bottom-color: #ccc;
+    -fx-border-bottom-width: 1;
+}
+
+.header-title {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+}
+
+.header-sub {
+    -fx-font-size: 16;
+    -fx-opacity: 0.7;
+}
+

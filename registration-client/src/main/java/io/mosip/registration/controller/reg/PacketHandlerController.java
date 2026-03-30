@@ -1,49 +1,21 @@
 package io.mosip.registration.controller.reg;
 
-import static io.mosip.registration.constants.LoggerConstants.PACKET_HANDLER;
-import static io.mosip.registration.constants.RegistrationConstants.*;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.Writer;
-import java.net.URL;
-import java.sql.Timestamp;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-
 import io.mosip.kernel.core.exception.ExceptionUtils;
 import io.mosip.kernel.core.logger.spi.Logger;
 import io.mosip.kernel.core.templatemanager.spi.TemplateManagerBuilder;
 import io.mosip.kernel.core.util.FileUtils;
 import io.mosip.registration.config.AppConfig;
-import io.mosip.registration.constants.AuditEvent;
-import io.mosip.registration.constants.AuditReferenceIdTypes;
-import io.mosip.registration.constants.Components;
-import io.mosip.registration.constants.RegistrationClientStatusCode;
-import io.mosip.registration.constants.RegistrationConstants;
-import io.mosip.registration.constants.RegistrationUIConstants;
+import io.mosip.registration.constants.*;
 import io.mosip.registration.context.ApplicationContext;
 import io.mosip.registration.context.SessionContext;
 import io.mosip.registration.controller.BaseController;
-import io.mosip.registration.dto.ErrorResponseDTO;
-import io.mosip.registration.dto.PacketStatusDTO;
-import io.mosip.registration.dto.RegistrationApprovalDTO;
-import io.mosip.registration.dto.RegistrationDTO;
-import io.mosip.registration.dto.ResponseDTO;
-import io.mosip.registration.dto.SyncDataProcessDTO;
+import io.mosip.registration.dto.*;
 import io.mosip.registration.entity.PreRegistrationList;
+import io.mosip.registration.entity.Registration;
 import io.mosip.registration.entity.SyncControl;
 import io.mosip.registration.exception.RegBaseCheckedException;
 import io.mosip.registration.exception.RegistrationExceptionConstants;
+import io.mosip.registration.repositories.RegistrationRepository;
 import io.mosip.registration.service.config.JobConfigurationService;
 import io.mosip.registration.service.operator.UserOnboardService;
 import io.mosip.registration.service.packet.PacketHandlerService;
@@ -59,8 +31,11 @@ import io.mosip.registration.update.SoftwareUpdateHandler;
 import io.mosip.registration.util.acktemplate.TemplateGenerator;
 import io.mosip.registration.util.healthcheck.RegistrationAppHealthCheckUtil;
 import io.mosip.registration.util.restclient.AuthTokenUtilService;
+import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -68,9 +43,26 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.TilePane;
+import javafx.util.Duration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.net.URL;
+import java.sql.Timestamp;
+import java.util.*;
+
+import static io.mosip.registration.constants.LoggerConstants.PACKET_HANDLER;
+import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_ID;
+import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
 
 /**
  * Class for Registration Packet operations
@@ -102,6 +94,9 @@ public class PacketHandlerController extends BaseController implements Initializ
 	@FXML
 	private GridPane uploadRoot;
 
+	@Autowired
+	RegistrationRepository registrationRepository;
+
 	@FXML
 	private Label pendingApprovalCountLbl;
 
@@ -119,7 +114,10 @@ public class PacketHandlerController extends BaseController implements Initializ
 
 	@Autowired
 	private JobConfigurationService jobConfigurationService;
-
+	@FXML
+	Label waitingUpload;
+	@FXML
+	private GridPane homeContent;
 	@SuppressWarnings("unchecked")
 	public void setLastUpdateTime() {
 		try {
@@ -158,9 +156,8 @@ public class PacketHandlerController extends BaseController implements Initializ
 
 	@FXML
 	private GridPane lostUINPane;
-
 	@FXML
-	private VBox vHolder;
+	private TilePane vHolder;
 
 	@FXML
 	public GridPane uinUpdateGridPane;
@@ -220,6 +217,8 @@ public class PacketHandlerController extends BaseController implements Initializ
 
 	@FXML
 	ProgressIndicator progressIndicator;
+	@FXML
+	private HBox eodLabel;
 
 	@FXML
 	public GridPane progressPane;
@@ -227,8 +226,10 @@ public class PacketHandlerController extends BaseController implements Initializ
 	@FXML
 	public ProgressBar syncProgressBar;
 
-	@FXML
-	private Label eodLabel;
+	public void waitToUpload() {
+		List<Registration> registrations = registrationRepository.findByClientStatusCodeInOrServerStatusCodeOrderByUpdDtimesDesc(RegistrationConstants.PACKET_STATUS_UPLOAD, RegistrationConstants.SERVER_STATUS_RESEND);
+		waitingUpload.setText(String.valueOf(registrations.size())+" " +"Applicant");
+	}
 
 	@FXML
 	private GridPane syncDataPane;
@@ -295,10 +296,12 @@ public class PacketHandlerController extends BaseController implements Initializ
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		waitToUpload();
 		versionValueLabel.setText(softwareUpdateHandler.getCurrentVersion());
 
 		try {
 			setImagesOnHover();
+			applyMenuCardAnimations();
 
 			if (!SessionContext.userContext().getRoles().contains(RegistrationConstants.SUPERVISOR)
 					&& !SessionContext.userContext().getRoles().contains(RegistrationConstants.ADMIN_ROLE)
@@ -338,8 +341,8 @@ public class PacketHandlerController extends BaseController implements Initializ
 			}
 			Timestamp ts = userOnboardService.getLastUpdatedTime(SessionContext.userId());
 			if (ts != null) {
-				lastBiometricTime.setText(RegistrationUIConstants.LAST_DOWNLOADED + " "
-						+ getLocalZoneTime(ts.toString()));
+//				lastBiometricTime.setText(RegistrationUIConstants.LAST_DOWNLOADED + " "
+//						+ getLocalZoneTime(ts.toString()));
 			}
 
 			if (!(getValueFromApplicationContext(RegistrationConstants.LOST_UIN_CONFIG_FLAG))
@@ -456,6 +459,29 @@ public class PacketHandlerController extends BaseController implements Initializ
 			} else {
 				checkUpdatesImageView
 						.setImage(new Image(getClass().getResourceAsStream(RegistrationConstants.DOWNLOAD_PREREG_IMAGE)));
+			}
+		});
+	}
+
+	private void applyMenuCardAnimations() {
+		Platform.runLater(() -> {
+			for (Node node : homeContent.lookupAll(".menuCard")) {
+				ScaleTransition hoverIn = new ScaleTransition(Duration.millis(160), node);
+				hoverIn.setToX(1.02);
+				hoverIn.setToY(1.02);
+
+				ScaleTransition hoverOut = new ScaleTransition(Duration.millis(160), node);
+				hoverOut.setToX(1.0);
+				hoverOut.setToY(1.0);
+
+				node.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+					hoverOut.stop();
+					hoverIn.playFromStart();
+				});
+				node.addEventHandler(MouseEvent.MOUSE_EXITED, event -> {
+					hoverIn.stop();
+					hoverOut.playFromStart();
+				});
 			}
 		});
 	}
