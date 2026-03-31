@@ -148,6 +148,7 @@ public class RegistrationConstants {
 	public static final String DOWNLOAD_PREREG_FOCUSED = "/images/DownloadPreRegDataFocused.png";
 	public static final String UPDATE_OP_BIOMETRICS_IMAGE = "/images/UpdateOperatorBiometrics.png";
 	public static final String UPDATE_OP_BIOMETRICS_FOCUSED = "/images/UpdateOperatorBiometricsFocused.png";
+	public static final String PACKET_UPLOAD_IMAGE = "/images/packetuplod.png";
 	public static final String PENDING_APPROVAL_IMAGE = "/images/PendingApproval.png";
 	public static final String PENDING_APPROVAL_FOCUSED = "/images/PendingApprovalFocused.png";
 	public static final String RE_REGISTRATION_IMAGE = "/images/Re-Registration.png";

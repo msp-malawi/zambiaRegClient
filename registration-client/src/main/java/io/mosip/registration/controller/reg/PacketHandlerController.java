@@ -437,7 +437,7 @@ public class PacketHandlerController extends BaseController implements Initializ
 		uploadPacketPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue) {
 				uploadPacketImageView.setImage(
-						new Image(getClass().getResourceAsStream(RegistrationConstants.UPDATE_OP_BIOMETRICS_FOCUSED)));
+						new Image(getClass().getResourceAsStream(RegistrationConstants.PACKET_UPLOAD_IMAGE)));
 			} else {
 				uploadPacketImageView
 						.setImage(new Image(getClass().getResourceAsStream(RegistrationConstants.UPDATE_OP_BIOMETRICS_IMAGE)));
