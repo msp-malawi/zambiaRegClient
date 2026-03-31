@@ -25,11 +25,14 @@
 						<Label styleClass="loginSideTitle" text="Your Future"/>
 						<Label styleClass="loginSideTitle" text="With Registration Client"/>
 						<Label styleClass="loginSideBody" text="Learn important new skills, discover passions, and build secure identity services."/>
-						<ImageView fitHeight="260.0" fitWidth="300.0" preserveRatio="true">
-							<image>
-								<Image url="@/images/LOGO1.png"/>
-							</image>
-						</ImageView>
+						<VBox alignment="CENTER">
+							<ImageView fitHeight="260.0" fitWidth="300.0" preserveRatio="true">
+								<image>
+									<Image url="@/images/LOGO1.png"/>
+								</image>
+							</ImageView>
+						</VBox>
+
 					</VBox>
 
 					<VBox alignment="CENTER" spacing="12" styleClass="loginFormPanel">

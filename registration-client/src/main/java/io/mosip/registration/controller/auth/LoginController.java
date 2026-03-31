@@ -373,6 +373,7 @@ public class LoginController extends BaseController implements Initializable {
 		primaryStage.setWidth(bounds.getWidth());
 		primaryStage.setHeight(bounds.getHeight());
 		primaryStage.setResizable(false);
+		primaryStage.setTitle("Registration Client");
 		primaryStage.setScene(scene);
 		primaryStage.getIcons().add(new Image(getClass().getResource(RegistrationConstants.LOGO).toExternalForm()));
 		primaryStage.show();
@@ -991,7 +992,6 @@ public class LoginController extends BaseController implements Initializable {
 					loginList.clear();
 
 					BaseController.load(getClass().getResource(RegistrationConstants.HOME_PAGE));
-					// to add events to the stage
 					getStage();
 
 					userDTO.setLastLoginMethod(loginMode);

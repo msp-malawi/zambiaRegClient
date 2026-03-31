@@ -20,9 +20,19 @@
 	-fx-font-size: 1.2em;
 }
 
-#syncProgressBar>.bar {
+#syncProgressBar {
+	-fx-background-radius: 30;
+}
+
+#syncProgressBar .bar {
 	-fx-background-color: red;
 	-fx-padding: 0;
+	-fx-background-insets: 0;
+	-fx-background-radius: 30;
+}
+
+#syncProgressBar .track {
+	-fx-background-radius: 30;
 	-fx-background-insets: 0;
 }
 
@@ -3125,7 +3135,8 @@ Working on new Css by taleev
 /* FOOTER TEXT */
 .footer-text {
 	-fx-text-fill: white;
-	-fx-font-size: 13px;
+	-fx-font-size: 14px;
+	-fx-font-weight: bold;
 }
 
 /* MSP BADGE */
@@ -3243,7 +3254,7 @@ Working on new Css by taleev
 
 .sectionHeaderBar {
 	-fx-background-color: transparent;
-	-fx-padding: 0 0 8 12;
+	-fx-padding: 0 0 0 0;
 	-fx-border-color: transparent transparent transparent transparent;
 	-fx-border-width: 0 0 0 3;
 	-fx-alignment: center;
@@ -3389,9 +3400,9 @@ Working on new Css by taleev
 	#ffffff 100%
 	);
 
-	/* ONLY LEFT SIDE CURVE */
-	-fx-background-radius: 30 0 0 30;
-	-fx-border-radius: 30 0 0 30;
+	/* ROUND BOTH SIDES */
+	-fx-background-radius: 30;
+	-fx-border-radius: 30;
 
 	-fx-padding: 12 20 12 20;
 	-fx-spacing: 12;
@@ -3424,6 +3435,8 @@ Working on new Css by taleev
 /* ================= HOVER EFFECT ================= */
 .card-box:hover {
 	-fx-background-color: #1B7F4C;
+	-fx-background-radius: 30;
+	-fx-border-radius: 30;
 	-fx-scale-x: 1.02;
 	-fx-scale-y: 1.02;
 	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 16, 0, 0, 5);
@@ -3441,6 +3454,8 @@ Working on new Css by taleev
 	-fx-scale-x: 0.98;
 	-fx-scale-y: 0.98;
 	-fx-background-color: #1B7F4C;
+	-fx-background-radius: 30;
+	-fx-border-radius: 30;
 	-fx-text-fill: white;
 
 }
@@ -3448,6 +3463,8 @@ Working on new Css by taleev
 /* ================= ACTIVE / SELECTED ================= */
 .card-box.active {
 	-fx-background-color: #1B7F4C;
+	-fx-background-radius: 30;
+	-fx-border-radius: 30;
 }
 
 /* TEXT CHANGE ON ACTIVE */

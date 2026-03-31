@@ -47,6 +47,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -218,7 +219,7 @@ public class PacketHandlerController extends BaseController implements Initializ
 	@FXML
 	ProgressIndicator progressIndicator;
 	@FXML
-	private HBox eodLabel;
+	private VBox eodLabel;
 
 	@FXML
 	public GridPane progressPane;
@@ -297,7 +298,7 @@ public class PacketHandlerController extends BaseController implements Initializ
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		waitToUpload();
-		versionValueLabel.setText(softwareUpdateHandler.getCurrentVersion());
+//		versionValueLabel.setText(softwareUpdateHandler.getCurrentVersion());
 
 		try {
 			setImagesOnHover();
@@ -437,10 +438,10 @@ public class PacketHandlerController extends BaseController implements Initializ
 		uploadPacketPane.hoverProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue) {
 				uploadPacketImageView.setImage(
-						new Image(getClass().getResourceAsStream(RegistrationConstants.PACKET_UPLOAD_IMAGE)));
+						new Image(getClass().getResourceAsStream(RegistrationConstants.UPDATE_OP_BIOMETRICS_FOCUSED)));
 			} else {
 				uploadPacketImageView
-						.setImage(new Image(getClass().getResourceAsStream(RegistrationConstants.UPDATE_OP_BIOMETRICS_IMAGE)));
+						.setImage(new Image(getClass().getResourceAsStream(RegistrationConstants.PACKET_UPLOAD_IMAGE)));
 			}
 		});
 		centerRemapPane.hoverProperty().addListener((ov, oldValue, newValue) -> {

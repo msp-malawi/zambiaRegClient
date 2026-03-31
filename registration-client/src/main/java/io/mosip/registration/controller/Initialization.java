@@ -55,6 +55,7 @@ public class Initialization extends Application {
 			setPrimaryStage(primaryStage);
 			LoginController loginController = applicationContext.getBean(LoginController.class);
 			loginController.loadInitialScreen(primaryStage);
+
 			loginController.loadUIElementsFromSchema();
 			SessionContext.setApplicationContext(applicationContext);
 

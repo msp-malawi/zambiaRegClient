@@ -21,7 +21,7 @@
 			<fx:include fx:id="homeContent" prefHeight="${onboardPane.height}" prefWidth="${onboardPane.width}" source="RegistrationOfficerPacketLayout.fxml" visible="false" />	           	
          </children>
       </GridPane>
-      <GridPane fx:id="headerHolder">      
+      <GridPane fx:id="">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
