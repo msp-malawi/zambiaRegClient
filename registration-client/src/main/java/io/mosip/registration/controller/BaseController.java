@@ -664,7 +664,10 @@ public class BaseController {
 		SessionContext.map().remove(RegistrationConstants.UIN_UPDATE_OPERATORAUTHENTICATIONPANE);
 		SessionContext.map().remove(RegistrationConstants.OLD_BIOMETRIC_EXCEPTION);
 		SessionContext.map().remove(RegistrationConstants.NEW_BIOMETRIC_EXCEPTION);
-		getRegistrationDTOFromSession().getDocuments().remove("signatureSign");
+//		getRegistrationDTOFromSession().removeDocument("signatureSign");
+		SessionContext.map().remove("signException");
+
+
 		clearAllValues();
 		guardianBiometricsController.clearBioCaptureInfo();
 		SessionContext.userMap().remove(RegistrationConstants.TOGGLE_BIO_METRIC_EXCEPTION);
