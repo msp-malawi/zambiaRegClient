@@ -11,6 +11,7 @@ import io.mosip.registration.util.LoggerFactory;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -400,41 +401,90 @@ public class ClientJarDecryption extends Application {
 				&& String.valueOf(properties.get(MOSIP_CLIENT_TPM_AVAILABILITY)).equalsIgnoreCase(IS_KEY_ENCRYPTED);
 	}
 
-	private void showDialog() {
+//	private void showDialog() {
+//
+//		LOGGER.info(LoggerConstants.CLIENT_JAR_DECRYPTION, LoggerConstants.APPLICATION_NAME,
+//				LoggerConstants.APPLICATION_ID, "Started Loading mosip run.jar screen");
+//
+//		StackPane stackPane = new StackPane();
+//		VBox vBox = new VBox();
+//		HBox hBox = new HBox();
+//		InputStream ins = this.getClass().getResourceAsStream("/img/logo-final.png");
+//		ImageView imageView = new ImageView(new Image(ins));
+//		imageView.setFitHeight(50);
+//		imageView.setFitWidth(50);
+//		hBox.setMinSize(200, 400);
+//		hBox.getChildren().add(imageView);
+//		downloadLabel = new Label();
+//		vBox.setAlignment(Pos.CENTER_LEFT);
+//		vBox.getChildren().add(progressIndicator);
+//		vBox.getChildren().add(downloadLabel);
+//
+//		hBox.getChildren().add(vBox);
+//		hBox.setAlignment(Pos.CENTER_LEFT);
+//
+//		stackPane.getChildren().add(hBox);
+//		Scene scene = new Scene(stackPane, 200, 150);
+//		primaryStage.initStyle(StageStyle.UNDECORATED);
+//		primaryStage.setScene(scene);
+//		primaryStage.getIcons().add(new Image(getClass().getResource("/img/logo-final.png").toExternalForm()));
+//
+//		primaryStage.show();
+//
+//		LOGGER.info(LoggerConstants.CLIENT_JAR_DECRYPTION, LoggerConstants.APPLICATION_NAME,
+//				LoggerConstants.APPLICATION_ID, "Completed Loading mosip run.jar screen");
+//
+//	}
+private void showDialog() {
 
-		LOGGER.info(LoggerConstants.CLIENT_JAR_DECRYPTION, LoggerConstants.APPLICATION_NAME,
-				LoggerConstants.APPLICATION_ID, "Started Loading mosip run.jar screen");
+	LOGGER.info(LoggerConstants.CLIENT_JAR_DECRYPTION, LoggerConstants.APPLICATION_NAME,
+			LoggerConstants.APPLICATION_ID, "Started Loading mosip run.jar screen");
 
-		StackPane stackPane = new StackPane();
-		VBox vBox = new VBox();
-		HBox hBox = new HBox();
-		InputStream ins = this.getClass().getResourceAsStream("/img/logo-final.png");
-		ImageView imageView = new ImageView(new Image(ins));
-		imageView.setFitHeight(50);
-		imageView.setFitWidth(50);
-		hBox.setMinSize(200, 400);
-		hBox.getChildren().add(imageView);
-		downloadLabel = new Label();
-		vBox.setAlignment(Pos.CENTER_LEFT);
-		vBox.getChildren().add(progressIndicator);
-		vBox.getChildren().add(downloadLabel);
+	StackPane root = new StackPane();
 
-		hBox.getChildren().add(vBox);
-		hBox.setAlignment(Pos.CENTER_LEFT);
+	VBox container = new VBox(15); // spacing
+	container.setAlignment(Pos.CENTER);
+	container.setPadding(new Insets(20));
 
-		stackPane.getChildren().add(hBox);
-		Scene scene = new Scene(stackPane, 200, 150);
-		primaryStage.initStyle(StageStyle.UNDECORATED);
-		primaryStage.setScene(scene);
-		primaryStage.getIcons().add(new Image(getClass().getResource("/img/logo-final.png").toExternalForm()));
+	// Logo
+	InputStream ins = getClass().getResourceAsStream("/img/logo-final.png");
+	ImageView imageView = new ImageView(new Image(ins));
+	imageView.setFitHeight(60);
+	imageView.setPreserveRatio(true);
 
-		primaryStage.show();
+	// Progress Indicator
+	progressIndicator.setPrefSize(40, 40);
 
-		LOGGER.info(LoggerConstants.CLIENT_JAR_DECRYPTION, LoggerConstants.APPLICATION_NAME,
-				LoggerConstants.APPLICATION_ID, "Completed Loading mosip run.jar screen");
+	// Label
+	downloadLabel = new Label("Loading, please wait...");
+	downloadLabel.setStyle("-fx-font-size: 13px;");
 
-	}
+	// Add to container
+	container.getChildren().addAll(imageView, progressIndicator, downloadLabel);
 
+	root.getChildren().add(container);
+
+	Scene scene = new Scene(root);
+
+	primaryStage.initStyle(StageStyle.UNDECORATED);
+	primaryStage.setScene(scene);
+
+	// Make responsive to screen size
+	primaryStage.setWidth(300);
+	primaryStage.setHeight(200);
+
+	// Center on screen
+	primaryStage.centerOnScreen();
+
+	primaryStage.getIcons().add(
+			new Image(getClass().getResource("/img/logo-final.png").toExternalForm())
+	);
+
+	primaryStage.show();
+
+	LOGGER.info(LoggerConstants.CLIENT_JAR_DECRYPTION, LoggerConstants.APPLICATION_NAME,
+			LoggerConstants.APPLICATION_ID, "Completed Loading mosip run.jar screen");
+}
 	// TODO - key used to encrypt jars is just encoded in properties file
 	private byte[] getValue(String key, Properties properties, boolean isTPMAvailable) {
 		byte[] value = CryptoUtil.decodeBase64(properties.getProperty(key));

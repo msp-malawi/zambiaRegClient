@@ -335,12 +335,36 @@
 			<version>${mosip.core.kernel.version}</version>
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>morena7</groupId>-->
+<!--			<artifactId>morena7</artifactId>-->
+<!--			<scope>system</scope>-->
+<!--			<version>1.0</version>-->
+<!--			<systemPath>${basedir}/lib/morena/morena7.jar</systemPath>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>morena7</groupId>
 			<artifactId>morena7</artifactId>
-			<scope>system</scope>
 			<version>1.0</version>
-			<systemPath>${basedir}/lib/morena/morena7.jar</systemPath>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/morena/morena7.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>morena7</groupId>
+			<artifactId>morena7-license</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/morena/morena7-license-1.0.jar</systemPath>
+		</dependency>
+
+		<dependency>
+			<groupId>morena7</groupId>
+			<artifactId>morena7-win</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/morena/morena7_win.jar</systemPath>
 		</dependency>
 
 		<dependency>

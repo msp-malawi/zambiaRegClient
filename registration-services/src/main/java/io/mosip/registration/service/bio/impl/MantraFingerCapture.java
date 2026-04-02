@@ -254,7 +254,7 @@ public class MantraFingerCapture {
     public List<String> getImageByte() {
         FingerGetImageRequestDto infoRequest = new FingerGetImageRequestDto();
         infoRequest.setCompressionRatio("10");
-        infoRequest.setImgFormat("1");
+        infoRequest.setImgFormat("6");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<FingerGetImageRequestDto> req = new HttpEntity<>(infoRequest, headers);
