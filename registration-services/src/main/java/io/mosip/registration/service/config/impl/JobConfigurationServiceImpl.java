@@ -148,6 +148,13 @@ public class JobConfigurationServiceImpl extends BaseService implements JobConfi
 
 	private static Map<String, SyncJobDef> parentJobMap = new HashMap<>();
 
+	private String resolveJobBeanName(String apiName) {
+		if ("userSaltSyncJob".equals(apiName)) {
+			return "userDetailServiceJob";
+		}
+		return apiName;
+	}
+
 	/**
 	 * Active sync job map with key as jobID and value as SyncJob (Entity)
 	 */
@@ -312,7 +319,7 @@ public class JobConfigurationServiceImpl extends BaseService implements JobConfi
 						&& !schedulerFactoryBean.getScheduler().checkExists(new JobKey(jobId))) {
 
 					// Get Job instance through application context
-					baseJob = (BaseJob) applicationContext.getBean(syncJob.getApiName());
+					baseJob = (BaseJob) applicationContext.getBean(resolveJobBeanName(syncJob.getApiName()));
 
 					JobDetail jobDetail = JobBuilder.newJob(baseJob.jobClass()).withIdentity(syncJob.getId())
 							.usingJobData(jobDataMap).build();
@@ -489,7 +496,7 @@ public class JobConfigurationServiceImpl extends BaseService implements JobConfi
 
 				if (syncJobDef != null && !isNull(syncJobDef.getApiName())) {
 					// Get Job using application context and api name
-					baseJob = (BaseJob) applicationContext.getBean(syncJobDef.getApiName());
+					baseJob = (BaseJob) applicationContext.getBean(resolveJobBeanName(syncJobDef.getApiName()));
 
 					BaseJob.removeCompletedJobInMap(jobId);
 

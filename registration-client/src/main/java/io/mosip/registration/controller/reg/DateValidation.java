@@ -154,15 +154,18 @@ public class DateValidation extends BaseController {
     }
 
     private void populateAge(Pane parentPane, String fieldId, LocalDate date) {
-        TextField ageField = (TextField) getFxElement(parentPane, fieldId + "__" + RegistrationConstants.AGE_FIELD);
-//        int age = Period.between(date, LocalDate.now(ZoneId.of("UTC"))).getYears();
-        String age = ageCalculator(date);
-        ageField.setText(String.valueOf(age));
-        ageField.setEditable(false);
+        TextField ageField = (TextField) getFxElement(parentPane,
+                fieldId + "__" + RegistrationConstants.AGE_FIELD);
 
-        Node node = getFxElement(parentPane, ageField.getId() + RegistrationConstants.LOCAL_LANGUAGE);
+        String age = ageCalculator(date);
+        ageField.setText(age);
+
+        Node node = getFxElement(parentPane,
+                ageField.getId() + RegistrationConstants.LOCAL_LANGUAGE);
+
         if (node != null) {
-            ((TextField) node).setText(String.valueOf(age));
+            TextField localField = (TextField) node;
+            localField.setText(age);
         }
     }
 
@@ -400,7 +403,10 @@ public class DateValidation extends BaseController {
                         getRegistrationDTOFromSession().setAgeCalculatedByDOB(true);
 
                         ageField.setText(String.valueOf(age));
-                        ageField.requestFocus();
+                        ageField.setEditable(false);
+                        ageField.setMouseTransparent(true);
+                        ageField.setFocusTraversable(false);
+//                        ageField.requestFocus();
                         dobMessage.setText(RegistrationConstants.EMPTY);
                         dobMessage.setVisible(false);
                         date.getStyleClass().removeIf((s) -> {

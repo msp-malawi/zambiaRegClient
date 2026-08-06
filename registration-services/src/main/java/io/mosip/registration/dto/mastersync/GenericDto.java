@@ -12,4 +12,9 @@ public class GenericDto {
 	private String code;
 	private String name;
 	private String langCode;
+
+	// convenience constructor
+	public GenericDto(String name) {
+		this.name = name;
+	}
 }

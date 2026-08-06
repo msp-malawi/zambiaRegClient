@@ -66,6 +66,13 @@ public abstract class BaseJob extends QuartzJobBean {
 	 */
 	private static final Logger LOGGER = AppConfig.getLogger(BaseJob.class);
 
+	private String resolveJobBeanName(String apiName) {
+		if ("userSaltSyncJob".equals(apiName)) {
+			return "userDetailServiceJob";
+		}
+		return apiName;
+	}
+
 
 
 	/**
@@ -133,7 +140,7 @@ public abstract class BaseJob extends QuartzJobBean {
 			 
 			if(parentJob!=null && parentJob.getApiName()!=null) {
 				/* Parent SyncJob */
-				BaseJob parentBaseJob = (BaseJob) applicationContext.getBean(parentJob.getApiName());
+				BaseJob parentBaseJob = (BaseJob) applicationContext.getBean(resolveJobBeanName(parentJob.getApiName()));
 				
 				/* Response of parentBaseJob */
 				parentJobResponse = parentBaseJob

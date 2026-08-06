@@ -201,7 +201,8 @@ public class DocumentScanController extends BaseController {
 
                 registrationNavlabel.setText(
                         ApplicationContext.applicationLanguageBundle().getString(RegistrationConstants.LOSTUINLBL));
-                docScanVbox.setDisable(true);
+                docScanVbox.setDisable(false);
+//                docScanVbox.setDisable(true);
                 continueBtn.setDisable(false);
             } else {
                 continueBtn.setDisable(true);

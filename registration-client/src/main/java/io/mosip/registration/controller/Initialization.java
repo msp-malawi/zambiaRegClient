@@ -96,6 +96,8 @@ public class Initialization extends Application {
 	public void stop() {
 		try {
 			super.stop();
+//			((ConfigurableApplicationContext) context).close();
+
 			getClientCryptoFacade().getClientSecurity().closeSecurityInstance();
 			LOGGER.info("REGISTRATION - APPLICATION INITILIZATION - REGISTRATIONAPPINITILIZATION", APPLICATION_NAME,
 					APPLICATION_ID, "Closed the Client Security Instance");

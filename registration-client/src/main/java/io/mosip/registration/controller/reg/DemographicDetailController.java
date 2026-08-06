@@ -26,8 +26,8 @@ import io.mosip.registration.service.sync.MasterSyncService;
 import io.mosip.registration.service.sync.PreRegistrationDataSyncService;
 import io.mosip.registration.util.common.ComboBoxAutoComplete;
 import io.mosip.registration.util.common.DemographicChangeActionHandler;
-import javafx.beans.binding.BooleanBinding;
 import javafx.collections.ObservableList;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -40,6 +40,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.StringConverter;
+import javafx.util.converter.DefaultStringConverter;
 import org.mvel2.MVEL;
 import org.mvel2.integration.VariableResolverFactory;
 import org.mvel2.integration.impl.MapVariableResolverFactory;
@@ -53,6 +54,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
@@ -146,6 +149,7 @@ public class DemographicDetailController extends BaseController {
     private Map<String, List<String>> orderOfAddressListByGroup = new LinkedHashMap<>();
     Map<String, List<UiSchemaDTO>> templateGroup = null;
 
+    StringBuilder validationMessage;
 
     /*
      * (non-Javadoc)
@@ -153,6 +157,7 @@ public class DemographicDetailController extends BaseController {
      * @see javafx.fxml.Initializable#initialize()
      */
     @FXML
+
     private void initialize() {
         LOGGER.debug(RegistrationConstants.REGISTRATION_CONTROLLER, APPLICATION_NAME,
                 RegistrationConstants.APPLICATION_ID, "Entering the Demographic Details Screen");
@@ -262,6 +267,27 @@ public class DemographicDetailController extends BaseController {
             }
 
             refreshDemographicGroups();
+            ComboBox<GenericDto> provinceCombo = listOfComboBoxWithObject.get("pobProvince");
+            if (provinceCombo != null) {
+
+                provinceCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+                    if (newVal != null && "Others".equals(newVal.getName())) {
+                        ComboBox<GenericDto> cityCombo = listOfComboBoxWithObject.get("pobCity");
+                        if (cityCombo != null) {
+                            // Find the "Others" option in the cityCombo
+                            for (GenericDto item : cityCombo.getItems()) {
+                                if ("Others".equals(item.getName())) {
+                                    cityCombo.getSelectionModel().select(item);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                });
+
+
+            }
             listOfComboBoxWithObject.get("registrationType").getSelectionModel().selectFirst();
 
             auditFactory.audit(AuditEvent.REG_DEMO_CAPTURE, Components.REGISTRATION_CONTROLLER,
@@ -273,19 +299,6 @@ public class DemographicDetailController extends BaseController {
 
         }
     }
-
-    private void addGroupInUI(List subList, int position, String gridPaneId) {
-        GridPane groupGridPane = new GridPane();
-        groupGridPane.setId(gridPaneId);
-
-        addGroupContent(subList, groupGridPane);
-//        parentFlowPane.getChildren().add(groupGridPane);//from github mosip 1.1.5.5
-//commented as per github
-        parentFlow.add(groupGridPane);
-        position++;
-        positionTracker.put(groupGridPane.getId(), position);
-    }
-
     private void fillOrderOfLocation() {
         List<Location> locations = masterSyncDao.getLocationDetails(applicationContext.getApplicationLanguage());
         Map<Integer, String> treeMap = new TreeMap<Integer, String>();
@@ -307,6 +320,11 @@ public class DemographicDetailController extends BaseController {
                                 .containsKey(location.getHierarchyLevel())) {
                             TreeMap<Integer, String> hirearchyMap = orderOfAddressMapByGroup
                                     .get(uiSchemaDTO.getGroup());
+                            int key = location.getHierarchyLevel();
+
+                            if ("Others".equalsIgnoreCase(location.getName())) {
+                                key = Integer.MAX_VALUE;
+                            }
                             hirearchyMap.put(location.getHierarchyLevel(), uiSchemaDTO.getId());
 
                             orderOfAddressMapByGroup.put(uiSchemaDTO.getGroup(), hirearchyMap);
@@ -330,6 +348,19 @@ public class DemographicDetailController extends BaseController {
 
         }
     }
+
+    private void addGroupInUI(List subList, int position, String gridPaneId) {
+        GridPane groupGridPane = new GridPane();
+        groupGridPane.setId(gridPaneId);
+
+        addGroupContent(subList, groupGridPane);
+//        parentFlowPane.getChildren().add(groupGridPane);//from github mosip 1.1.5.5
+//commented as per github
+        parentFlow.add(groupGridPane);
+        position++;
+        positionTracker.put(groupGridPane.getId(), position);
+    }
+
 
     private void disablePreRegFetch() {
         preRegParentPane.setVisible(false);
@@ -383,6 +414,7 @@ public class DemographicDetailController extends BaseController {
         return gridPane;
     }
 
+
     @SuppressWarnings("unlikely-arg-type")
     public GridPane subGridPane(UiSchemaDTO schemaDTO, String languageType, int noOfItems) {
         GridPane gridPane = new GridPane();
@@ -430,41 +462,99 @@ public class DemographicDetailController extends BaseController {
     }
 
     private VBox addDateTextField(UiSchemaDTO schema, String type, String languageType, String mandatorySuffix) {
+
         VBox vBoxParent = new VBox();
+
         TextField textField = new TextField();
+
+        if (RegistrationConstants.AGE_FIELD.equals(type)) {
+            textField.setEditable(false);
+            textField.setFocusTraversable(false);
+        }
+
         textField.getStyleClass().add(RegistrationConstants.DEMOGRAPHIC_TEXTFIELD);
         textField.setId(schema.getId() + "__" + type + languageType);
+
         Label label = new Label();
         label.setVisible(false);
         label.setId(schema.getId() + "__" + type + languageType + RegistrationConstants.LABEL);
         label.getStyleClass().add(RegistrationConstants.DEMOGRAPHIC_FIELD_LABEL);
+
         vBoxParent.getChildren().addAll(label, textField);
 
         boolean localLanguage = languageType.equals(RegistrationConstants.LOCAL_LANGUAGE);
+
         textField.setPromptText(localLanguage ? localLabelBundle.getString(type)
                 : applicationLabelBundle.getString(type) + mandatorySuffix);
+
         label.setText(localLanguage ? localLabelBundle.getString(type)
                 : applicationLabelBundle.getString(type) + mandatorySuffix);
 
         textField.textProperty().addListener((ob, ov, nv) -> {
+
             fxUtils.showLabel(parentFlowPane, textField);
+
             if (!dateValidation.isNewValueValid(nv, type)) {
                 textField.setText(ov);
             }
-            boolean isValid = RegistrationConstants.AGE_FIELD.equalsIgnoreCase(type) ?
-                    dateValidation.validateAge(parentFlowPane, textField) :
-                    dateValidation.validateDate(parentFlowPane, schema.getId());
+
+            boolean isValid = RegistrationConstants.AGE_FIELD.equalsIgnoreCase(type)
+                    ? dateValidation.validateAge(parentFlowPane, textField)
+                    : dateValidation.validateDate(parentFlowPane, schema.getId());
+
             if (isValid) {
                 refreshDemographicGroups();
             }
         });
 
         putIntoLabelMap(schema.getId() + "__" + type + languageType,
-                schema.getLabel().get(RegistrationConstants.LOCAL_LANGUAGE.equals(languageType) ?
-                        RegistrationConstants.SECONDARY : RegistrationConstants.PRIMARY));
+                schema.getLabel().get(RegistrationConstants.LOCAL_LANGUAGE.equals(languageType)
+                        ? RegistrationConstants.SECONDARY
+                        : RegistrationConstants.PRIMARY));
+
         listOfTextField.put(schema.getId() + "__" + type + languageType, textField);
+
         return vBoxParent;
     }
+
+
+
+//    private VBox addDateTextField(UiSchemaDTO schema, String type, String languageType, String mandatorySuffix) {
+//        VBox vBoxParent = new VBox();
+//        TextField textField = new TextField();
+//        textField.getStyleClass().add(RegistrationConstants.DEMOGRAPHIC_TEXTFIELD);
+//        textField.setId(schema.getId() + "__" + type + languageType);
+//        Label label = new Label();
+//        label.setVisible(false);
+//        label.setId(schema.getId() + "__" + type + languageType + RegistrationConstants.LABEL);
+//        label.getStyleClass().add(RegistrationConstants.DEMOGRAPHIC_FIELD_LABEL);
+//        vBoxParent.getChildren().addAll(label, textField);
+//
+//        boolean localLanguage = languageType.equals(RegistrationConstants.LOCAL_LANGUAGE);
+//        textField.setPromptText(localLanguage ? localLabelBundle.getString(type)
+//                : applicationLabelBundle.getString(type) + mandatorySuffix);
+//        label.setText(localLanguage ? localLabelBundle.getString(type)
+//                : applicationLabelBundle.getString(type) + mandatorySuffix);
+//
+//        textField.textProperty().addListener((ob, ov, nv) -> {
+//            fxUtils.showLabel(parentFlowPane, textField);
+//            if (!dateValidation.isNewValueValid(nv, type)) {
+//                textField.setText(ov);
+//            }
+//            boolean isValid = RegistrationConstants.AGE_FIELD.equalsIgnoreCase(type) ?
+//                    dateValidation.validateAge(parentFlowPane, textField) :
+//                    dateValidation.validateDate(parentFlowPane, schema.getId());
+//            if (isValid) {
+//                refreshDemographicGroups();
+//            }
+//        });
+//
+//        putIntoLabelMap(schema.getId() + "__" + type + languageType,
+//                schema.getLabel().get(RegistrationConstants.LOCAL_LANGUAGE.equals(languageType) ?
+//                        RegistrationConstants.SECONDARY : RegistrationConstants.PRIMARY));
+//        listOfTextField.put(schema.getId() + "__" + type + languageType, textField);
+//        return vBoxParent;
+//    }
 
     public VBox addContentForDobAndAge(UiSchemaDTO schema, String languageType) {
         String mandatorySuffix = getMandatorySuffix(schema);
@@ -593,6 +683,7 @@ public class DemographicDetailController extends BaseController {
         return vbox;
     }
 
+
     private void populateDropDowns() {
         try {
             for (String k : listOfComboBoxWithObject.keySet()) {
@@ -613,7 +704,6 @@ public class DemographicDetailController extends BaseController {
                     ExceptionUtils.getStackTrace(e));
         }
     }
-
     public <T> VBox addContentWithCheckbox(String fieldName, UiSchemaDTO schema, String languageType) {
         CheckBox field = new CheckBox();
         Label label = new Label();
@@ -876,8 +966,7 @@ public class DemographicDetailController extends BaseController {
         filter.put("presentAddressLine4","presentBarangay");
         filter.put("presentAddressLine5","presentZipcode");
 
-        for (String key:filter.keySet()
-             ) {
+        for (String key : filter.keySet()) {
             if(demographics.containsKey(key)){
                 demographics.put(filter.get(key),demographics.get(key));
                 demographics.remove(key);
@@ -909,6 +998,35 @@ public class DemographicDetailController extends BaseController {
                                         : platformField.getValue() != null ? platformField.getValue().getName() : null,
                                 applicationContext.getLocalLanguage(), localField == null ? null
                                         : localField.getValue() != null ? localField.getValue().getName() : null);
+
+
+                        String platformValue = platformField == null ? null : platformField.getValue() != null ? platformField.getValue().getName() : null;
+                        String localValue = localField == null ? null : localField.getValue() != null ? localField.getValue().getName() : null;
+//                        System.out.println("registrationDTO = " + registrationDTO.getDemographics().get("pobProvince"));
+//                        System.out.println("registrationDTO = " + registrationDTO.getDemographics().get("pobCity"));
+
+                        if ("pobProvince".equalsIgnoreCase(schemaField.getId()) && "Others".equalsIgnoreCase(platformValue)) {
+                            TextField otherProvinceField = listOfTextField.get("pobProvinceOthers");
+                            System.out.println("DemographicDetailController.addFieldValueToSession" + schemaField.getId());
+                            if (otherProvinceField != null) {
+                                platformValue = otherProvinceField.getText();
+                                System.out.println("platformValue: " + platformValue);
+
+                            }
+                        }
+
+                        if ("pobCity".equalsIgnoreCase(schemaField.getId()) && "Others".equalsIgnoreCase(platformValue)) {
+                            TextField otherProvinceField = listOfTextField.get("pobCityOthers");
+                            System.out.println("DemographicDetailController.addFieldValueToSession" + schemaField.getId());
+
+                            if (otherProvinceField != null) {
+                                platformValue = otherProvinceField.getText();
+                                System.out.println("platformValue: " + platformValue);
+                            }
+                        }
+
+                        registrationDTO.addDemographicField(schemaField.getId(), applicationContext.getApplicationLanguage(), platformValue, applicationContext.getLocalLanguage(), localValue);
+
                         break;
                     case RegistrationConstants.BUTTON:
                         List<Button> platformFieldButtons = listOfButtons.get(schemaField.getId());
@@ -1221,7 +1339,7 @@ public class DemographicDetailController extends BaseController {
         System.out.println(temp);
         if(temp!=null&&!temp.isEmpty()) {
             preRegistrationId.setText(temp);
-fetchPreRegistration();
+            fetchPreRegistration();
         }
     }
 
@@ -1239,7 +1357,7 @@ fetchPreRegistration();
             return;
         } else {
             try {
-               // pridValidatorImpl.validateId(preRegId);
+                // pridValidatorImpl.validateId(preRegId);
             } catch (InvalidIDException invalidIDException) {
                 generateAlert(RegistrationConstants.ERROR, RegistrationUIConstants.PRE_REG_ID_NOT_VALID);
                 LOGGER.error("PRID VALIDATION FAILED", APPLICATION_NAME, RegistrationConstants.APPLICATION_ID,
@@ -1325,14 +1443,12 @@ fetchPreRegistration();
         saveDetail();
 
         if (registrationController.validateDemographicPane(parentFlowPane)) {
-            if (validateAgeEmailandMobile()) {
-                guardianBiometricsController.populateBiometricPage(false, false);
-                documentScanController.populateDocumentCategories();
-                auditFactory.audit(AuditEvent.REG_DEMO_NEXT, Components.REG_DEMO_DETAILS, SessionContext.userId(),
-                        AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
-                registrationController.showCurrentPage(RegistrationConstants.DEMOGRAPHIC_DETAIL,
-                        getPageByAction(RegistrationConstants.DEMOGRAPHIC_DETAIL, RegistrationConstants.NEXT));
-            }
+//            if (validateAgeEmailandMobile()) {
+            guardianBiometricsController.populateBiometricPage(false, false);
+            documentScanController.populateDocumentCategories();
+            auditFactory.audit(AuditEvent.REG_DEMO_NEXT, Components.REG_DEMO_DETAILS, SessionContext.userId(), AuditReferenceIdTypes.USER_ID.getReferenceTypeId());
+            registrationController.showCurrentPage(RegistrationConstants.DEMOGRAPHIC_DETAIL, getPageByAction(RegistrationConstants.DEMOGRAPHIC_DETAIL, RegistrationConstants.NEXT));
+//            }
         }
         setAddressDetailsForPhilsys();
     }
@@ -1692,6 +1808,60 @@ fetchPreRegistration();
     }
 
 
+
+
+    private void addSpaceValidation(TextField textField) {
+        textField.setTextFormatter(new TextFormatter<>(new DefaultStringConverter(), null, change -> {
+            String newText = change.getControlNewText();
+
+            // Reject leading space
+            if (newText.startsWith(" ")) {
+                return null;
+            }
+
+            // Reject double or multiple spaces
+            if (newText.contains("  ")) {
+                return null;
+            }
+
+            // Allow letters, numbers, and spaces while typing
+            if (newText.matches("[\\p{L} ]*")) {
+                return change;
+            }
+
+            return null; // reject everything else
+        }));
+
+        // Trim leading/trailing spaces on focus lost
+        textField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) { // lost focus
+                String text = textField.getText();
+                if (text != null) {
+                    text = text.trim(); // remove leading/trailing spaces
+                    textField.setText(text);
+                }
+            }
+        });
+    }
+
+
+
+    private boolean isProvinceEqualToOthers() {
+        ComboBox<GenericDto> combo = (ComboBox<GenericDto>) getFxElement("pobProvince");
+        GenericDto value = combo != null ? combo.getValue() : null;
+        return value != null && "Others".equalsIgnoreCase(value.getName());
+    }
+
+    private boolean isCityEqualToOthers() {
+        ComboBox<GenericDto> combo = (ComboBox<GenericDto>) getFxElement("pobCity");
+        GenericDto value = combo != null ? combo.getValue() : null;
+        return value != null && "Others".equalsIgnoreCase(value.getName());
+    }
+
+
+
+
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void refreshDemographicGroups() {
 
@@ -1708,7 +1878,7 @@ fetchPreRegistration();
                     if (visibilityExpr.getEngine().equalsIgnoreCase(RegistrationConstants.MVEL_TYPE)) {
                         VariableResolverFactory resolverFactory = new MapVariableResolverFactory(context);
                         Object required = MVEL.eval(visibilityExpr.getExpr(), resolverFactory);
-                        System.out.println("field id : "+uiSchemaDTO.getId()+"required :"+(boolean)required);
+//                        System.out.println("field id : "+uiSchemaDTO.getId()+"required :"+(boolean)required);
                         updateFields(Arrays.asList(uiSchemaDTO), required != null ? (boolean) required : false);
                     }
                 }
@@ -1716,6 +1886,22 @@ fetchPreRegistration();
         }
         addDemoGraphicDetailsToSession();
     }
+
+
+    private void handleOthersProvinceSelection() {
+        ComboBox<GenericDto> cityCombo = listOfComboBoxWithObject.get("pobCity");
+        if (cityCombo != null) {
+            for (GenericDto item : cityCombo.getItems()) {
+                if ("Others".equals(item.getName())) {
+                    cityCombo.getSelectionModel().select(item);
+                    break;
+                }
+            }
+        }
+    }
+
+
+
 
     private void updateFields(List<UiSchemaDTO> fields, boolean isVisible) {
         //LOGGER.debug(loggerClassName, APPLICATION_NAME, RegistrationConstants.APPLICATION_ID, "Updating fields");
@@ -1725,29 +1911,105 @@ fetchPreRegistration();
 					"Updating visibility for field : " + field.getId() + " as visibility : " + isVisible);*/
             Node node = getFxElement(field.getId());
             if (node != null) {
-                System.out.println("node not null field id : "+field.getId() +" is visible : "+isVisible);
-                if (!isVisible) {
+//                System.out.println("node not null field id : "+field.getId() +" is visible : "+isVisible);
+                if (!isVisible && node.isVisible()) {
                     clearFieldValue(node);
                 }
-                node.setVisible(isVisible);
-                node.getParent().getParent().getParent().setVisible(isVisible);
-                node.getParent().getParent().getParent().setManaged(isVisible);
+
+
+                boolean finalVisibility = isVisible;
+
+                // Clear old value if hiding
+                if (!finalVisibility && node.isVisible()) {
+                    clearFieldValue(node);
+
+                }
+
+                if ("pobProvinceOthers".equals(field.getId())) {
+
+                    finalVisibility = isProvinceEqualToOthers();
+
+                }
+
+
+                if ("pobCityOthers".equals(field.getId())) {
+                    finalVisibility = isProvinceEqualToOthers() || isCityEqualToOthers();
+                }
+
+                node.setVisible(finalVisibility);
+                node.getParent().getParent().getParent().setVisible(finalVisibility);
+                node.getParent().getParent().getParent().setManaged(finalVisibility);
             }
 
             Node localLangNode = getFxElement(field.getId() + RegistrationConstants.LOCAL_LANGUAGE);
             if (localLangNode != null) {
                 if (!isVisible) {
+                    boolean finalVisibility = isVisible;
+
+                    if ("pobProvinceOthers".equals(field.getId())) {
+                        finalVisibility = isProvinceEqualToOthers();
+                    }
+                    if ("pobCityOthers".equals(field.getId())) {
+                        finalVisibility = isCityEqualToOthers();
+                    }
                     clearFieldValue(localLangNode);
                 }
+
                 localLangNode.setVisible(isVisible);
                 localLangNode.getParent().getParent().getParent().setVisible(isVisible);
                 localLangNode.getParent().getParent().getParent().setManaged(isVisible);
             }
         }
     }
+    private void clearValidationMessage(Node node) {
 
+        node.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), false);
+
+        Label errorLabel = getErrorLabelForField(node.getId());
+        if (errorLabel != null) {
+            errorLabel.setText("");
+            errorLabel.setVisible(false);
+        }
+    }
+    private Label getErrorLabelForField(String fieldId) {
+        switch (fieldId) {
+            case "pobProvinceOthers": return null;
+            case "pobCityOthers": return null;
+            default: return null;
+        }
+    }
 
     private void clearFieldValue(Node node) {
+        String id = node.getId();
+        if ("pobProvinceOthers".equals(id)) {
+            if (!isProvinceEqualToOthers()) {
+                // Hide and clear value when province is NOT "Others"
+                node.setVisible(false);
+                if (node instanceof TextField) {
+                    ((TextField) node).clear();
+                }
+                clearValidationMessage(node);
+
+                addSpaceValidation((TextField) node);
+
+                getRegistrationDTOFromSession().removeDemographicField(id);
+            }
+            return;
+        }
+
+        if ("pobCityOthers".equals(id)) {
+            if (!isCityEqualToOthers()) {
+                node.setVisible(false);
+                if (node instanceof TextField) {
+                    ((TextField) node).clear();
+                }
+                clearValidationMessage(node);
+                addSpaceValidation((TextField) node);
+
+                getRegistrationDTOFromSession().removeDemographicField(id);
+            }
+            return;
+        }
         node.setDisable(false);
         getRegistrationDTOFromSession().removeDemographicField(node.getId());
 
@@ -1814,3 +2076,5 @@ fetchPreRegistration();
 
     }
 }
+
+  

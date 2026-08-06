@@ -121,7 +121,6 @@ public class RegistrationAppHealthCheckUtil {
 			// acceptAnySSLCerticficate();
 			// System.setProperty("java.net.useSystemProxies", "true");
 			URL url = new URL(serviceUrl);
-			System.out.println("url >>>>>>..= " + url);
 			// List<Proxy> proxyList = ProxySelector.getDefault().select(new
 			// URI(url.toString()));
 			// Proxy proxy = proxyList.get(0);

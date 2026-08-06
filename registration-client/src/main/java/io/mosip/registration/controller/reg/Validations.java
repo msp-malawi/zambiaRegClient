@@ -636,6 +636,8 @@ public class Validations extends BaseController {
 	}
 
 
+
+
 	private String getRegex(String fieldId, String regexType) {
 		UiSchemaDTO uiSchemaDTO = getValidationMap().get(fieldId);
 		if (uiSchemaDTO != null && uiSchemaDTO.getValidators() != null) {

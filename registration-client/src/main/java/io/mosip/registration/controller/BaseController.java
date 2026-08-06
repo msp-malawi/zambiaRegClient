@@ -1508,7 +1508,8 @@ public class BaseController {
 												? RegistrationConstants.FACE_THRESHOLD
 												: RegistrationConstants.EMPTY;
 	}
-
+//: bioType.toLowerCase().contains(RegistrationConstants.EXCEPTION_PHOTO.toLowerCase())
+//			? RegistrationConstants.FACE_THRESHOLD
 	public interface ToRun<T> {
 		public T toRun();
 	}
