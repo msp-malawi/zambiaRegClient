@@ -30,7 +30,7 @@ local.properties
 db1/**
 registration-libs/src/main/resources/jre/**
 *.lck
-*.ctrl
+*.ctr
 stylesheet.css
 *.js
 *.dat
