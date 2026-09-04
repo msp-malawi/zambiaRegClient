@@ -114,9 +114,9 @@
 	</properties>
 
 	<modules>
-<!--		<module>registration-services</module>-->
-<!--		<module>registration-client</module>-->
-<!--		<module>registration-libs</module>-->
+		<module>registration-services</module>
+		<module>registration-client</module>
+		<module>registration-libs</module>
 	</modules>
 
 	<dependencyManagement>

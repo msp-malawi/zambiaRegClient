@@ -63,7 +63,7 @@ import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_
 import static io.mosip.registration.constants.RegistrationConstants.APPLICATION_NAME;
 
 @Controller
-public class ScanPopUpViewController extends BaseController {
+public class  ScanPopUpViewController extends BaseController {
     private static final Logger LOGGER = AppConfig.getLogger(ScanPopUpViewController.class);
     static int interval;
     static Timer timer;
